@@ -21,7 +21,7 @@ const etherscanApiKey = process.env.ETHERSCAN_API_KEY || "DNXJA8RX2Q3VZ4URQIWP7Z
 
 const config: HardhatUserConfig = {
   solidity: {
-    version: "0.8.17",
+    version: "0.8.24",
     settings: {
       optimizer: {
         enabled: true,
@@ -45,6 +45,18 @@ const config: HardhatUserConfig = {
         url: `https://eth-mainnet.alchemyapi.io/v2/${providerApiKey}`,
         enabled: process.env.MAINNET_FORKING_ENABLED === "true",
       },
+    },
+    biomesTestnet: {
+      url: `https://testnet.biomes.aw`,
+      accounts: [deployerPrivateKey],
+    },
+    garnet: {
+      url: `https://rpc.garnetchain.com`,
+      accounts: [deployerPrivateKey],
+    },
+    redstone: {
+      url: `https://rpc.redstonechain.com`,
+      accounts: [deployerPrivateKey],
     },
     mainnet: {
       url: `https://eth-mainnet.alchemyapi.io/v2/${providerApiKey}`,

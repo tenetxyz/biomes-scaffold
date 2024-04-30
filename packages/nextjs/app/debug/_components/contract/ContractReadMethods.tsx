@@ -12,7 +12,9 @@ export const ContractReadMethods = ({ deployedContractData }: { deployedContract
   )
     .filter(fn => {
       const isQueryableWithParams =
-        (fn.stateMutability === "view" || fn.stateMutability === "pure") && fn.inputs.length > 0;
+        (fn.stateMutability === "view" || fn.stateMutability === "pure") &&
+        fn.inputs.length > 0 &&
+        fn.name !== "supportsInterface";
       return isQueryableWithParams;
     })
     .map(fn => {

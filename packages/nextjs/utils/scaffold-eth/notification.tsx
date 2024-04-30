@@ -46,6 +46,7 @@ const Notification = ({
   return toast.custom(
     t => (
       <div
+        style={{ backgroundColor: "#160b21", border: "1px solid white" }}
         className={`flex flex-row items-start justify-between max-w-sm rounded-xl shadow-center shadow-accent bg-base-200 p-4 transform-gpu relative transition-all duration-500 ease-in-out space-x-2
         ${
           position.substring(0, 3) == "top"

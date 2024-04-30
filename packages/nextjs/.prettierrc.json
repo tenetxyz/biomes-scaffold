@@ -1,8 +1,12 @@
 {
+  "plugins": ["prettier-plugin-solidity"],
   "arrowParens": "avoid",
   "printWidth": 120,
   "tabWidth": 2,
+  "useTabs": false,
+  "bracketSpacing": true,
   "trailingComma": "all",
   "importOrder": ["^react$", "^next/(.*)$", "<THIRD_PARTY_MODULES>", "^@heroicons/(.*)$", "^~~/(.*)$"],
-  "importOrderSortSpecifiers": true
+  "importOrderSortSpecifiers": true,
+  "semi": true
 }

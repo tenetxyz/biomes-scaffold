@@ -6,8 +6,7 @@ module.exports = {
   darkMode: ["selector", "[data-theme='dark']"],
   // DaisyUI theme colors
   daisyui: {
-    themes: [
-      {
+    themes: [{
         light: {
           primary: "#93BBFB",
           "primary-content": "#212638",
@@ -26,7 +25,7 @@ module.exports = {
           warning: "#FFCF72",
           error: "#FF8863",
 
-          "--rounded-btn": "9999rem",
+          "--rounded-btn": "8rem",
 
           ".tooltip": {
             "--tooltip-tail": "6px",
@@ -43,13 +42,13 @@ module.exports = {
         dark: {
           primary: "#212638",
           "primary-content": "#F9FBFF",
-          secondary: "#323f61",
+          secondary: "#42a232",
           "secondary-content": "#F9FBFF",
           accent: "#4969A6",
           "accent-content": "#F9FBFF",
           neutral: "#F9FBFF",
           "neutral-content": "#385183",
-          "base-100": "#385183",
+          "base-100": "#1c0d29",
           "base-200": "#2A3655",
           "base-300": "#212638",
           "base-content": "#F9FBFF",
@@ -58,7 +57,7 @@ module.exports = {
           warning: "#FFCF72",
           error: "#FF8863",
 
-          "--rounded-btn": "9999rem",
+          "--rounded-btn": "8rem",
 
           ".tooltip": {
             "--tooltip-tail": "6px",

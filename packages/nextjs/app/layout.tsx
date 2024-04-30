@@ -6,12 +6,12 @@ import "~~/styles/globals.css";
 
 const baseUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
-  : `http://localhost:${process.env.PORT || 3000}`;
+  : `http://localhost:${process.env.PORT || 4000}`;
 const imageUrl = `${baseUrl}/thumbnail.jpg`;
 
-const title = "Scaffold-ETH 2 App";
-const titleTemplate = "%s | Scaffold-ETH 2";
-const description = "Built with 🏗 Scaffold-ETH 2";
+const title = "Biomes AW Extension";
+const titleTemplate = "%s | Biomes AW Extension";
+const description = "Built with Biomes AW Extensions Scaffold-ETH Template";
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
@@ -48,9 +48,9 @@ export const metadata: Metadata = {
 
 const ScaffoldEthApp = ({ children }: { children: React.ReactNode }) => {
   return (
-    <html suppressHydrationWarning>
-      <body>
-        <ThemeProvider enableSystem>
+    <html suppressHydrationWarning style={{ background: "#42a232" }}>
+      <body className="bg-base-100">
+        <ThemeProvider defaultTheme="dark">
           <ScaffoldEthAppWithProviders>{children}</ScaffoldEthAppWithProviders>
         </ThemeProvider>
       </body>

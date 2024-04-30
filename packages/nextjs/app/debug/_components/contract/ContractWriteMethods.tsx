@@ -17,7 +17,14 @@ export const ContractWriteMethods = ({
     (deployedContractData.abi as Abi).filter(part => part.type === "function") as AbiFunction[]
   )
     .filter(fn => {
-      const isWriteableFunction = fn.stateMutability !== "view" && fn.stateMutability !== "pure";
+      const isWriteableFunction =
+        fn.stateMutability !== "view" &&
+        fn.stateMutability !== "pure" &&
+        fn.name !== "onAfterCallSystem" &&
+        fn.name !== "onBeforeCallSystem" &&
+        fn.name !== "onRegisterHook" &&
+        fn.name !== "onUnregisterHook" &&
+        fn.name !== "canUnregister";
       return isWriteableFunction;
     })
     .map(fn => {

@@ -1,19 +1,12 @@
 {
+  "plugins": ["prettier-plugin-solidity"],
   "arrowParens": "avoid",
   "printWidth": 120,
   "tabWidth": 2,
+  "useTabs": false,
+  "bracketSpacing": true,
   "trailingComma": "all",
-  "overrides": [
-    {
-      "files": "*.sol",
-      "options": {
-        "printWidth": 80,
-        "tabWidth": 4,
-        "useTabs": true,
-        "singleQuote": false,
-        "bracketSpacing": true,
-        "explicitTypes": "always"
-      }
-    }
-  ]
+  "importOrder": ["^react$", "^next/(.*)$", "<THIRD_PARTY_MODULES>", "^@heroicons/(.*)$", "^~~/(.*)$"],
+  "importOrderSortSpecifiers": true,
+  "semi": true
 }
