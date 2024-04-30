@@ -1,6 +1,7 @@
 import { useReducer } from "react";
 import { Abi, AbiFunction } from "abitype";
-import { DisplayVariable, displayTxResult } from "~~/app/debug/_components/contract";
+import { formatEther } from "viem";
+import { DisplayVariable } from "~~/app/debug/_components/contract";
 import { useDeployedContractInfo } from "~~/hooks/scaffold-eth";
 import { GenericContract, InheritedFunctions } from "~~/utils/scaffold-eth/contract";
 
@@ -26,7 +27,7 @@ export const Landing: React.FC = ({}) => {
     })
     .sort((a, b) => (b.inheritedFrom ? b.inheritedFrom.localeCompare(a.inheritedFrom) : 1));
 
-  const basicGetterFn = viewFunctions.find(({ fn }) => fn.name === "basicGetter");
+  const rewardPoolGetter = viewFunctions.find(({ fn }) => fn.name === "getRewardPool");
 
   return (
     <div className="flex-1 flex flex-col h-full p-mono">
@@ -45,40 +46,26 @@ export const Landing: React.FC = ({}) => {
       <div className="grid grid-cols-12 flex flex-1">
         <div className="col-span-12 lg:col-span-9 p-12 flex flex-col justify-between items-center">
           <div style={{ width: "80%" }}>
-            <h1 className="text-3xl font-bold text-left mt-4">Your Game Title</h1>
+            <h1 className="text-3xl font-bold text-left mt-4">Death Match: Battle For Eth</h1>
             <h1 className="text-left mt-4" style={{ lineHeight: "normal", margin: "0", wordWrap: "break-word" }}>
-              Your game description
+              Transfer ETH to reward pool to play. Kill as many players as you can, and stay within the bordered area.
+              Player with most kills after 450 blocks gets entire reward pool.
             </h1>
-            <div
-              style={{
-                border: "1px solid white",
-                width: "100%",
-                height: "500px", // Adjust the height as needed
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                backgroundColor: "#000", // Optional: Background color
-                color: "#fff", // Text color
-                fontSize: "20px", // Adjust font size as needed
-              }}
-              className="mt-4"
-            >
-              Your Game Image
-            </div>
+            <img alt="" src="/splash.webp" style={{ border: "1px solid white", width: "100%" }} className="mt-4" />
           </div>
         </div>
         <div
           className="col-span-12 lg:col-span-3 p-12"
           style={{ backgroundColor: "#160b21", borderLeft: "1px solid #0e0715" }}
         >
-          {basicGetterFn && (
+          {rewardPoolGetter && (
             <DisplayVariable
               abi={deployedContractData.abi as Abi}
-              abiFunction={basicGetterFn.fn}
+              abiFunction={rewardPoolGetter.fn}
               contractAddress={deployedContractData.address}
-              key={"getter"}
+              key={"rewardPoolGetter"}
               refreshDisplayVariables={refreshDisplayVariables}
-              inheritedFrom={basicGetterFn.inheritedFrom}
+              inheritedFrom={rewardPoolGetter.inheritedFrom}
               poll={10000}
             >
               {({ result, RefreshButton }) => {
@@ -88,9 +75,9 @@ export const Landing: React.FC = ({}) => {
                     style={{ backgroundColor: "#42a232" }}
                   >
                     <div className="text-sm font-bold flex justify-center items-center">
-                      <span>YOUR GETTER</span> <span>{RefreshButton}</span>
+                      <span>PRIZE POOL</span> <span>{RefreshButton}</span>
                     </div>
-                    <div className="text-4xl mt-2">{displayTxResult(result)}</div>
+                    {result !== undefined && <div className="text-4xl mt-2">{formatEther(result)}</div>}
                   </div>
                 );
               }}
