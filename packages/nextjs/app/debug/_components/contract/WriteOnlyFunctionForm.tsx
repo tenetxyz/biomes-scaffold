@@ -43,7 +43,7 @@ export const WriteOnlyFunctionForm = ({
   const [buttonToShow, setButtonToShow] = useState("");
   const [textInput, setTextInput] = useState("");
 
-  const { data: result, writeContractAsync } = useWriteContract();
+  const { data: result, writeContractAsync, isPending } = useWriteContract();
 
   const handleTextInputChange = event => {
     setTextInput(event.target.value);
@@ -319,10 +319,10 @@ export const WriteOnlyFunctionForm = ({
           >
             <button
               className="btn btn-secondary btn-sm rounded-sm"
-              disabled={writeDisabled || isLoading}
+              disabled={writeDisabled || isPending}
               onClick={handleWrite}
             >
-              {isLoading && <span className="loading loading-spinner loading-xs"></span>}
+              {isPending && <span className="loading loading-spinner loading-xs"></span>}
               Send
             </button>
           </div>
