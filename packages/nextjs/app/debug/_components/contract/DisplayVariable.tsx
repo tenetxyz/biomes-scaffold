@@ -16,11 +16,12 @@ import {
 import { Abi, AbiFunction } from "abitype";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { Address } from "viem";
-import { useContractRead } from "wagmi";
+import { useReadContract } from "wagmi";
 import { ArrowPathIcon } from "@heroicons/react/24/outline";
 import { CheckCircleIcon, DocumentDuplicateIcon } from "@heroicons/react/24/outline";
 import { useAnimationConfig } from "~~/hooks/scaffold-eth";
-import { notification } from "~~/utils/scaffold-eth";
+import { useTargetNetwork } from "~~/hooks/scaffold-eth/useTargetNetwork";
+import { getParsedError, notification } from "~~/utils/scaffold-eth";
 
 export function Copy({ result }: { result: unknown }) {
   const [copied, setCopied] = useState(false);
@@ -72,16 +73,20 @@ export const DisplayVariable = ({
     RefreshButton: React.ReactNode;
   }) => React.ReactNode;
 }) => {
+  const { targetNetwork } = useTargetNetwork();
+
   const {
     data: result,
     isFetching,
     refetch,
-  } = useContractRead({
+    error,
+  } = useReadContract({
     address: contractAddress,
     functionName: abiFunction.name,
     abi: abi,
-    onError: error => {
-      notification.error(error.message);
+    chainId: targetNetwork.id,
+    query: {
+      retry: false,
     },
   });
 
@@ -97,6 +102,13 @@ export const DisplayVariable = ({
       return () => clearInterval(interval);
     }
   }, [refetch, refreshDisplayVariables]);
+
+  useEffect(() => {
+    if (error) {
+      const parsedError = getParsedError(error);
+      notification.error(parsedError);
+    }
+  }, [error]);
 
   // Render Copy button as a component for easy use in children
   const CopyButton =
