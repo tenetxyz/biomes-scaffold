@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { InheritanceTooltip } from "./InheritanceTooltip";
 import { Abi, AbiFunction } from "abitype";
-import { Address, TransactionReceipt } from "viem";
+import { Address, TransactionReceipt, parseGwei } from "viem";
 import { useAccount, useWaitForTransactionReceipt, useWriteContract } from "wagmi";
 import {
   ContractInput,
@@ -58,6 +58,8 @@ export const WriteOnlyFunctionForm = ({
             address: contractAddress,
             functionName: abiFunction.name,
             abi: abi,
+            maxFeePerGas: parseGwei("0.01"),
+            maxPriorityFeePerGas: parseGwei("0.001"),
             args: getParsedContractFunctionArgs(form),
             value: BigInt(txValue),
           });
