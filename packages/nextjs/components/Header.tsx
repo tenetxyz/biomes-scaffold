@@ -40,7 +40,7 @@ export const HeaderMenuLinks = () => {
   return (
     <>
       {menuLinks.map(({ label, href, icon }) => {
-        const isActive = pathname === href;
+        const isActive = pathname === href || pathname === href + "/";
         if (href === "/manage" && connectedAddress === undefined) return null;
 
         return (
