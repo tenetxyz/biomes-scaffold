@@ -16,6 +16,7 @@ import {
 import { IntegerInput } from "~~/components/scaffold-eth";
 import { useTransactor } from "~~/hooks/scaffold-eth";
 import { useTargetNetwork } from "~~/hooks/scaffold-eth/useTargetNetwork";
+import { replacer } from "~~/utils/scaffold-eth/common";
 
 type WriteOnlyFunctionFormProps = {
   abi: Abi;
