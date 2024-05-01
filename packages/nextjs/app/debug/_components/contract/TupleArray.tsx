@@ -1,6 +1,7 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { ContractInput } from "./ContractInput";
 import { getFunctionInputKey, getInitalTupleArrayFormState } from "./utilsContract";
+import { AbiParameter } from "abitype/dist/types/abi";
 import { replacer } from "~~/utils/scaffold-eth/common";
 import { AbiParameterTuple } from "~~/utils/scaffold-eth/contract";
 
@@ -11,7 +12,7 @@ type TupleArrayProps = {
   parentForm: Record<string, any> | undefined;
 };
 
-export const TupleArray = ({ abiTupleParameter, setParentForm, parentStateObjectKey }: TupleArrayProps) => {
+export const TupleArray = ({ abiTupleParameter, parentForm, setParentForm, parentStateObjectKey }: TupleArrayProps) => {
   const [form, setForm] = useState<Record<string, any>>(() => getInitalTupleArrayFormState(abiTupleParameter));
   const [additionalInputs, setAdditionalInputs] = useState<Array<typeof abiTupleParameter.components>>([
     abiTupleParameter.components,
@@ -95,14 +96,72 @@ export const TupleArray = ({ abiTupleParameter, setParentForm, parentStateObject
     setAdditionalInputs(inputs => inputs.slice(0, -1));
   };
 
+  useEffect(() => {
+    if (parentForm) {
+      const currentParentValue = parentForm[parentStateObjectKey];
+      if (currentParentValue === undefined || currentParentValue === null || currentParentValue === "") {
+        return;
+      }
+      // Check if form field matches parent, if not update it to match
+
+      // Extract and group fields based on index prefix
+      const groupedFields = Object.keys(form).reduce((acc, key) => {
+        const [indexPrefix, ...restArray] = key.split("_");
+        const componentName = restArray.join("_");
+        if (!acc[indexPrefix]) {
+          acc[indexPrefix] = {};
+        }
+        acc[indexPrefix][componentName] = form[key];
+        return acc;
+      }, {} as Record<string, Record<string, any>>);
+
+      let argsArray: Array<Record<string, any>> = [];
+
+      Object.keys(groupedFields).forEach(key => {
+        const currentKeyValues = Object.values(groupedFields[key]);
+
+        const argsStruct: Record<string, any> = {};
+        abiTupleParameter.components.forEach((component, componentIndex) => {
+          argsStruct[component.name || `input_${componentIndex}_`] = currentKeyValues[componentIndex];
+        });
+
+        argsArray.push(argsStruct);
+      });
+
+      if (depth > 1) {
+        argsArray = argsArray.map(args => {
+          return args[abiTupleParameter.components[0].name || "tuple"];
+        });
+      }
+
+      const parentFormData = JSON.parse(currentParentValue);
+      const currentFormValue = JSON.stringify(argsArray, replacer);
+      if (currentParentValue !== currentFormValue) {
+        const newForm: Record<string, any> = {};
+        const newAdditionalInputs: (readonly AbiParameter[])[] = [];
+        parentFormData.forEach((parentFormValue: unknown, idx: number) => {
+          abiTupleParameter.components.forEach((component, componentIndex) => {
+            const key = getFunctionInputKey(idx + "_" + abiTupleParameter.name || "tuple", component, componentIndex);
+            if (component.name) {
+              newForm[key] = parentFormValue[component.name];
+            }
+          });
+          newAdditionalInputs.push(abiTupleParameter.components);
+        });
+        setForm(newForm);
+        setAdditionalInputs(newAdditionalInputs);
+      }
+    }
+  }, [JSON.stringify(parentForm, replacer)]);
+
   return (
     <div>
-      <div className="collapse collapse-arrow bg-base-200 pl-4 py-1.5 border-2 border-secondary">
+      <div className="collapse rounded-sm collapse-arrow pl-4 py-1.5 border border-white">
         <input type="checkbox" className="min-h-fit peer" />
-        <div className="collapse-title p-0 min-h-fit peer-checked:mb-1 text-primary-content/50">
+        <div className="collapse-title p-0 min-h-fit peer-checked:mb-1 text-white/80">
           <p className="m-0 text-[1rem]">{abiTupleParameter.internalType}</p>
         </div>
-        <div className="ml-3 flex-col space-y-2 border-secondary/70 border-l-2 pl-4 collapse-content">
+        <div className="ml-3 flex-col space-y-2 border-white/70 pl-2 collapse-content">
           {additionalInputs.map((additionalInput, additionalIndex) => (
             <div key={additionalIndex} className="space-y-1">
               <span className="badge bg-base-300 badge-sm">

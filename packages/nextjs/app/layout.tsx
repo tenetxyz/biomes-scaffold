@@ -6,7 +6,7 @@ import "~~/styles/globals.css";
 
 const baseUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
-  : `http://localhost:${process.env.PORT || 4000}`;
+  : `http://localhost:${process.env.PORT || 3000}`;
 const imageUrl = `${baseUrl}/thumbnail.jpg`;
 
 const title = "Biomes AW Extension";

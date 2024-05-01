@@ -35,6 +35,14 @@ export const RainbowKitCustomConnectButton = () => {
                     Connect Wallet
                   </button>
                 );
+                // return (
+                //   <>
+                //     <label className="btn btn-primary btn-sm" htmlFor="initburner-modal">
+                //       Connect Wallet
+                //     </label>
+                //     <InitBurnerAccountModal modalId="initburner-modal" />
+                //   </>
+                // );
               }
 
               if (chain.unsupported || chain.id !== targetNetwork.id) {
@@ -56,6 +64,7 @@ export const RainbowKitCustomConnectButton = () => {
                     blockExplorerAddressLink={blockExplorerAddressLink}
                   />
                   <AddressQRCodeModal address={account.address as Address} modalId="qrcode-modal" />
+                  {/* <ChangeAccountModal address={account.address as Address} modalId="changeaccount-modal" /> */}
                 </>
               );
             })()}

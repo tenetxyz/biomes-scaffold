@@ -1,7 +1,18 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Copy } from "./DisplayVariable";
 import { InheritanceTooltip } from "./InheritanceTooltip";
+import {
+  areValidBuilds,
+  areValidBuildsWithPos,
+  isAreaArray,
+  isArrayofBytes32,
+  isBytes32,
+  isValidArea,
+  isValidBuild,
+  isValidBuildWithPos,
+} from "./utilsDisplay";
 import { Abi, AbiFunction } from "abitype";
 import { Address } from "viem";
 import { useReadContract } from "wagmi";
@@ -79,14 +90,26 @@ export const ReadOnlyFunctionForm = ({
       <div className="flex justify-between gap-2 flex-wrap">
         <div className="flex-grow w-4/5">
           {result !== null && result !== undefined && (
-            <div className="bg-secondary rounded-3xl text-sm px-4 py-1.5 break-words">
-              <p className="font-bold m-0 mb-1">Result:</p>
+            <div className="bg-secondary rounded-sm text-sm px-4 py-1.5 break-words">
+              <div className="flex">
+                <p className="font-bold m-0 mb-1">Result:</p>
+                {isValidArea(result) ||
+                isAreaArray(result) ||
+                isBytes32(result) ||
+                isArrayofBytes32(result) ||
+                isValidBuild(result) ||
+                isValidBuildWithPos(result) ||
+                areValidBuilds(result) ||
+                areValidBuildsWithPos(result) ? (
+                  <Copy result={result} />
+                ) : null}
+              </div>
               <pre className="whitespace-pre-wrap break-words">{displayTxResult(result)}</pre>
             </div>
           )}
         </div>
         <button
-          className="btn btn-secondary btn-sm"
+          className="btn btn-secondary btn-sm rounded-sm"
           onClick={async () => {
             const { data } = await refetch();
             setResult(data);
@@ -94,7 +117,7 @@ export const ReadOnlyFunctionForm = ({
           disabled={isFetching}
         >
           {isFetching && <span className="loading loading-spinner loading-xs"></span>}
-          Read 📡
+          Read
         </button>
       </div>
     </div>
