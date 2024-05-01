@@ -1,7 +1,8 @@
 import { useReducer } from "react";
 import { Abi, AbiFunction } from "abitype";
+import { TransactionReceipt } from "viem";
 import { useAccount } from "wagmi";
-import { DisplayVariable, displayTxResult } from "~~/app/debug/_components/contract";
+import { DisplayVariable, WriteOnlyFunctionForm, displayTxResult } from "~~/app/debug/_components/contract";
 import { useDeployedContractInfo } from "~~/hooks/scaffold-eth";
 import { GenericContract, InheritedFunctions } from "~~/utils/scaffold-eth/contract";
 
@@ -18,6 +19,26 @@ export const Game: React.FC = ({}) => {
     return <div>Loading...</div>;
   }
 
+  const writeFunctions = ((deployedContractData.abi as Abi).filter(part => part.type === "function") as AbiFunction[])
+    .filter(fn => {
+      const isWriteableFunction =
+        fn.stateMutability !== "view" &&
+        fn.stateMutability !== "pure" &&
+        fn.name !== "onAfterCallSystem" &&
+        fn.name !== "onBeforeCallSystem" &&
+        fn.name !== "onRegisterHook" &&
+        fn.name !== "onUnregisterHook" &&
+        fn.name !== "canUnregister";
+      return isWriteableFunction;
+    })
+    .map(fn => {
+      return {
+        fn,
+        inheritedFrom: ((deployedContractData as GenericContract)?.inheritedFunctions as InheritedFunctions)?.[fn.name],
+      };
+    })
+    .sort((a, b) => (b.inheritedFrom ? b.inheritedFrom.localeCompare(a.inheritedFrom) : 1));
+
   const viewFunctions = ((deployedContractData.abi as Abi).filter(part => part.type === "function") as AbiFunction[])
     .filter(fn => {
       const isQueryableWithNoParams =
@@ -32,7 +53,13 @@ export const Game: React.FC = ({}) => {
     })
     .sort((a, b) => (b.inheritedFrom ? b.inheritedFrom.localeCompare(a.inheritedFrom) : 1));
 
-  const basicGetterFn = viewFunctions.find(({ fn }) => fn.name === "basicGetter");
+  const dropItem = writeFunctions.find(fn => fn.fn.name === "dropItem");
+  const matchBuild = writeFunctions.find(fn => fn.fn.name === "matchBuild");
+  const getAllowedItemDrops = viewFunctions.find(({ fn }) => fn.name === "getAllowedItemDrops");
+
+  if (dropItem === undefined || matchBuild === undefined || getAllowedItemDrops === undefined) {
+    return <div>Missing required functions</div>;
+  }
 
   return (
     <div className="flex-1 flex flex-col h-full p-mono">
@@ -64,42 +91,72 @@ export const Game: React.FC = ({}) => {
             <div>
               <h1 className="text-3xl font-bold text-left mt-4">Play Game</h1>
               <h1 className="text-left mt-4" style={{ lineHeight: "normal", margin: "0", wordWrap: "break-word" }}>
-                Your Main Game Screen
+                Submit builds and drop items!
               </h1>
             </div>
-            <div></div>
+            <div>
+              <div className="p-5 divide-y divide-base-300">
+                <WriteOnlyFunctionForm
+                  abi={deployedContractData.abi as Abi}
+                  key={"matchBuild"}
+                  abiFunction={matchBuild.fn}
+                  onChange={() => {
+                    return;
+                  }}
+                  onBlockConfirmation={(txnReceipt: TransactionReceipt) => {
+                    console.log("txnReceipt", txnReceipt);
+                  }}
+                  contractAddress={deployedContractData.address}
+                  inheritedFrom={matchBuild?.inheritedFrom}
+                />
+              </div>
+              <div className="p-5 divide-y divide-base-300">
+                <WriteOnlyFunctionForm
+                  abi={deployedContractData.abi as Abi}
+                  key={"dropItem"}
+                  abiFunction={dropItem.fn}
+                  onChange={() => {
+                    return;
+                  }}
+                  onBlockConfirmation={(txnReceipt: TransactionReceipt) => {
+                    console.log("txnReceipt", txnReceipt);
+                  }}
+                  contractAddress={deployedContractData.address}
+                  inheritedFrom={dropItem?.inheritedFrom}
+                />
+              </div>
+              <div>
+                <DisplayVariable
+                  abi={deployedContractData.abi as Abi}
+                  abiFunction={getAllowedItemDrops.fn}
+                  contractAddress={deployedContractData.address}
+                  key={"getAllowedItemDrops"}
+                  refreshDisplayVariables={refreshDisplayVariables}
+                  inheritedFrom={getAllowedItemDrops.inheritedFrom}
+                  poll={2000}
+                >
+                  {({ result, RefreshButton }) => {
+                    // if (isFetching) return <div>Loading...</div>;
+
+                    return (
+                      <div style={{ backgroundColor: "#160b21", padding: "16px", border: "1px solid #0e0715" }}>
+                        <div className="flex justify-between mb-4">
+                          <div className="text-lg font-medium">Players Allowed Item Drops</div>
+                          <div className="flex gap-4">{RefreshButton}</div>
+                        </div>
+                        {displayTxResult(result)}
+                      </div>
+                    );
+                  }}
+                </DisplayVariable>
+              </div>
+            </div>
           </div>
         </div>
         <div
           className="col-span-12 lg:col-span-3 p-12"
           style={{ backgroundColor: "#160b21", borderLeft: "1px solid #0e0715" }}
-        >
-          {basicGetterFn && (
-            <DisplayVariable
-              abi={deployedContractData.abi as Abi}
-              abiFunction={basicGetterFn.fn}
-              contractAddress={deployedContractData.address}
-              key={"getter"}
-              refreshDisplayVariables={refreshDisplayVariables}
-              inheritedFrom={basicGetterFn.inheritedFrom}
-              poll={10000}
-            >
-              {({ result, RefreshButton }) => {
-                return (
-                  <div
-                    className="p-6 text-white text-center border border- border-white w-full"
-                    style={{ backgroundColor: "#42a232" }}
-                  >
-                    <div className="text-sm font-bold flex justify-center items-center">
-                      <span>YOUR GETTER</span> <span>{RefreshButton}</span>
-                    </div>
-                    <div className="text-4xl mt-2">{displayTxResult(result)}</div>
-                  </div>
-                );
-              }}
-            </DisplayVariable>
-          )}
-        </div>
+        ></div>
       </div>
     </div>
   );

@@ -49,7 +49,7 @@ const deployGameContract: DeployFunction = async function (hre: HardhatRuntimeEn
   await deploy("Game", {
     from: deployer,
     // Contract constructor arguments
-    args: [useBiomesWorldAddress, "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266"],
+    args: [useBiomesWorldAddress, "0xE0ae70caBb529336e25FA7a1f036b77ad0089d2a"],
     log: true,
     // autoMine: can be passed to the deploy function to make the deployment process faster on local networks by
     // automatically mining the contract deployment transaction. There is no effect on live networks.
