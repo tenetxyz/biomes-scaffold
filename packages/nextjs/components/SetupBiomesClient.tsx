@@ -194,18 +194,18 @@ export const SetupBiomesClient: React.FC = ({}) => {
                 </div>
               </div>
 
-              <div className="flex grid grid-cols-6">
+              {/* <div className="flex grid grid-cols-6">
                 <div className="col-span-2 text-left">
                   <p>2) Toggle To &quot;Show&quot; in Biomes Client:</p>
                 </div>
                 <div className="col-span-4">
                   <img alt="" src="/importavatars/one.png" className="w-3/4 border rounded-sm" />
                 </div>
-              </div>
+              </div> */}
 
               <div className="flex grid grid-cols-6">
                 <div className="col-span-2 text-left">
-                  <p>3) Click Import in Entities Section:</p>
+                  <p>2) Click Import in Entities Section:</p>
                 </div>
                 <div className="col-span-4">
                   <img alt="" src="/importavatars/two.png" className="w-3/4 border rounded-sm" />
@@ -214,7 +214,7 @@ export const SetupBiomesClient: React.FC = ({}) => {
 
               <div className="flex grid grid-cols-6">
                 <div className="col-span-2 text-left">
-                  <p>4) Paste The Avatar IDs You Copied and Click Import:</p>
+                  <p>3) Paste The Avatar IDs You Copied and Click Import:</p>
                 </div>
                 <div className="col-span-4">
                   <img alt="" src="/importavatars/three.png" className="w-3/4 border rounded-sm" />
@@ -282,7 +282,7 @@ export const SetupBiomesClient: React.FC = ({}) => {
             onClick={toggleModal}
             disabled={false}
           >
-            I Have Imported The Avatars Into Biomes
+            I Have Imported The Avatars And Area Into Biomes
           </button>
         </div>
 

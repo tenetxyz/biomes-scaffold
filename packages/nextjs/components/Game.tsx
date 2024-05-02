@@ -1,12 +1,11 @@
 import { useReducer } from "react";
 import Link from "next/link";
 import { Abi, AbiFunction } from "abitype";
-import { formatEther } from "ethers";
-import { TransactionReceipt } from "viem";
+import { TransactionReceipt, formatEther } from "viem";
 import { useAccount, useBlockNumber } from "wagmi";
 import { DisplayVariable, WriteOnlyFunctionForm, displayTxResult } from "~~/app/debug/_components/contract";
 import { useDeployedContractInfo } from "~~/hooks/scaffold-eth";
-import { Stage, useGlobalState } from "~~/services/store/store";
+import { useGlobalState } from "~~/services/store/store";
 import { GenericContract, InheritedFunctions } from "~~/utils/scaffold-eth/contract";
 
 export const Game: React.FC = ({}) => {
@@ -68,7 +67,6 @@ export const Game: React.FC = ({}) => {
   const registeredPlayersGetter = viewFunctions.find(({ fn }) => fn.name === "getRegisteredPlayerEntityIds");
   const killsGetter = viewFunctions.find(({ fn }) => fn.name === "getKillsLeaderboard");
   const rewardPoolGetter = viewFunctions.find(({ fn }) => fn.name === "getRewardPool");
-  const getKillsGetter = viewFunctions.find(({ fn }) => fn.name === "getKills");
 
   if (
     claimRewardPoolFunctionData === undefined ||
@@ -76,8 +74,7 @@ export const Game: React.FC = ({}) => {
     isEndedGetter === undefined ||
     registeredPlayersGetter === undefined ||
     killsGetter === undefined ||
-    rewardPoolGetter === undefined ||
-    getKillsGetter === undefined
+    rewardPoolGetter === undefined
   ) {
     return <div>Missing required functions</div>;
   }
@@ -87,15 +84,19 @@ export const Game: React.FC = ({}) => {
       <div className="w-full marquee bg-secondary text-center flex justify-between px-12 items-center">
         <div>
           Kill participating avatars in{" "}
-          <a href="https://biomes.aw" style={{ textDecoration: "underline", fontWeight: "bolder", color: "white" }}>
+          <a
+            href="https://biome1.biomes.aw/"
+            rel="noreferrer"
+            target="_blank"
+            style={{ textDecoration: "underline", fontWeight: "bolder", color: "white" }}
+          >
             Biomes
-          </a>{" "}
-          to get more kills. Watch Your Stamina & Craft Weapons To Do More Damage.
+          </a>
+          . Watch Your Stamina & Craft Weapons To Do More Damage.
         </div>
         <div>
           <a
             href="/how-to-play"
-            rel="noopener noreferrer"
             className="flex items-center bg-white/10 border border-white/20 px-2 py-1.5 font-mono uppercase text-sm leading-none transition hover:border-white"
           >
             How To Play
@@ -107,7 +108,66 @@ export const Game: React.FC = ({}) => {
         <div className="col-span-12 lg:col-span-9 p-12 flex flex-col justify-between items-center">
           <div style={{ width: "80%" }} className="flex flex-col gap-12">
             <div>
-              <div>
+              <div className="flex flex-col gap-5">
+                <DisplayVariable
+                  abi={deployedContractData.abi as Abi}
+                  abiFunction={isStartedGetter.fn}
+                  contractAddress={deployedContractData.address}
+                  key={"isGameStarted"}
+                  refreshDisplayVariables={refreshDisplayVariables}
+                  inheritedFrom={isStartedGetter.inheritedFrom}
+                  poll={2000}
+                >
+                  {({ result, RefreshButton }) => {
+                    if (result === true) {
+                      return (
+                        <div className="text-xl font-semibold flex" style={{ color: "rgb(205 202 254)" }}>
+                          <div>Game Has Started & Ends At Block:</div>
+                          <div>
+                            <DisplayVariable
+                              abi={deployedContractData.abi as Abi}
+                              abiFunction={isEndedGetter.fn}
+                              contractAddress={deployedContractData.address}
+                              key={"gameEndBlock"}
+                              refreshDisplayVariables={refreshDisplayVariables}
+                              inheritedFrom={isEndedGetter.inheritedFrom}
+                            >
+                              {({ result }) => {
+                                const numBlocksRemaining =
+                                  latestBlockNumber !== undefined && result !== undefined && result !== null
+                                    ? result - latestBlockNumber
+                                    : 0n;
+                                return (
+                                  <div className="pl-2">
+                                    {displayTxResult(result)}{" "}
+                                    <span style={{ color: "#FECACA" }}>
+                                      ({numBlocksRemaining.toString()} blocks remaining)
+                                    </span>
+                                  </div>
+                                );
+                              }}
+                            </DisplayVariable>
+                          </div>
+                          {RefreshButton}
+                        </div>
+                      );
+                    } else {
+                      return (
+                        <div
+                          className="p-4 flex justify-between text-white text-center border border-white w-full"
+                          style={{ border: "1px solid rgb(242 12 12)", background: "rgb(162 50 50)" }}
+                        >
+                          <div className="text-3xl">⏳</div>
+                          <div className="text-xl font-semibold" style={{ color: "#FECACA" }}>
+                            Game Hasn&apos;t Started
+                          </div>
+                          {RefreshButton}
+                        </div>
+                      );
+                    }
+                  }}
+                </DisplayVariable>
+
                 <DisplayVariable
                   abi={deployedContractData.abi as Abi}
                   abiFunction={registeredPlayersGetter.fn}
@@ -117,7 +177,7 @@ export const Game: React.FC = ({}) => {
                   inheritedFrom={registeredPlayersGetter.inheritedFrom}
                   poll={2000}
                 >
-                  {({ result, CopyButton }) => {
+                  {({ CopyButton }) => {
                     return (
                       <div style={{ backgroundColor: "#160b21", padding: "16px", border: "1px solid #0e0715" }}>
                         <div className="flex justify-between mb-4 items-center">
@@ -215,63 +275,6 @@ export const Game: React.FC = ({}) => {
                 inheritedFrom={claimRewardPoolFunctionData?.inheritedFrom}
               />
             </div>
-
-            <DisplayVariable
-              abi={deployedContractData.abi as Abi}
-              abiFunction={isStartedGetter.fn}
-              contractAddress={deployedContractData.address}
-              key={"isGameStarted"}
-              refreshDisplayVariables={refreshDisplayVariables}
-              inheritedFrom={isStartedGetter.inheritedFrom}
-              poll={2000}
-            >
-              {({ result, RefreshButton }) => {
-                if (result === true) {
-                  return (
-                    <div className="text-xl font-semibold flex" style={{ color: "rgb(205 202 254)" }}>
-                      <div>Game Has Started & Ends At Block:</div>
-                      <div>
-                        <DisplayVariable
-                          abi={deployedContractData.abi as Abi}
-                          abiFunction={isEndedGetter.fn}
-                          contractAddress={deployedContractData.address}
-                          key={"gameEndBlock"}
-                          refreshDisplayVariables={refreshDisplayVariables}
-                          inheritedFrom={isEndedGetter.inheritedFrom}
-                        >
-                          {({ result }) => {
-                            const numBlocksRemaining =
-                              latestBlockNumber !== undefined && result !== undefined && result !== null
-                                ? result - latestBlockNumber
-                                : 0n;
-                            return (
-                              <div className="pl-2">
-                                {displayTxResult(result)}{" "}
-                                <span style={{ color: "#FECACA" }}>
-                                  ({numBlocksRemaining.toString()} blocks remaining)
-                                </span>
-                              </div>
-                            );
-                          }}
-                        </DisplayVariable>
-                      </div>
-                    </div>
-                  );
-                } else {
-                  return (
-                    <div
-                      className="p-4 text-white text-center border border-white w-full"
-                      style={{ border: "1px solid rgb(242 12 12)", background: "rgb(162 50 50)" }}
-                    >
-                      <div className="text-3xl">⏳</div>
-                      <div className="text-xl font-semibold" style={{ color: "#FECACA" }}>
-                        Game Hasn&apos;t Started
-                      </div>
-                    </div>
-                  );
-                }
-              }}
-            </DisplayVariable>
           </div>
 
           <div
@@ -286,7 +289,7 @@ export const Game: React.FC = ({}) => {
               </Link>
             </div>
             <div className="text-sm font-semibold" style={{ color: "#FEF08A" }}>
-              <div className="pb-4 pt-2">⚠️ You can't logoff until you the game is over.</div>
+              <div className="pb-4 pt-2">⚠️ You can&apos;t logoff until the game is over.</div>
               <div>Unregister your hooks when done playing!</div>
             </div>
           </div>
