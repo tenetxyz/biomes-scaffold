@@ -98,7 +98,8 @@ export const RegisterGame: React.FC = ({}) => {
             <div>
               <h1 className="text-3xl font-bold text-left mt-4">Join Game</h1>
               <h1 className="text-left mt-4" style={{ lineHeight: "normal", margin: "0", wordWrap: "break-word" }}>
-                Your Register Game Description
+                Deposit 0.0015 ETH to register your player. If anyone kills your player, they will get this eth. If you
+                kill other players, you will get their eth.
               </h1>
             </div>
             <div>
@@ -116,12 +117,7 @@ export const RegisterGame: React.FC = ({}) => {
                       }}
                     />
                   ) : (
-                    <button
-                      className="w-full btn btn-primary bg-secondary rounded-sm"
-                      onClick={() => setIsGameRegistered(true)}
-                    >
-                      Mock Game Register
-                    </button>
+                    <div>Register function not found</div>
                   )}
                 </div>
               ) : (
