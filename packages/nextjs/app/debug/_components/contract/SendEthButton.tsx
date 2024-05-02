@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Abi } from "abitype";
-import { TransactionReceipt, parseEther, parseGwei } from "viem";
+import { TransactionReceipt, parseEther } from "viem";
 import { useWriteContract } from "wagmi";
 import { useTransactor } from "~~/hooks/scaffold-eth";
 
@@ -27,8 +27,6 @@ export const SendEthButton: React.FC<SendEthButton> = ({ contractAddress, abi, f
         writeContractAsync({
           address: contractAddress,
           abi: abi,
-          maxFeePerGas: parseGwei("0.01"),
-          maxPriorityFeePerGas: parseGwei("0.001"),
           functionName: functionName,
           value: parseEther(value),
         });

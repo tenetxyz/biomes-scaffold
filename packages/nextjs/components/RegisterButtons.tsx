@@ -3,7 +3,7 @@ import IWorldAbi from "@biomesaw/world/IWorld.abi.json";
 import { resourceToHex } from "@latticexyz/common";
 import { garnet, redstone } from "@latticexyz/common/chains";
 import { encodeSystemCalls } from "@latticexyz/world/internal";
-import { TransactionReceipt, parseGwei } from "viem";
+import { TransactionReceipt } from "viem";
 import { usePublicClient, useWriteContract } from "wagmi";
 import { useTransactor } from "~~/hooks/scaffold-eth";
 import { useTargetNetwork } from "~~/hooks/scaffold-eth/useTargetNetwork";
@@ -130,8 +130,6 @@ export const RegisterHookButton: React.FC<HookButtonProps> = ({
         writeContractAsync({
           address: useBiomesWorldAddress,
           abi: IWorldAbi,
-          maxFeePerGas: parseGwei("0.01"),
-          maxPriorityFeePerGas: parseGwei("0.001"),
           functionName: "batchCall",
           args: [encodeSystemCalls(IWorldAbi, registerSystemCalls)],
         });
@@ -157,8 +155,6 @@ export const RegisterHookButton: React.FC<HookButtonProps> = ({
         writeContractAsync({
           address: useBiomesWorldAddress,
           abi: IWorldAbi,
-          maxFeePerGas: parseGwei("0.01"),
-          maxPriorityFeePerGas: parseGwei("0.001"),
           functionName: "batchCall",
           args: [encodeSystemCalls(IWorldAbi, unRegisterSystemCalls)],
         });
@@ -253,8 +249,6 @@ export const RegisterDelegationButton: React.FC<DelegationButtonProps> = ({
         writeContractAsync({
           address: useBiomesWorldAddress,
           abi: IWorldAbi,
-          maxFeePerGas: parseGwei("0.01"),
-          maxPriorityFeePerGas: parseGwei("0.001"),
           functionName: "registerDelegation",
           args: [delegateeAddress, UNLIMITED_DELEGATION, emptyInitCallData],
         });
@@ -280,8 +274,6 @@ export const RegisterDelegationButton: React.FC<DelegationButtonProps> = ({
         writeContractAsync({
           address: useBiomesWorldAddress,
           abi: IWorldAbi,
-          maxFeePerGas: parseGwei("0.01"),
-          maxPriorityFeePerGas: parseGwei("0.001"),
           functionName: "unregisterDelegation",
           args: [delegateeAddress],
         });
