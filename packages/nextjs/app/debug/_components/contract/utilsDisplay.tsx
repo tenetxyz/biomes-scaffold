@@ -130,15 +130,15 @@ function LeaderboardComponent({ leaderboard }: { leaderboard: LeaderboardEntry[]
         <table style={{ width: "100%", borderCollapse: "collapse" }}>
           <thead>
             <tr>
-              <th style={{ border: "0.5px solid white", padding: "8px", textAlign: "left" }}>Player</th>
-              <th style={{ border: "0.5px solid white", padding: "8px", textAlign: "left" }}>Kills</th>
+              <th style={{ border: "0.5px solid #ffffff47", padding: "8px", textAlign: "left" }}>Player</th>
+              <th style={{ border: "0.5px solid #ffffff47", padding: "8px", textAlign: "left" }}>Kills</th>
             </tr>
           </thead>
           <tbody>
             {sortedLeaderboard.map((entry, index) => (
               <tr key={index}>
-                <td style={{ border: "0.5px solid white", padding: "8px" }}>{entry.player}</td>
-                <td style={{ border: "0.5px solid white", padding: "8px" }}>{entry.kills.toString()}</td>
+                <td style={{ border: "0.5px solid #ffffff47", padding: "8px" }}>{displayTxResult(entry.player)}</td>
+                <td style={{ border: "0.5px solid #ffffff47", padding: "8px" }}>{entry.kills.toString()}</td>
               </tr>
             ))}
           </tbody>

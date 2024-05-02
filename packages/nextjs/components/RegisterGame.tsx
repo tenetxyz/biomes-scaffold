@@ -109,7 +109,7 @@ export const RegisterGame: React.FC = ({}) => {
                       contractAddress={deployedContractData.address}
                       abi={deployedContractData.abi as Abi}
                       functionName={registerPlayFunctionData.fn.name}
-                      value={"1"}
+                      value={"0.0015"}
                       onWrite={(txnReceipt: TransactionReceipt) => {
                         console.log("txnReceipt", txnReceipt);
                         checkPlayerRegistered();

@@ -141,7 +141,7 @@ export const RegisterBiomes: React.FC = ({}) => {
                 ⚠️
               </div>
               <div className="text-sm font-semibold" style={{ color: "#FEF08A" }}>
-                Unregister the hooks and delegations when opting out or after completing the game.
+                Unregister your hooks when done playing!
               </div>
             </div>
           </div>

@@ -42,24 +42,16 @@ p {
 
 
 .marquee {
-  height: 28px;
+  /* height: 28px; */
   /* Adjusted for text */
   width: 100%;
   /* Full width for better effect */
-  overflow: hidden;
-  box-sizing: border-box;
-  position: relative;
+  /* overflow: hidden; */
+  /* box-sizing: border-box; */
+  /* position: relative; */
+  padding-top: 1rem;
+  padding-bottom: 1rem;
   border-bottom: #2ef20e 1.5px solid;
-}
-
-.marquee--inner {
-  display: flex;
-  /* Changed to flex for inline display of text spans */
-  width: auto;
-  /* Adjusted based on content */
-  position: absolute;
-  padding: 2px;
-  animation: marquee 1000s linear infinite;
 }
 
 .marquee--inner:hover {

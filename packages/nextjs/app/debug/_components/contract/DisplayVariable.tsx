@@ -30,7 +30,10 @@ export function Copy({ result }: { result: unknown }) {
   return (
     <div>
       {copied ? (
-        <CheckCircleIcon className="text-xl font-normal text-white h-5 w-5 cursor-pointer" aria-hidden="true" />
+        <div className="flex gap-2 items-center border border-white p-1 cursor-pointer px-2 hover:bg-white hover:text-black hover:border-black">
+          <CheckCircleIcon className="text-xl font-normal h-5 w-5 cursor-pointer" aria-hidden="true" />
+          <div>Copied</div>
+        </div>
       ) : (
         <CopyToClipboard
           text={resultString}
@@ -41,7 +44,41 @@ export function Copy({ result }: { result: unknown }) {
             }, 800);
           }}
         >
-          <DocumentDuplicateIcon className="text-xl font-normal text-white h-5 w-5 cursor-pointer" aria-hidden="true" />
+          <div className="flex gap-2 items-center border border-white p-1 cursor-pointer px-2 hover:bg-white hover:text-black hover:border-black">
+            <DocumentDuplicateIcon className="text-xl font-normal h-5 w-5" aria-hidden="true" />
+            <div>Copy</div>
+          </div>
+        </CopyToClipboard>
+      )}
+    </div>
+  );
+}
+
+export function BigCopy({ result }: { result: unknown }) {
+  const [copied, setCopied] = useState(false);
+  const resultString = JSON.stringify(result, null, 2);
+
+  return (
+    <div>
+      {copied ? (
+        <div className="flex gap-2 items-center justify-center w-full cursor-pointer border border-white p-2 font-mono uppercase text-lg transition bg-biomes hover:border-white">
+          <CheckCircleIcon className="text-xl font-normal h-6 w-6 cursor-pointer" aria-hidden="true" />
+          <div>Copied</div>
+        </div>
+      ) : (
+        <CopyToClipboard
+          text={resultString}
+          onCopy={() => {
+            setCopied(true);
+            setTimeout(() => {
+              setCopied(false);
+            }, 800);
+          }}
+        >
+          <div className="flex gap-2 items-center justify-center w-full cursor-pointer border border-white/20 p-2 font-mono uppercase text-lg transition bg-biomes hover:border-white">
+            <DocumentDuplicateIcon className="text-xl font-normal h-6 w-6" aria-hidden="true" />
+            <div>Copy</div>
+          </div>
         </CopyToClipboard>
       )}
     </div>
@@ -55,6 +92,7 @@ type DisplayVariableProps = {
   inheritedFrom?: string;
   abi: Abi;
   poll?: number;
+  bigCopy?: boolean;
 };
 
 export const DisplayVariable = ({
@@ -65,6 +103,7 @@ export const DisplayVariable = ({
   inheritedFrom,
   children,
   poll,
+  bigCopy = false,
 }: DisplayVariableProps & {
   children?: (props: {
     result: any;
@@ -111,6 +150,8 @@ export const DisplayVariable = ({
   }, [error]);
 
   // Render Copy button as a component for easy use in children
+  const CopyComponent = bigCopy ? BigCopy : Copy;
+
   const CopyButton =
     isValidArea(result) ||
     isAreaArray(result) ||
@@ -120,7 +161,7 @@ export const DisplayVariable = ({
     isValidBuildWithPos(result) ||
     areValidBuilds(result) ||
     areValidBuildsWithPos(result) ? (
-      <Copy result={result} />
+      <CopyComponent result={result} />
     ) : null;
 
   const RefreshButton = (

@@ -40,13 +40,13 @@ export const Footer = () => {
           <div className="flex justify-center items-center gap-2 text-sm w-full">
             <div className="text-center">
               <a href="https://github.com/tenetxyz/biomes-scaffold" target="_blank" rel="noreferrer" className="link">
-                Create Your Own Extension
+                Create Your Own Experience
               </a>
             </div>
             <span>·</span>
             <div className="text-center">
-              <a href="https://discord.gg/J75hkmtmM4" target="_blank" rel="noreferrer" className="link">
-                Join Discord
+              <a href="/debug" className="link">
+                Smart Contract
               </a>
             </div>
           </div>

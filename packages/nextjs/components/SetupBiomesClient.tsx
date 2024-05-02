@@ -1,4 +1,4 @@
-import { useReducer } from "react";
+import { useReducer, useState } from "react";
 import Image from "next/image";
 import { Abi, AbiFunction } from "abitype";
 import { useAccount } from "wagmi";
@@ -7,11 +7,50 @@ import { useDeployedContractInfo } from "~~/hooks/scaffold-eth";
 import { useGlobalState } from "~~/services/store/store";
 import { GenericContract, InheritedFunctions } from "~~/utils/scaffold-eth/contract";
 
+const Modal = ({ isOpen, onClose }) => {
+  const setIsBiomesClientSetup = useGlobalState(({ setIsBiomesClientSetup }) => setIsBiomesClientSetup);
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+      <div className="bg-base-100 p-4 border">
+        <div className="flex flex-col gap-4 items-center">
+          <div className="text-2xl text-center">Confirm You Have Imported Avatars Into Biomes Before Playing</div>
+          <img alt="" src="/importavatars/modal.png" style={{ width: "30%" }} className="rounded-sm mb-4" />
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <button
+            className="flex gap-2 items-center justify-center w-full cursor-pointer border border-white/10 p-2 font-mono uppercase text-lg transition bg-biomes hover:border-white"
+            onClick={() => {
+              setIsBiomesClientSetup(true);
+            }}
+            disabled={false}
+          >
+            Confirm And Play
+          </button>
+
+          <button
+            className="flex gap-2 items-center justify-center w-full cursor-pointer border border-white/10 p-2 font-mono uppercase text-lg transition bg-white/20 hover:border-white"
+            onClick={onClose}
+            disabled={false}
+          >
+            Go Back And Finish Importing
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 export const SetupBiomesClient: React.FC = ({}) => {
   const { address: connectedAddress } = useAccount();
   const [refreshDisplayVariables] = useReducer(value => !value, false);
   const { data: deployedContractData, isLoading: deployedContractLoading } = useDeployedContractInfo("Game");
-  const setIsBiomesClientSetup = useGlobalState(({ setIsBiomesClientSetup }) => setIsBiomesClientSetup);
+  const [isModalOpen, setModalOpen] = useState(false);
+
+  const toggleModal = () => setModalOpen(!isModalOpen);
 
   if (connectedAddress === undefined) {
     return <div>Connect your wallet to continue</div>;
@@ -41,36 +80,42 @@ export const SetupBiomesClient: React.FC = ({}) => {
 
   return (
     <div className="flex-1 flex flex-col h-full p-mono">
+      <div
+        className="w-full bg-biomesNeg text-center"
+        style={{ borderBottom: "1.5px solid red", paddingTop: "1rem", paddingBottom: "1rem" }}
+      >
+        DO NOT SKIP: To play this experience, you must import its data into the{" "}
+        <a
+          href="https://biome1.biomes.aw"
+          target="_blank"
+          style={{ textDecoration: "underline", fontWeight: "bolder", color: "white" }}
+        >
+          Biomes
+        </a>{" "}
+        client.
+      </div>
       <div className="p-12 flex flex-col justify-between">
-        <h1 className="text-3xl font-bold text-left mt-4">Setup Biomes Client</h1>
-
-        <div className="py-8 px-12">
-          <h2 className="text-xl text-center pb-2" style={{ borderBottom: "0.5px solid white", textAlign: "center" }}>
-            1. Turn On Show Extensions Toggle
-          </h2>
-          <div className="pt-2" style={{ textAlign: "-webkit-center" }}>
-            <Image alt="" src="/enable_extensions.png" width={200} height={500} className="border rounded-sm" />
-          </div>
-        </div>
-
         {matchAreaGetter && (
           <div className="py-8 px-12">
-            <h2 className="text-xl text-center pb-2" style={{ borderBottom: "0.5px solid white", textAlign: "center" }}>
-              2. Import Match Area You Have To Stay Inside
+            <h2 className="text-xl pb-2" style={{ borderBottom: "0.5px solid white", textAlign: "center" }}>
+              Import Match Area You Have To Stay Inside
             </h2>
-            <div className="pt-2 grid grid-cols-6 gap-4 text-center" style={{ textAlign: "-webkit-center" }}>
-              <div className="col-span-1">
-                <p>1) Copy match area</p>
 
-                <div style={{ backgroundColor: "#160b21", width: "fit-content", border: "1px solid white" }}>
+            <div className="pt-2 flex flex-col gap-4 text-center" style={{ textAlign: "-webkit-center" }}>
+              <div className="flex grid grid-cols-6">
+                <div className="col-span-1 text-left">
+                  <p>1) Copy Area:</p>
+                </div>
+                <div style={{ backgroundColor: "#160b21" }} className="col-span-5">
                   <DisplayVariable
                     abi={deployedContractData.abi as Abi}
                     abiFunction={matchAreaGetter.fn}
                     contractAddress={deployedContractData.address}
-                    key={"getMatchArea"}
+                    key={"getRegisteredPlayerEntityIds"}
                     refreshDisplayVariables={refreshDisplayVariables}
                     inheritedFrom={matchAreaGetter.inheritedFrom}
                     poll={2000}
+                    bigCopy={true}
                   >
                     {({ CopyButton }) => {
                       return <div className="items-center text-center font-mono p-1">{CopyButton}</div>;
@@ -79,16 +124,41 @@ export const SetupBiomesClient: React.FC = ({}) => {
                 </div>
               </div>
 
-              <div className="col-span-2">
-                <p>2) Click import areas in Biomes & paste</p>
-                <Image alt="" src="/import_area_pre.png" width={300} height={500} className="border rounded-sm" />
+              <div className="flex grid grid-cols-6">
+                <div className="col-span-2 text-left">
+                  <p>2) Toggle To &quot;Show&quot; in Biomes Client:</p>
+                </div>
+                <div className="col-span-4">
+                  <img alt="" src="/importareas/one.png" className="w-3/4 border rounded-sm" />
+                </div>
               </div>
 
-              <div className="col-span-3">
-                <p>3) Red borders around area. Area indicator in map.</p>
-                <div className="gap-4 flex flex-col items-center">
-                  <Image alt="" src="/bordered_area.png" width={450} height={250} className="border rounded-sm" />
-                  <Image alt="" src="/map_area.png" width={125} height={220} className="border rounded-sm" />
+              <div className="flex grid grid-cols-6">
+                <div className="col-span-2 text-left">
+                  <p>3) Click Import in Areas Section:</p>
+                </div>
+                <div className="col-span-4">
+                  <img alt="" src="/importareas/two.png" className="w-3/4 border rounded-sm" />
+                </div>
+              </div>
+
+              <div className="flex grid grid-cols-6">
+                <div className="col-span-2 text-left">
+                  <p>4) Paste The Areas You Copied and Click Import:</p>
+                </div>
+                <div className="col-span-4">
+                  <img alt="" src="/importareas/three.png" className="w-3/4 border rounded-sm" />
+                </div>
+              </div>
+
+              <div className="flex grid grid-cols-6">
+                <div className="col-span-2 text-left">
+                  <p>You Should Now See Imported Areas:</p>
+                </div>
+                <div className="col-span-4">
+                  <img alt="" src="/importareas/four.png" className="w-3/4 border rounded-sm mb-4" />
+                  <img alt="" src="/importareas/five.png" className="w-3/4 border rounded-sm mb-4" />
+                  <img alt="" src="/importareas/six.png" className="w-3/4 border rounded-sm" />
                 </div>
               </div>
             </div>
@@ -97,13 +167,16 @@ export const SetupBiomesClient: React.FC = ({}) => {
 
         {registeredPlayersGetter && (
           <div className="py-8 px-12">
-            <h2 className="text-xl text-center pb-2" style={{ borderBottom: "0.5px solid white", textAlign: "center" }}>
-              3. Import Avatars You Have To Kill
+            <h2 className="text-xl pb-2" style={{ borderBottom: "0.5px solid white", textAlign: "center" }}>
+              Import Avatars You Have To Kill
             </h2>
-            <div className="pt-2 grid grid-cols-6 gap-4 text-center" style={{ textAlign: "-webkit-center" }}>
-              <div className="col-span-1">
-                <p>1) Copy avatar IDs</p>
-                <div style={{ backgroundColor: "#160b21", width: "fit-content", border: "1px solid white" }}>
+
+            <div className="pt-2 flex flex-col gap-4 text-center" style={{ textAlign: "-webkit-center" }}>
+              <div className="flex grid grid-cols-6">
+                <div className="col-span-1 text-left">
+                  <p>1) Copy Avatar IDs:</p>
+                </div>
+                <div style={{ backgroundColor: "#160b21" }} className="col-span-5">
                   <DisplayVariable
                     abi={deployedContractData.abi as Abi}
                     abiFunction={registeredPlayersGetter.fn}
@@ -112,6 +185,7 @@ export const SetupBiomesClient: React.FC = ({}) => {
                     refreshDisplayVariables={refreshDisplayVariables}
                     inheritedFrom={registeredPlayersGetter.inheritedFrom}
                     poll={2000}
+                    bigCopy={true}
                   >
                     {({ CopyButton }) => {
                       return <div className="items-center text-center font-mono p-1">{CopyButton}</div>;
@@ -120,16 +194,40 @@ export const SetupBiomesClient: React.FC = ({}) => {
                 </div>
               </div>
 
-              <div className="col-span-2">
-                <p>2) Click import entities in Biomes & paste</p>
-                <Image alt="" src="/import_entity_pre.png" width={300} height={500} className="border rounded-sm" />
+              <div className="flex grid grid-cols-6">
+                <div className="col-span-2 text-left">
+                  <p>2) Toggle To &quot;Show&quot; in Biomes Client:</p>
+                </div>
+                <div className="col-span-4">
+                  <img alt="" src="/importavatars/one.png" className="w-3/4 border rounded-sm" />
+                </div>
               </div>
 
-              <div className="col-span-3">
-                <p>3) Purple beams on others avatars. Yellow beam on your avatar.</p>
-                <div className="gap-4 flex items-center justify-center">
-                  <Image alt="" src="/purple_beam.png" width={180} height={430} className="border rounded-sm" />
-                  <Image alt="" src="/yellow_beam.png" width={185} height={450} className="border rounded-sm" />
+              <div className="flex grid grid-cols-6">
+                <div className="col-span-2 text-left">
+                  <p>3) Click Import in Entities Section:</p>
+                </div>
+                <div className="col-span-4">
+                  <img alt="" src="/importavatars/two.png" className="w-3/4 border rounded-sm" />
+                </div>
+              </div>
+
+              <div className="flex grid grid-cols-6">
+                <div className="col-span-2 text-left">
+                  <p>4) Paste The Avatar IDs You Copied and Click Import:</p>
+                </div>
+                <div className="col-span-4">
+                  <img alt="" src="/importavatars/three.png" className="w-3/4 border rounded-sm" />
+                </div>
+              </div>
+
+              <div className="flex grid grid-cols-6">
+                <div className="col-span-2 text-left">
+                  <p>You Should Now See Imported Avatars:</p>
+                </div>
+                <div className="col-span-4">
+                  <img alt="" src="/importavatars/four.png" className="w-3/4 border rounded-sm mb-4" />
+                  <img alt="" src="/importavatars/five.png" className="w-3/4 border rounded-sm" />
                 </div>
               </div>
             </div>
@@ -139,7 +237,7 @@ export const SetupBiomesClient: React.FC = ({}) => {
         {buildGetter && (
           <div className="py-8 px-12">
             <h2 className="text-xl text-center pb-2" style={{ borderBottom: "0.5px solid white", textAlign: "center" }}>
-              4. Import Blueprint of Builds You Have to Make
+              Import Blueprint of Builds You Have to Make
             </h2>
             <div className="pt-2 grid grid-cols-6 gap-4 text-center" style={{ textAlign: "-webkit-center" }}>
               <div className="col-span-1">
@@ -180,15 +278,15 @@ export const SetupBiomesClient: React.FC = ({}) => {
 
         <div className="py-8 px-12 mt-4">
           <button
-            className="w-full btn btn-primary bg-secondary rounded-sm"
-            onClick={() => {
-              setIsBiomesClientSetup(true);
-            }}
+            className="flex gap-2 items-center justify-center w-full cursor-pointer border border-white/10 p-2 font-mono uppercase text-lg transition bg-biomes hover:border-white"
+            onClick={toggleModal}
             disabled={false}
           >
-            Play Game
+            I Have Imported The Avatars Into Biomes
           </button>
         </div>
+
+        <Modal isOpen={isModalOpen} onClose={toggleModal} />
       </div>
     </div>
   );

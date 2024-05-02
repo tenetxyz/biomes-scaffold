@@ -36,6 +36,28 @@ export const Game: React.FC = ({}) => {
 
   return (
     <div className="flex-1 flex flex-col h-full p-mono">
+      <div className="w-full marquee bg-secondary text-center flex justify-between px-12 items-center">
+        <div>
+          Play in{" "}
+          <a
+            href="https://biome1.biomes.aw/"
+            rel="noreferrer"
+            target="_blank"
+            style={{ textDecoration: "underline", fontWeight: "bolder", color: "white" }}
+          >
+            Biomes
+          </a>{" "}
+        </div>
+        <div>
+          <a
+            href="/how-to-play"
+            className="flex items-center bg-white/10 border border-white/20 px-2 py-1.5 font-mono uppercase text-sm leading-none transition hover:border-white"
+          >
+            How To Play
+          </a>
+        </div>
+      </div>
+
       <div className="grid grid-cols-12 flex flex-1">
         <div className="col-span-12 lg:col-span-9 p-12 flex flex-col justify-between items-center">
           <div style={{ width: "80%" }} className="flex flex-col gap-12">

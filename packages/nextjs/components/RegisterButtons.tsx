@@ -182,7 +182,7 @@ export const RegisterHookButton: React.FC<HookButtonProps> = ({
       {hooksRegistered ? (
         <div>
           <button
-            className="btn btn-outline btn-error rounded-sm btn-sm"
+            className="flex items-center gap-4 border border-white/20 p-2 font-mono uppercase text-sm leading-none transition bg-biomesNeg hover:border-white"
             onClick={handleUnregisterTransaction}
             disabled={isLoading}
           >
@@ -192,7 +192,7 @@ export const RegisterHookButton: React.FC<HookButtonProps> = ({
       ) : (
         <div>
           <button
-            className="btn btn-primary bg-secondary rounded-sm btn-sm"
+            className="flex items-center gap-4 border border-white/20 p-2 font-mono uppercase text-sm leading-none transition bg-biomes hover:border-white"
             onClick={handleRegisterTransaction}
             disabled={isLoading}
           >
@@ -305,7 +305,7 @@ export const RegisterDelegationButton: React.FC<DelegationButtonProps> = ({
       {delegationRegistered ? (
         <div>
           <button
-            className="btn btn-outline btn-error rounded-sm btn-sm"
+            className="flex items-center gap-4 border border-white/20 p-2 font-mono uppercase text-sm leading-none transition bg-biomesNeg hover:border-white"
             onClick={handleUnregisterDelegation}
             disabled={isLoading}
           >
@@ -315,7 +315,7 @@ export const RegisterDelegationButton: React.FC<DelegationButtonProps> = ({
       ) : (
         <div>
           <button
-            className="btn btn-primary bg-secondary rounded-sm btn-sm"
+            className="flex items-center gap-4 border border-white/20 p-2 font-mono uppercase text-sm leading-none transition bg-biomes hover:border-white"
             onClick={handleRegisterDelegation}
             disabled={isLoading}
           >

@@ -49,7 +49,7 @@ export const SendEthButton: React.FC<SendEthButton> = ({ contractAddress, abi, f
   return (
     <div>
       <button
-        className="w-full btn btn-primary bg-secondary rounded-sm"
+        className="w-full text-center border border-white/20 p-2 font-mono uppercase text-sm transition bg-biomes hover:border-white"
         onClick={() => handleWriteTransaction()}
         disabled={isLoading}
       >

@@ -30,6 +30,18 @@ export const Landing: React.FC = ({}) => {
 
   return (
     <div className="flex-1 flex flex-col h-full p-mono">
+      <div className="w-full marquee bg-secondary text-center">
+        Sign up and get your avatar in{" "}
+        <a
+          href="https://biome1.biomes.aw"
+          rel="noreferrer"
+          target="_blank"
+          style={{ textDecoration: "underline", fontWeight: "bolder", color: "white" }}
+        >
+          Biome-1
+        </a>{" "}
+        before playing this experience!
+      </div>
       <div className="grid grid-cols-12 flex flex-1">
         <div className="col-span-12 lg:col-span-9 p-12 flex flex-col justify-between items-center">
           <div style={{ width: "80%" }}>
