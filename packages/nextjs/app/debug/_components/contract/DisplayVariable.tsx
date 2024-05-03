@@ -16,7 +16,7 @@ import {
 import { Abi, AbiFunction } from "abitype";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { Address } from "viem";
-import { useReadContract } from "wagmi";
+import { useAccount, useReadContract } from "wagmi";
 import { ArrowPathIcon } from "@heroicons/react/24/outline";
 import { CheckCircleIcon, DocumentDuplicateIcon } from "@heroicons/react/24/outline";
 import { useAnimationConfig } from "~~/hooks/scaffold-eth";
@@ -113,6 +113,7 @@ export const DisplayVariable = ({
   }) => React.ReactNode;
 }) => {
   const { targetNetwork } = useTargetNetwork();
+  const { address: connectedAddress } = useAccount();
 
   const {
     data: result,
@@ -123,6 +124,7 @@ export const DisplayVariable = ({
     address: contractAddress,
     functionName: abiFunction.name,
     abi: abi,
+    account: connectedAddress,
     chainId: targetNetwork.id,
     query: {
       retry: false,

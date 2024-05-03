@@ -210,8 +210,12 @@ export const SubmitBuildModal: React.FC<CreateBuildModalProps> = ({ closeModal, 
             <h2 className="text-lg text-center pb-2" style={{ borderBottom: "0.5px solid white", textAlign: "center" }}>
               6. Paste World Position and Pay Submission Fee
             </h2>
-            <label>{build.name}</label>
-            <label>{formatEther(build.price) + " Ξ"}</label>
+            <label>
+              <b>Name:</b> {build.name}
+            </label>
+            <label>
+              <b>Submission Price:</b> {formatEther(build.price) + " Ξ"}
+            </label>
             <textarea
               value={textInput}
               onChange={handleTextInputChange}
