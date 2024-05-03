@@ -320,7 +320,7 @@ export const Game: React.FC = ({}) => {
                                             setModalOpenId("submit-build-modal");
                                           }}
                                         >
-                                          Submit Build
+                                          Build & Join
                                         </button>
                                       </td>
                                     </tr>
