@@ -116,7 +116,7 @@ export const Game: React.FC = ({}) => {
                   key={"isGameStarted"}
                   refreshDisplayVariables={refreshDisplayVariables}
                   inheritedFrom={isStartedGetter.inheritedFrom}
-                  poll={2000}
+                  poll={4000}
                 >
                   {({ result, RefreshButton }) => {
                     if (result === true) {
@@ -175,7 +175,7 @@ export const Game: React.FC = ({}) => {
                   key={"getRegisteredPlayerEntityIds"}
                   refreshDisplayVariables={refreshDisplayVariables}
                   inheritedFrom={registeredPlayersGetter.inheritedFrom}
-                  poll={2000}
+                  poll={4000}
                 >
                   {({ CopyButton }) => {
                     return (
@@ -205,7 +205,7 @@ export const Game: React.FC = ({}) => {
                   key={"getKillsLeaderboard"}
                   refreshDisplayVariables={refreshDisplayVariables}
                   inheritedFrom={killsGetter.inheritedFrom}
-                  poll={2000}
+                  poll={4000}
                 >
                   {({ result, RefreshButton }) => {
                     return (
@@ -243,7 +243,7 @@ export const Game: React.FC = ({}) => {
                 key={"getRewardPool"}
                 refreshDisplayVariables={refreshDisplayVariables}
                 inheritedFrom={rewardPoolGetter.inheritedFrom}
-                poll={2000}
+                poll={4000}
               >
                 {({ result, RefreshButton }) => {
                   return (

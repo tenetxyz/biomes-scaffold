@@ -49,7 +49,7 @@ export const Landing: React.FC = ({}) => {
             <h1 className="text-3xl font-bold text-left mt-4">Death Match: Battle For Eth</h1>
             <h1 className="text-left mt-4" style={{ lineHeight: "normal", margin: "0", wordWrap: "break-word" }}>
               Transfer ETH to reward pool to play. Kill as many players as you can, and stay within the bordered area.
-              Player with most kills after 450 blocks gets entire reward pool.
+              Player with most kills after 30 minutes gets entire reward pool.
             </h1>
             <img alt="" src="/splash.webp" style={{ border: "1px solid white", width: "100%" }} className="mt-4" />
           </div>
