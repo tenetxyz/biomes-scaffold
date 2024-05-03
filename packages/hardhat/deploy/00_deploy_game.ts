@@ -51,8 +51,8 @@ const deployGameContract: DeployFunction = async function (hre: HardhatRuntimeEn
     // Contract constructor arguments
     args: [
       useBiomesWorldAddress,
-      { x: 384, y: -150, z: -120 },
-      { x: 35, y: 250, z: 60 },
+      { x: 271, y: -150, z: -235 },
+      { x: 60, y: 250, z: 60 },
       "0x1f820052916970Ff09150b58F2f0Fb842C5a58be",
     ],
     log: true,
