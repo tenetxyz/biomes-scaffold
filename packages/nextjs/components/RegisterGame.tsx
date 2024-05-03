@@ -98,7 +98,7 @@ export const RegisterGame: React.FC = ({}) => {
             <div>
               <h1 className="text-3xl font-bold text-left mt-4">Join Game</h1>
               <h1 className="text-left mt-4" style={{ lineHeight: "normal", margin: "0", wordWrap: "break-word" }}>
-                Deposit 0.0015 ETH to register your player. If anyone kills your player, they will get this eth. If you
+                Deposit 0.00035 ETH to register your player. If anyone kills your player, they will get this eth. If you
                 kill other players, you will get their eth.
               </h1>
             </div>
@@ -110,7 +110,7 @@ export const RegisterGame: React.FC = ({}) => {
                       contractAddress={deployedContractData.address}
                       abi={deployedContractData.abi as Abi}
                       functionName={registerPlayFunctionData.fn.name}
-                      value={"0.0015"}
+                      value={"0.00035"}
                       onWrite={(txnReceipt: TransactionReceipt) => {
                         console.log("txnReceipt", txnReceipt);
                         checkPlayerRegistered();

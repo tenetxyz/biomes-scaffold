@@ -75,7 +75,7 @@ contract Game is IOptionalSystemHook {
   }
 
   function registerPlayer() external payable {
-    require(msg.value >= 0.0015 ether, "Must send atleast minimum ETH to register");
+    require(msg.value >= 0.00035 ether, "Must send atleast minimum ETH to register");
 
     address player = msg.sender;
     require(
@@ -245,7 +245,10 @@ contract Game is IOptionalSystemHook {
     uint8 enabledHooksBitmap,
     bytes32 callDataHash
   ) external override onlyBiomeWorld {
-    require(getEntityFromPlayer(msgSender) != bytes32(0), "Player entity not found in Biome world");
+    require(
+      getEntityFromPlayer(msgSender) != bytes32(0),
+      "You Must First Spawn An Avatar In Biome-1 To Play The Game."
+    );
   }
 
   function onBeforeCallSystem(
