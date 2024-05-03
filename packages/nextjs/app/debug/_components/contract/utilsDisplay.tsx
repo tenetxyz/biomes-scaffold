@@ -4,18 +4,18 @@ import { TransactionBase, TransactionReceipt, formatEther, isAddress } from "vie
 import { Address } from "~~/components/scaffold-eth";
 import { replacer } from "~~/utils/scaffold-eth/common";
 
-interface Build {
+export interface Build {
   objectTypeIds: number[];
   relativePositions: VoxelCoord[];
 }
 
-interface BuildWithPos {
+export interface BuildWithPos {
   objectTypeIds: number[];
   relativePositions: VoxelCoord[];
   baseWorldCoord: VoxelCoord;
 }
 
-interface Area {
+export interface Area {
   lowerSouthwestCorner: VoxelCoord;
   size: VoxelCoord;
 }
