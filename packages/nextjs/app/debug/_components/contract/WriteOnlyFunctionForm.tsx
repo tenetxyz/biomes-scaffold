@@ -142,12 +142,18 @@ export const WriteOnlyFunctionForm = ({
     try {
       const parsedJson = JSON.parse(textInput);
       if (importType === "area") {
+        if (!parsedJson.lowerSouthwestCorner || !parsedJson.size) {
+          throw new Error("Invalid JSON");
+        }
         const lowerSouthWestCornerKey = getFunctionInputKey(abiFunction.name, abiFunction.inputs[0], 0);
         const lowerSouthWestCornerValue = JSON.stringify(parsedJson.lowerSouthwestCorner, replacer);
         const sizeKey = getFunctionInputKey(abiFunction.name, abiFunction.inputs[1], 1);
         const sizeValue = JSON.stringify(parsedJson.size, replacer);
         setForm(form => ({ ...form, [lowerSouthWestCornerKey]: lowerSouthWestCornerValue, [sizeKey]: sizeValue }));
       } else if (importType === "baseWorldCoord") {
+        if (!parsedJson.baseWorldCoord) {
+          throw new Error("Invalid JSON");
+        }
         const baseWorldCoordKey = getFunctionInputKey(abiFunction.name, abiFunction.inputs[0], 2);
         const baseWorldCoordValue = JSON.stringify(parsedJson.baseWorldCoord, replacer);
         const newForm = {
@@ -156,6 +162,10 @@ export const WriteOnlyFunctionForm = ({
         };
         setForm(newForm);
       } else if (importType === "build") {
+        // validate JSON
+        if (!parsedJson.objectTypeIds || !parsedJson.relativePositions) {
+          throw new Error("Invalid JSON");
+        }
         const objectTypeIdsKey = getFunctionInputKey(abiFunction.name, abiFunction.inputs[0], 0);
         const objectTypeIdsValue = JSON.stringify(parsedJson.objectTypeIds, replacer);
         const relativePositions = getFunctionInputKey(abiFunction.name, abiFunction.inputs[1], 1);
