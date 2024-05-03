@@ -5,493 +5,9 @@
 import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 
 const deployedContracts = {
-  690: {
-    Game: {
-      address: "0x09F61e35b34EB7855fb234dc81109d774Bb16973",
-      abi: [
-        {
-          inputs: [
-            {
-              internalType: "address",
-              name: "_biomeWorldAddress",
-              type: "address",
-            },
-            {
-              internalType: "address",
-              name: "_delegatorAddress",
-              type: "address",
-            },
-          ],
-          stateMutability: "nonpayable",
-          type: "constructor",
-        },
-        {
-          anonymous: false,
-          inputs: [
-            {
-              indexed: false,
-              internalType: "address",
-              name: "player",
-              type: "address",
-            },
-            {
-              indexed: false,
-              internalType: "string",
-              name: "message",
-              type: "string",
-            },
-          ],
-          name: "GameNotif",
-          type: "event",
-        },
-        {
-          inputs: [],
-          name: "basicGetter",
-          outputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [],
-          name: "biomeWorldAddress",
-          outputs: [
-            {
-              internalType: "address",
-              name: "",
-              type: "address",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "address",
-              name: "delegator",
-              type: "address",
-            },
-          ],
-          name: "canUnregister",
-          outputs: [
-            {
-              internalType: "bool",
-              name: "",
-              type: "bool",
-            },
-          ],
-          stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          inputs: [],
-          name: "delegatorAddress",
-          outputs: [
-            {
-              internalType: "address",
-              name: "",
-              type: "address",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [],
-          name: "getRegisteredPlayers",
-          outputs: [
-            {
-              internalType: "address[]",
-              name: "",
-              type: "address[]",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "address",
-              name: "msgSender",
-              type: "address",
-            },
-            {
-              internalType: "ResourceId",
-              name: "systemId",
-              type: "bytes32",
-            },
-            {
-              internalType: "bytes",
-              name: "callData",
-              type: "bytes",
-            },
-          ],
-          name: "onAfterCallSystem",
-          outputs: [],
-          stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "address",
-              name: "msgSender",
-              type: "address",
-            },
-            {
-              internalType: "ResourceId",
-              name: "systemId",
-              type: "bytes32",
-            },
-            {
-              internalType: "bytes",
-              name: "callData",
-              type: "bytes",
-            },
-          ],
-          name: "onBeforeCallSystem",
-          outputs: [],
-          stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "address",
-              name: "msgSender",
-              type: "address",
-            },
-            {
-              internalType: "ResourceId",
-              name: "systemId",
-              type: "bytes32",
-            },
-            {
-              internalType: "uint8",
-              name: "enabledHooksBitmap",
-              type: "uint8",
-            },
-            {
-              internalType: "bytes32",
-              name: "callDataHash",
-              type: "bytes32",
-            },
-          ],
-          name: "onRegisterHook",
-          outputs: [],
-          stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "address",
-              name: "msgSender",
-              type: "address",
-            },
-            {
-              internalType: "ResourceId",
-              name: "systemId",
-              type: "bytes32",
-            },
-            {
-              internalType: "uint8",
-              name: "enabledHooksBitmap",
-              type: "uint8",
-            },
-            {
-              internalType: "bytes32",
-              name: "callDataHash",
-              type: "bytes32",
-            },
-          ],
-          name: "onUnregisterHook",
-          outputs: [],
-          stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "bytes4",
-              name: "interfaceId",
-              type: "bytes4",
-            },
-          ],
-          name: "supportsInterface",
-          outputs: [
-            {
-              internalType: "bool",
-              name: "",
-              type: "bool",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-      ],
-      inheritedFunctions: {
-        canUnregister: "@latticexyz/world/src/ICustomUnregisterDelegation.sol",
-        supportsInterface: "@latticexyz/world/src/IOptionalSystemHook.sol",
-        onAfterCallSystem: "@latticexyz/world/src/IOptionalSystemHook.sol",
-        onBeforeCallSystem: "@latticexyz/world/src/IOptionalSystemHook.sol",
-        onRegisterHook: "@latticexyz/world/src/IOptionalSystemHook.sol",
-        onUnregisterHook: "@latticexyz/world/src/IOptionalSystemHook.sol",
-      },
-    },
-  },
-  17069: {
-    Game: {
-      address: "0xaFFFd91f427b81e0e56be9A4b6369f8DE6f24994",
-      abi: [
-        {
-          inputs: [
-            {
-              internalType: "address",
-              name: "_biomeWorldAddress",
-              type: "address",
-            },
-            {
-              internalType: "address",
-              name: "_delegatorAddress",
-              type: "address",
-            },
-          ],
-          stateMutability: "nonpayable",
-          type: "constructor",
-        },
-        {
-          anonymous: false,
-          inputs: [
-            {
-              indexed: false,
-              internalType: "address",
-              name: "player",
-              type: "address",
-            },
-            {
-              indexed: false,
-              internalType: "string",
-              name: "message",
-              type: "string",
-            },
-          ],
-          name: "GameNotif",
-          type: "event",
-        },
-        {
-          inputs: [],
-          name: "basicGetter",
-          outputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [],
-          name: "biomeWorldAddress",
-          outputs: [
-            {
-              internalType: "address",
-              name: "",
-              type: "address",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "address",
-              name: "delegator",
-              type: "address",
-            },
-          ],
-          name: "canUnregister",
-          outputs: [
-            {
-              internalType: "bool",
-              name: "",
-              type: "bool",
-            },
-          ],
-          stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          inputs: [],
-          name: "delegatorAddress",
-          outputs: [
-            {
-              internalType: "address",
-              name: "",
-              type: "address",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [],
-          name: "getRegisteredPlayers",
-          outputs: [
-            {
-              internalType: "address[]",
-              name: "",
-              type: "address[]",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "address",
-              name: "msgSender",
-              type: "address",
-            },
-            {
-              internalType: "ResourceId",
-              name: "systemId",
-              type: "bytes32",
-            },
-            {
-              internalType: "bytes",
-              name: "callData",
-              type: "bytes",
-            },
-          ],
-          name: "onAfterCallSystem",
-          outputs: [],
-          stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "address",
-              name: "msgSender",
-              type: "address",
-            },
-            {
-              internalType: "ResourceId",
-              name: "systemId",
-              type: "bytes32",
-            },
-            {
-              internalType: "bytes",
-              name: "callData",
-              type: "bytes",
-            },
-          ],
-          name: "onBeforeCallSystem",
-          outputs: [],
-          stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "address",
-              name: "msgSender",
-              type: "address",
-            },
-            {
-              internalType: "ResourceId",
-              name: "systemId",
-              type: "bytes32",
-            },
-            {
-              internalType: "uint8",
-              name: "enabledHooksBitmap",
-              type: "uint8",
-            },
-            {
-              internalType: "bytes32",
-              name: "callDataHash",
-              type: "bytes32",
-            },
-          ],
-          name: "onRegisterHook",
-          outputs: [],
-          stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "address",
-              name: "msgSender",
-              type: "address",
-            },
-            {
-              internalType: "ResourceId",
-              name: "systemId",
-              type: "bytes32",
-            },
-            {
-              internalType: "uint8",
-              name: "enabledHooksBitmap",
-              type: "uint8",
-            },
-            {
-              internalType: "bytes32",
-              name: "callDataHash",
-              type: "bytes32",
-            },
-          ],
-          name: "onUnregisterHook",
-          outputs: [],
-          stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "bytes4",
-              name: "interfaceId",
-              type: "bytes4",
-            },
-          ],
-          name: "supportsInterface",
-          outputs: [
-            {
-              internalType: "bool",
-              name: "",
-              type: "bool",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-      ],
-      inheritedFunctions: {
-        canUnregister: "@latticexyz/world/src/ICustomUnregisterDelegation.sol",
-        supportsInterface: "@latticexyz/world/src/IOptionalSystemHook.sol",
-        onAfterCallSystem: "@latticexyz/world/src/IOptionalSystemHook.sol",
-        onBeforeCallSystem: "@latticexyz/world/src/IOptionalSystemHook.sol",
-        onRegisterHook: "@latticexyz/world/src/IOptionalSystemHook.sol",
-        onUnregisterHook: "@latticexyz/world/src/IOptionalSystemHook.sol",
-      },
-    },
-  },
   31337: {
     Game: {
-      address: "0xddE78e6202518FF4936b5302cC2891ec180E8bFf",
+      address: "0x63fea6E447F120B8Faf85B53cdaD8348e645D80E",
       abi: [
         {
           inputs: [
@@ -500,14 +16,30 @@ const deployedContracts = {
               name: "_biomeWorldAddress",
               type: "address",
             },
-            {
-              internalType: "address",
-              name: "_delegatorAddress",
-              type: "address",
-            },
           ],
           stateMutability: "nonpayable",
           type: "constructor",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes",
+              name: "data",
+              type: "bytes",
+            },
+            {
+              internalType: "uint256",
+              name: "start",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "end",
+              type: "uint256",
+            },
+          ],
+          name: "Slice_OutOfBounds",
+          type: "error",
         },
         {
           anonymous: false,
@@ -530,7 +62,20 @@ const deployedContracts = {
         },
         {
           inputs: [],
-          name: "basicGetter",
+          name: "biomeWorldAddress",
+          outputs: [
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "buildCount",
           outputs: [
             {
               internalType: "uint256",
@@ -542,8 +87,32 @@ const deployedContracts = {
           type: "function",
         },
         {
-          inputs: [],
-          name: "biomeWorldAddress",
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "buildingId",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "n",
+              type: "uint256",
+            },
+          ],
+          name: "challengeBuilding",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "",
+              type: "bytes32",
+            },
+          ],
+          name: "coordHashToBuilder",
           outputs: [
             {
               internalType: "address",
@@ -557,30 +126,97 @@ const deployedContracts = {
         {
           inputs: [
             {
-              internalType: "address",
-              name: "delegator",
-              type: "address",
+              internalType: "uint8[]",
+              name: "objectTypeIds",
+              type: "uint8[]",
             },
-          ],
-          name: "canUnregister",
-          outputs: [
             {
-              internalType: "bool",
-              name: "",
-              type: "bool",
+              components: [
+                {
+                  internalType: "int16",
+                  name: "x",
+                  type: "int16",
+                },
+                {
+                  internalType: "int16",
+                  name: "y",
+                  type: "int16",
+                },
+                {
+                  internalType: "int16",
+                  name: "z",
+                  type: "int16",
+                },
+              ],
+              internalType: "struct VoxelCoord[]",
+              name: "relativePositions",
+              type: "tuple[]",
+            },
+            {
+              internalType: "uint256",
+              name: "submissionPrice",
+              type: "uint256",
+            },
+            {
+              internalType: "string",
+              name: "name",
+              type: "string",
             },
           ],
+          name: "create",
+          outputs: [],
           stateMutability: "nonpayable",
           type: "function",
         },
         {
           inputs: [],
-          name: "delegatorAddress",
+          name: "getAllBlueprints",
           outputs: [
             {
-              internalType: "address",
+              components: [
+                {
+                  internalType: "uint256",
+                  name: "id",
+                  type: "uint256",
+                },
+                {
+                  components: [
+                    {
+                      internalType: "uint8[]",
+                      name: "objectTypeIds",
+                      type: "uint8[]",
+                    },
+                    {
+                      components: [
+                        {
+                          internalType: "int16",
+                          name: "x",
+                          type: "int16",
+                        },
+                        {
+                          internalType: "int16",
+                          name: "y",
+                          type: "int16",
+                        },
+                        {
+                          internalType: "int16",
+                          name: "z",
+                          type: "int16",
+                        },
+                      ],
+                      internalType: "struct VoxelCoord[]",
+                      name: "relativePositions",
+                      type: "tuple[]",
+                    },
+                  ],
+                  internalType: "struct Build",
+                  name: "blueprint",
+                  type: "tuple",
+                },
+              ],
+              internalType: "struct BlueprintPair[]",
               name: "",
-              type: "address",
+              type: "tuple[]",
             },
           ],
           stateMutability: "view",
@@ -588,12 +224,300 @@ const deployedContracts = {
         },
         {
           inputs: [],
-          name: "getRegisteredPlayers",
+          name: "getAllBuilders",
           outputs: [
             {
-              internalType: "address[]",
+              components: [
+                {
+                  internalType: "uint256",
+                  name: "id",
+                  type: "uint256",
+                },
+                {
+                  internalType: "address[]",
+                  name: "builderAddresses",
+                  type: "address[]",
+                },
+              ],
+              internalType: "struct BuilderList[]",
               name: "",
-              type: "address[]",
+              type: "tuple[]",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "getAllLocations",
+          outputs: [
+            {
+              components: [
+                {
+                  internalType: "uint256",
+                  name: "id",
+                  type: "uint256",
+                },
+                {
+                  components: [
+                    {
+                      internalType: "int16",
+                      name: "x",
+                      type: "int16",
+                    },
+                    {
+                      internalType: "int16",
+                      name: "y",
+                      type: "int16",
+                    },
+                    {
+                      internalType: "int16",
+                      name: "z",
+                      type: "int16",
+                    },
+                  ],
+                  internalType: "struct VoxelCoord[]",
+                  name: "location",
+                  type: "tuple[]",
+                },
+              ],
+              internalType: "struct LocationPair[]",
+              name: "",
+              type: "tuple[]",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "getAllNames",
+          outputs: [
+            {
+              components: [
+                {
+                  internalType: "uint256",
+                  name: "id",
+                  type: "uint256",
+                },
+                {
+                  internalType: "string",
+                  name: "name",
+                  type: "string",
+                },
+              ],
+              internalType: "struct NamePair[]",
+              name: "",
+              type: "tuple[]",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "getAllSubmissionPrices",
+          outputs: [
+            {
+              components: [
+                {
+                  internalType: "uint256",
+                  name: "id",
+                  type: "uint256",
+                },
+                {
+                  internalType: "uint256",
+                  name: "price",
+                  type: "uint256",
+                },
+              ],
+              internalType: "struct SubmissionPricePair[]",
+              name: "",
+              type: "tuple[]",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "getBuilds",
+          outputs: [
+            {
+              components: [
+                {
+                  internalType: "string",
+                  name: "name",
+                  type: "string",
+                },
+                {
+                  components: [
+                    {
+                      internalType: "uint8[]",
+                      name: "objectTypeIds",
+                      type: "uint8[]",
+                    },
+                    {
+                      components: [
+                        {
+                          internalType: "int16",
+                          name: "x",
+                          type: "int16",
+                        },
+                        {
+                          internalType: "int16",
+                          name: "y",
+                          type: "int16",
+                        },
+                        {
+                          internalType: "int16",
+                          name: "z",
+                          type: "int16",
+                        },
+                      ],
+                      internalType: "struct VoxelCoord[]",
+                      name: "relativePositions",
+                      type: "tuple[]",
+                    },
+                  ],
+                  internalType: "struct Build",
+                  name: "build",
+                  type: "tuple",
+                },
+              ],
+              internalType: "struct NamedBuild[]",
+              name: "",
+              type: "tuple[]",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "getDisplayName",
+          outputs: [
+            {
+              internalType: "string",
+              name: "",
+              type: "string",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "getEarned",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "getList",
+          outputs: [
+            {
+              components: [
+                {
+                  internalType: "uint256",
+                  name: "id",
+                  type: "uint256",
+                },
+                {
+                  internalType: "string",
+                  name: "name",
+                  type: "string",
+                },
+                {
+                  internalType: "uint256",
+                  name: "price",
+                  type: "uint256",
+                },
+                {
+                  internalType: "address[]",
+                  name: "builders",
+                  type: "address[]",
+                },
+                {
+                  components: [
+                    {
+                      internalType: "uint8[]",
+                      name: "objectTypeIds",
+                      type: "uint8[]",
+                    },
+                    {
+                      components: [
+                        {
+                          internalType: "int16",
+                          name: "x",
+                          type: "int16",
+                        },
+                        {
+                          internalType: "int16",
+                          name: "y",
+                          type: "int16",
+                        },
+                        {
+                          internalType: "int16",
+                          name: "z",
+                          type: "int16",
+                        },
+                      ],
+                      internalType: "struct VoxelCoord[]",
+                      name: "relativePositions",
+                      type: "tuple[]",
+                    },
+                  ],
+                  internalType: "struct Build",
+                  name: "blueprint",
+                  type: "tuple",
+                },
+                {
+                  components: [
+                    {
+                      internalType: "int16",
+                      name: "x",
+                      type: "int16",
+                    },
+                    {
+                      internalType: "int16",
+                      name: "y",
+                      type: "int16",
+                    },
+                    {
+                      internalType: "int16",
+                      name: "z",
+                      type: "int16",
+                    },
+                  ],
+                  internalType: "struct VoxelCoord[]",
+                  name: "locations",
+                  type: "tuple[]",
+                },
+              ],
+              internalType: "struct ListEntry[]",
+              name: "",
+              type: "tuple[]",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "getStatus",
+          outputs: [
+            {
+              internalType: "string",
+              name: "",
+              type: "string",
             },
           ],
           stateMutability: "view",
@@ -704,6 +628,41 @@ const deployedContracts = {
         {
           inputs: [
             {
+              internalType: "uint256",
+              name: "buildingId",
+              type: "uint256",
+            },
+            {
+              components: [
+                {
+                  internalType: "int16",
+                  name: "x",
+                  type: "int16",
+                },
+                {
+                  internalType: "int16",
+                  name: "y",
+                  type: "int16",
+                },
+                {
+                  internalType: "int16",
+                  name: "z",
+                  type: "int16",
+                },
+              ],
+              internalType: "struct VoxelCoord",
+              name: "baseWorldCoord",
+              type: "tuple",
+            },
+          ],
+          name: "submitBuilding",
+          outputs: [],
+          stateMutability: "payable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
               internalType: "bytes4",
               name: "interfaceId",
               type: "bytes4",
@@ -722,12 +681,11 @@ const deployedContracts = {
         },
       ],
       inheritedFunctions: {
-        canUnregister: "@latticexyz/world/src/ICustomUnregisterDelegation.sol",
-        supportsInterface: "@latticexyz/world/src/IOptionalSystemHook.sol",
         onAfterCallSystem: "@latticexyz/world/src/IOptionalSystemHook.sol",
         onBeforeCallSystem: "@latticexyz/world/src/IOptionalSystemHook.sol",
         onRegisterHook: "@latticexyz/world/src/IOptionalSystemHook.sol",
         onUnregisterHook: "@latticexyz/world/src/IOptionalSystemHook.sol",
+        supportsInterface: "@latticexyz/world/src/IOptionalSystemHook.sol",
       },
     },
   },
