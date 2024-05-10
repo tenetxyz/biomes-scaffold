@@ -2,16 +2,17 @@
 pragma solidity >=0.8.24;
 
 import { VoxelCoord } from "@biomesaw/utils/src/Types.sol";
+import { AirObjectID } from "@biomesaw/world/src/ObjectTypeIds.sol";
 
 import { Area } from "./AreaUtils.sol";
 import { Build, BuildWithPos } from "./BuildUtils.sol";
 import { getObjectTypeAtCoord } from "./EntityUtils.sol";
 
 enum GameState {
-    Waiting,
-    Countdown,
-    Active,
-    Finished,
+  Waiting,
+  Countdown,
+  Active,
+  Finished
 }
 
 struct NamedArea {
@@ -29,10 +30,7 @@ struct NamedBuildWithPos {
   BuildWithPos build;
 }
 
-function getEmptyBlockOnGround(
-  address biomeWorldAddress,
-  VoxelCoord memory centerCoord
-) internal returns (VoxelCoord memory) {
+function getEmptyBlockOnGround(address biomeWorldAddress, VoxelCoord memory centerCoord) returns (VoxelCoord memory) {
   for (int8 dx = -1; dx <= 1; dx++) {
     for (int8 dy = -1; dy <= 1; dy++) {
       for (int8 dz = -1; dz <= 1; dz++) {
