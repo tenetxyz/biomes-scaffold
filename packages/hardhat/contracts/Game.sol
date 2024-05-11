@@ -15,6 +15,7 @@ import { IWorld } from "@biomesaw/world/src/codegen/world/IWorld.sol";
 import { VoxelCoord } from "@biomesaw/utils/src/Types.sol";
 import { getObjectType, getEntityAtCoord, getPosition, getEntityFromPlayer, getObjectTypeAtCoord } from "../utils/EntityUtils.sol";
 import { voxelCoordsAreEqual } from "@biomesaw/utils/src/VoxelCoordUtils.sol";
+import { NamedBuild } from "../utils/GameUtils.sol";
 
 struct NamePair {
   uint256 id;
@@ -330,5 +331,17 @@ contract Game is IOptionalSystemHook {
   // Getter for retrieving the balance of a specific address
   function getEarned() public view returns (uint256) {
     return earned[msg.sender];
+  }
+
+  function getDisplayName() external view returns (string memory) {
+    return "Build A Nomics";
+  }
+
+  function getBuilds() external view returns (NamedBuild[] memory) {
+    NamedBuild[] memory builds = new NamedBuild[](buildCount);
+    for (uint256 i = 1; i <= buildCount; i++) {
+      builds[i - 1] = NamedBuild({ name: names[i], build: blueprints[i] });
+    }
+    return builds;
   }
 }
