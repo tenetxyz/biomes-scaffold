@@ -19,4 +19,6 @@ interface IGame {
   function getCountdownEndTimestamp() external view returns (uint256);
 
   function getCountdownEndBlock() external view returns (uint256);
+
+  function getUnregisterMessage() external view returns (string);
 }
