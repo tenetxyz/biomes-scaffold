@@ -20,6 +20,8 @@ import { AirObjectID } from "@biomesaw/world/src/ObjectTypeIds.sol";
 import { getObjectType, getEntityAtCoord, getPosition, getEntityFromPlayer, getObjectTypeAtCoord } from "../utils/EntityUtils.sol";
 import { voxelCoordsAreEqual } from "@biomesaw/utils/src/VoxelCoordUtils.sol";
 
+import { NamedBuild } from "../utils/GameUtils.sol";
+
 contract Game is ICustomUnregisterDelegation, IOptionalSystemHook {
   address public immutable biomeWorldAddress;
 
@@ -217,5 +219,15 @@ contract Game is ICustomUnregisterDelegation, IOptionalSystemHook {
 
   function getAllowedItemDrops() external view returns (address[] memory) {
     return allowedItemDrops;
+  }
+
+  function getDisplayName() external view returns (string memory) {
+    return "Build For Drops";
+  }
+
+  function getBuilds() external view returns (NamedBuild[] memory) {
+    NamedBuild[] memory builds = new NamedBuild[](1);
+    builds[0] = NamedBuild({ name: "Logo", build: build });
+    return builds;
   }
 }
