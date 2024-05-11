@@ -10,7 +10,7 @@ struct Area {
   VoxelCoord size;
 }
 
-function insideArea(Area memory area, VoxelCoord memory baseWorldCoord) returns (bool) {
+function insideArea(Area memory area, VoxelCoord memory baseWorldCoord) pure returns (bool) {
   VoxelCoord memory topNortheastCorner = VoxelCoord(
     area.lowerSouthwestCorner.x + area.size.x,
     area.lowerSouthwestCorner.y + area.size.y,
@@ -31,7 +31,7 @@ function insideArea(Area memory area, VoxelCoord memory baseWorldCoord) returns 
   return false;
 }
 
-function insideAreaIgnoreY(Area memory area, VoxelCoord memory baseWorldCoord) returns (bool) {
+function insideAreaIgnoreY(Area memory area, VoxelCoord memory baseWorldCoord) pure returns (bool) {
   VoxelCoord memory topNortheastCorner = VoxelCoord(
     area.lowerSouthwestCorner.x + area.size.x,
     area.lowerSouthwestCorner.y + area.size.y,
