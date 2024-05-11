@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { EtherInput, InputBase } from "./scaffold-eth";
 import { VoxelCoord } from "@latticexyz/utils";
-import { parseEther, parseGwei } from "viem";
+import { parseEther } from "viem";
 import { useAccount, useWriteContract } from "wagmi";
 import { useDeployedContractInfo, useTransactor } from "~~/hooks/scaffold-eth";
 import { useTargetNetwork } from "~~/hooks/scaffold-eth/useTargetNetwork";
@@ -103,8 +103,6 @@ export const CreateBuildModal: React.FC<CreateBuildModalProps> = ({ closeModal }
         writeContractAsync({
           address: deployedContractData.address,
           functionName: "create",
-          maxFeePerGas: parseGwei("0.01"),
-          maxPriorityFeePerGas: parseGwei("0.001"),
           abi: deployedContractData?.abi,
           args: [objectTypeIds, relativePositions, submitBuildPrice, buildName],
         });

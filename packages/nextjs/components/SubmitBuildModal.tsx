@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { ListEntry } from "./Game";
 import { VoxelCoord } from "@latticexyz/utils";
-import { formatEther, parseGwei } from "viem";
+import { formatEther } from "viem";
 import { useAccount, useWriteContract } from "wagmi";
 import { BigCopy } from "~~/app/debug/_components/contract";
 import { useDeployedContractInfo, useTransactor } from "~~/hooks/scaffold-eth";
@@ -85,8 +85,6 @@ export const SubmitBuildModal: React.FC<CreateBuildModalProps> = ({ closeModal, 
         writeContractAsync({
           address: deployedContractData?.address,
           functionName: "submitBuilding",
-          maxFeePerGas: parseGwei("0.01"),
-          maxPriorityFeePerGas: parseGwei("0.001"),
           abi: deployedContractData?.abi,
           args: [build.id, baseWorldCoord ?? { x: 0, y: 0, z: 0 }],
           value: build.price,
