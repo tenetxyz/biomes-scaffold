@@ -14,13 +14,9 @@ interface IGame {
 
   function getBuildsWithPos() external view returns (NamedBuildWithPos[] memory);
 
-  function getState() external view returns (GameState);
+  function getState() external view returns (string);
 
   function getCountdownEndTimestamp() external view returns (uint256);
 
   function getCountdownEndBlock() external view returns (uint256);
-
-  function getGameEndTimestamp() external view returns (uint256);
-
-  function getGameEndBlock() external view returns (uint256);
 }

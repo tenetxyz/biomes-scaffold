@@ -8,13 +8,6 @@ import { Area } from "./AreaUtils.sol";
 import { Build, BuildWithPos } from "./BuildUtils.sol";
 import { getObjectTypeAtCoord } from "./EntityUtils.sol";
 
-enum GameState {
-  Waiting,
-  Countdown,
-  Active,
-  Finished
-}
-
 struct NamedArea {
   string name;
   Area area;
