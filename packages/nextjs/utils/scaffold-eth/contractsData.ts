@@ -1,7 +1,7 @@
-import scaffoldConfig from "~~/scaffold.config";
+import { ChainWithAttributes } from "./networks";
 import { contracts } from "~~/utils/scaffold-eth/contract";
 
-export function getAllContracts() {
-  const contractsData = contracts?.[scaffoldConfig.targetNetworks[0].id];
+export function getAllContracts(targetNetwork: ChainWithAttributes) {
+  const contractsData = contracts?.[targetNetwork.id];
   return contractsData ? contractsData : {};
 }

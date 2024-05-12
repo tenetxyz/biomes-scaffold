@@ -7,13 +7,12 @@ import { useTargetNetwork } from "~~/hooks/scaffold-eth/useTargetNetwork";
 import { useGlobalState } from "~~/services/store/store";
 import { getAllContracts } from "~~/utils/scaffold-eth/contractsData";
 
-const contractsData = getAllContracts();
-
 const GameRequiredHooks: string[] = ["LogoffSystem"];
 
 export const RegisterBiomes: React.FC = ({}) => {
   const { address: connectedAddress } = useAccount();
   const { targetNetwork } = useTargetNetwork();
+  const contractsData = getAllContracts(targetNetwork);
   const publicClient = usePublicClient({ chainId: targetNetwork.id });
   const { data: deployedContractData, isLoading: deployedContractLoading } = useDeployedContractInfo("Game");
 
