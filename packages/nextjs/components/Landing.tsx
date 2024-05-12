@@ -47,7 +47,7 @@ export const Landing: React.FC = ({}) => {
           <div style={{ width: "80%" }}>
             <h1 className="text-3xl font-bold text-left mt-4">Biocash</h1>
             <h1 className="text-left mt-4" style={{ lineHeight: "normal", margin: "0", wordWrap: "break-word" }}>
-              Biomes economy, trading and currency.
+              Your game description
             </h1>
             <div
               style={{
@@ -64,7 +64,7 @@ export const Landing: React.FC = ({}) => {
               }}
               className="mt-4"
             >
-              <img src="/BiocashMarket.png" style={{ width: "100%", height: "auto" }} />
+              Your Game Image
             </div>
           </div>
         </div>
