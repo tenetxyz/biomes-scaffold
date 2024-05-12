@@ -44,28 +44,40 @@ export const Landing: React.FC = ({}) => {
       </div>
       <div className="grid grid-cols-12 flex flex-1">
         <div className="col-span-12 lg:col-span-9 p-12 flex flex-col justify-between items-center">
-          <div style={{ width: "80%" }}>
-            <h1 className="text-3xl font-bold text-left mt-4">Biocash</h1>
-            <h1 className="text-left mt-4" style={{ lineHeight: "normal", margin: "0", wordWrap: "break-word" }}>
-              Your game description
-            </h1>
+          
+          <div style={{ width: "80%"}}>
+            
+            <div style={{display: "flex",justifyContent: "space-between", alignItems: "row"}}>
+              <div>
+                <h1 className="text-3xl font-bold text-left mt-4">Biocash</h1>
+                <h1 className="text-left mt-4" style={{ lineHeight: "normal", margin: "0", wordWrap: "break-word" }}>
+                Introducing a digital currency to the ecosystem of Biomes.
+                </h1>
+              </div>
+              <img src="/Biocash.png" alt="Biocash token" style={{ width: "auto", height: "100px" }} />
+              
+            </div>
             <div
-              style={{
-                border: "1px solid white",
-                width: "100%",
-                height: "300px", // Adjust the height as needed
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                backgroundColor: "#000", // Optional: Background color
-                color: "#fff", // Text color
-                fontSize: "20px",
-                overflow: "hidden", // Adjust font size as needed
-              }}
+             style={{
+              border: "1px solid white",
+              width: "auto", // Let width remain auto
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              backgroundColor: "#000", // Optional: Background color
+              color: "#fff", // Text color
+              fontSize: "20px", // Adjust font size as needed
+              overflow: "hidden", // Keeps everything neat
+              marginBottom: "30px",
+            }}
               className="mt-4"
             >
-              Your Game Image
+              <img src="/BiocashMarket.png" alt="Biomes market" style={{ width: "100%", height: "auto",}} />
+              
             </div>
+            <p>
+              Biocash enhances the economic aspect of Biomes fully on-chain interactive voxel experience. The token enables players to engage in sophisticated trading activities, allowing them to buy, sell, or barter items with NPC merchants within the game's expansive open world. By integrating Biocash Biomes transforms into a dynamic economic platform where players can experience the value and impact of a digital economy in a virtual setting.
+            </p>
           </div>
         </div>
         <div
