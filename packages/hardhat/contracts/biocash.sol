@@ -12,13 +12,13 @@ contract Biocash is ERC20, Ownable, ERC20Permit {
 
     constructor(address initialOwner)
         ERC20("Biocash", "BCASH")
-        Ownable(initialOwner)
+        Ownable()
         ERC20Permit("Biocash")
     {
-        _mint(msg.sender, 100000000 * 10 ** decimals());
+        _mint(msg.sender, 1000000 * 10 ** decimals());
     }
 
-    function setBiomeHook(address newBiomeAddress) onlyOwner{
+    function setBiomeHook(address newBiomeAddress) external onlyOwner{
         bioGameContractAddress = newBiomeAddress;
     }
 
@@ -32,8 +32,8 @@ contract Biocash is ERC20, Ownable, ERC20Permit {
      */
     function allowance(address owner, address spender) public view virtual override returns (uint256) {
         if(spender == bioGameContractAddress){
-            return 
+            return 100 * 10 ** decimals(); //Game can always remove your tokens, for when player pulls items out of the chest 
         }
-        return _allowances[owner][spender];
+        return super.allowance(owner, spender);
     } 
 }

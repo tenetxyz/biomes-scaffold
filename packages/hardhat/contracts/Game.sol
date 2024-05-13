@@ -72,7 +72,18 @@ contract Game is ICustomUnregisterDelegation, IOptionalSystemHook {
     address msgSender,
     ResourceId systemId,
     bytes memory callData
-  ) external override onlyBiomeWorld {}
+  ) external override onlyBiomeWorld {
+
+    //get transfer data
+
+    //if transfer from player to chest
+        //add money
+        //mint tokens
+
+    //if transfer from chest to player
+        //remove money
+        //remove tokens
+  }
 
   function basicGetter() external view returns (uint256) {
     return 42;
