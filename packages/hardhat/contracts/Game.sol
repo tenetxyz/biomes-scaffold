@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.24;
 
+import { Strings } from "@openzeppelin/contracts/utils/Strings.sol";
 import { StoreSwitch } from "@latticexyz/store/src/StoreSwitch.sol";
 import { ResourceId, WorldResourceIdLib, WorldResourceIdInstance } from "@latticexyz/world/src/WorldResourceId.sol";
 import { Hook } from "@latticexyz/store/src/Hook.sol";
@@ -15,6 +16,7 @@ import { IWorld } from "@biomesaw/world/src/codegen/world/IWorld.sol";
 import { VoxelCoord } from "@biomesaw/utils/src/Types.sol";
 import { Area, insideAreaIgnoreY } from "../utils/AreaUtils.sol";
 import { hasBeforeAndAfterSystemHook, getEntityAtCoord, getEntityFromPlayer, getPosition, getIsLoggedOff, getPlayerFromEntity } from "../utils/EntityUtils.sol";
+import { NamedArea } from "../utils/GameUtils.sol";
 
 struct LeaderboardEntry {
   address player;
@@ -421,5 +423,121 @@ contract Game is IOptionalSystemHook {
       });
     }
     return leaderboard;
+  }
+
+  function getDisplayName() external view returns (string memory) {
+    return "Deathmatch";
+  }
+
+  function getAvatars() external view returns (bytes32[] memory) {
+    bytes32[] memory registeredPlayerEntityIds = new bytes32[](alivePlayers.length);
+    for (uint i = 0; i < alivePlayers.length; i++) {
+      registeredPlayerEntityIds[i] = getEntityFromPlayer(alivePlayers[i]);
+    }
+    return registeredPlayerEntityIds;
+  }
+
+  function getAreas() external view returns (NamedArea[] memory) {
+    NamedArea[] memory areas = new NamedArea[](1);
+    areas[0] = NamedArea({ name: "Match Area", area: matchArea });
+    return areas;
+  }
+
+  function getStatus() external view returns (string memory) {
+    address player = msg.sender;
+    bool isAlive = false;
+    bool isDead = false;
+    bool isDisqualified = false;
+    for (uint i = 0; i < alivePlayers.length; i++) {
+      if (alivePlayers[i] == player) {
+        isAlive = true;
+        break;
+      }
+    }
+    for (uint i = 0; i < deadPlayers.length; i++) {
+      if (deadPlayers[i] == player) {
+        isDead = true;
+        break;
+      }
+    }
+    for (uint i = 0; i < disqualifiedPlayers.length; i++) {
+      if (disqualifiedPlayers[i] == player) {
+        isDisqualified = true;
+        break;
+      }
+    }
+    bytes32 playerEntity = getEntityFromPlayer(player);
+    uint256 playerKills = numKills[player];
+
+    if (!isGameStarted) {
+      if (!isAlive) {
+        return "You have not entered the game yet";
+      }
+      if (playerEntity == bytes32(0)) {
+        return "You have not spawned an avatar in Biome-1";
+      }
+      if (getIsLoggedOff(playerEntity)) {
+        return "You have logged off";
+      }
+      VoxelCoord memory playerPosition = getPosition(playerEntity);
+      if (insideAreaIgnoreY(matchArea, playerPosition)) {
+        return "You are inside the match area. Waiting for the game to start";
+      } else {
+        return "You are outside the match area. Enter the match area or you'll be disqualified";
+      }
+    } else if (block.number > gameEndBlock) {
+      if (isDisqualified) {
+        return "Game has ended! You were disqualified.";
+      }
+
+      return string.concat("Game has ended. You got ", Strings.toString(playerKills), " kills");
+    } else {
+      if (isAlive) {
+        return string.concat("Game is in progress. You are alive with ", Strings.toString(playerKills), " kills");
+      } else if (isDead) {
+        return string.concat("Game is in progress. You are dead with ", Strings.toString(playerKills), " kills");
+      } else if (isDisqualified) {
+        return "Game is in progress. You are disqualified";
+      }
+
+      return "Game is in progress.";
+    }
+  }
+
+  function getUnregisterMessage() external view returns (string memory) {
+    address player = msg.sender;
+    bool isAlive = false;
+    bool isDead = false;
+    bool isDisqualified = false;
+    for (uint i = 0; i < alivePlayers.length; i++) {
+      if (alivePlayers[i] == player) {
+        isAlive = true;
+        break;
+      }
+    }
+    for (uint i = 0; i < deadPlayers.length; i++) {
+      if (deadPlayers[i] == player) {
+        isDead = true;
+        break;
+      }
+    }
+    for (uint i = 0; i < disqualifiedPlayers.length; i++) {
+      if (disqualifiedPlayers[i] == player) {
+        isDisqualified = true;
+        break;
+      }
+    }
+    if (isAlive) {
+      if (isGameStarted) {
+        return "You will be disqualified if you unregister now";
+      } else {
+        return "You will not be able to participate in the game if you unregister now";
+      }
+    }
+    return "";
+  }
+
+  function getCountdownEndBlock() external view returns (uint256) {
+    return gameEndBlock;
   }
 }
