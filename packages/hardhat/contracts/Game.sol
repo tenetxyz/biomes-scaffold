@@ -12,17 +12,24 @@ import { BEFORE_CALL_SYSTEM, AFTER_CALL_SYSTEM, ALL } from "@latticexyz/world/sr
 import { RESOURCE_SYSTEM } from "@latticexyz/world/src/worldResourceTypes.sol";
 import { OptionalSystemHooks } from "@latticexyz/world/src/codegen/tables/OptionalSystemHooks.sol";
 
+import { hasBeforeAndAfterSystemHook, getEntityAtCoord, getEntityFromPlayer, getPosition, getIsLoggedOff, getPlayerFromEntity } from "../utils/EntityUtils.sol";
+
 import { IWorld } from "@biomesaw/world/src/codegen/world/IWorld.sol";
 import { VoxelCoord } from "@biomesaw/utils/src/Types.sol";
+
+import {Biocash} from "./biocash.sol";
 
 contract Game is ICustomUnregisterDelegation, IOptionalSystemHook {
   address public immutable biomeWorldAddress;
 
   address public delegatorAddress;
 
+  address public biocashAddress = 0x55d53Cb744d9948D0ffD4DDB6b23d274278F933D;
+  Biocash biocash = Biocash(biocashAddress);
+
   //money money money
   mapping(address => bool) isAdmin;
-  mapping(string => uint16) valueTable;
+  mapping(uint256 => uint16) valueTable;
 
   constructor(address _biomeWorldAddress, address _delegatorAddress) {
     biomeWorldAddress = _biomeWorldAddress;
@@ -81,14 +88,30 @@ contract Game is ICustomUnregisterDelegation, IOptionalSystemHook {
   ) external override onlyBiomeWorld {
 
     //get transfer data
+    Slice callDataArgs = SliceLib.getSubslice(callData, 4);
+    address player = msgSender;
+    //function transfer(bytes32 srcEntityId, bytes32 dstEntityId, uint8 transferObjectTypeId, uint16 numToTransfer);
+     bytes32 sourceEntityID;
+     bytes32 destinationEntityID;
+     uint8 itemTypeID;
+     uint16 numToTransfer;
+     
+    (sourceEntityID, destinationEntityID, itemTypeID, numToTransfer)= abi.decode(callDataArgs.toBytes(), (bytes32, bytes32, uint8, uint16));
 
     //if transfer from player to chest
         //add money
         //mint tokens
+    address playerAddress = msgSender;
+    if(getPlayerFromEntity(sourceEntityID) == playerAddress){
+        //player is the sender
+        biocash.mint(playerAddress, numToTransfer * valueTable[itemTypeID]);
+    }
 
     //if transfer from chest to player
-        //remove money
-        //remove tokens
+    if(getPlayerFromEntity(destinationEntityID) == playerAddress){
+      //remove tokens. buy price is (1.1 * sell price) + 1
+      biocash.transferFrom(playerAddress, address(0), 1 + (valueTable[itemTypeID] * 11/10) );
+    }
   }
 
   function basicGetter() external view returns (uint256) {
@@ -109,8 +132,8 @@ contract Game is ICustomUnregisterDelegation, IOptionalSystemHook {
     return "Place items in the shop chests to earn Biocash. 1 dirt = 1 Biocash during testing.";
   }
 
-  function updateValueTable(string calldata item, uint16 _newValue) external{
+  function updateValueTable(uint itemID, uint16 _newValue) external{
     require(isAdmin[msg.sender] == true);
-    valueTable[item] = _newValue;
+    valueTable[itemID] = _newValue;
   }
 }
