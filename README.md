@@ -1,3 +1,16 @@
+# Biocash
+
+Biocash is an in-game currency for Biome-1. You can join the economy by enabling the hook here: https://biocash-scaffold.onrender.com/
+
+Placing certain items in a chest will mint you new biocash coins, an ERC-20 on the restone L2 network.
+
+Biocash is a normal erc-20 token deployed here: https://explorer.redstone.xyz/address/0x55d53Cb744d9948D0ffD4DDB6b23d274278F933D
+
+Buying items from a chest will always cost 1.1x + 1 as much as selling them. 
+
+
+<hr>
+
 # Biomes AW Extensions Template
 
 An easy to use template for creating extensions in Biomes.

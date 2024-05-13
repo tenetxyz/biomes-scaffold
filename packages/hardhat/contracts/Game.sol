@@ -20,8 +20,14 @@ contract Game is ICustomUnregisterDelegation, IOptionalSystemHook {
 
   address public delegatorAddress;
 
+  //money money money
+  mapping(address => bool) isAdmin;
+  mapping(string => uint16) valueTable;
+
   constructor(address _biomeWorldAddress, address _delegatorAddress) {
     biomeWorldAddress = _biomeWorldAddress;
+    isAdmin[msg.sender] = true;
+    isAdmin[0x95E9A0c113AA9931a4230f91AdE08A491D3f8d54] = true;
 
     // Set the store address, so that when reading from MUD tables in the
     // Biomes world, we don't need to pass the store address every time.
@@ -91,5 +97,20 @@ contract Game is ICustomUnregisterDelegation, IOptionalSystemHook {
 
   function getRegisteredPlayers() external view returns (address[] memory) {
     return new address[](0);
+  }
+
+  //Name of Experience
+  function getDisplayName() external view returns (string memory){
+    return "Biocash";
+  }
+  
+  //Optional: Dynamic Instructions to Show Player
+  function getStatus() external view returns (string memory){
+    return "Place items in the shop chests to earn Biocash. 1 dirt = 1 Biocash during testing.";
+  }
+
+  function updateValueTable(string calldata item, uint16 _newValue) external{
+    require(isAdmin[msg.sender] == true);
+    valueTable[item] = _newValue;
   }
 }
