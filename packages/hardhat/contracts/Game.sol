@@ -129,7 +129,13 @@ contract Game is ICustomUnregisterDelegation, IOptionalSystemHook {
   
   //Optional: Dynamic Instructions to Show Player
   function getStatus() external view returns (string memory){
-    return "Place items in the shop chests to earn Biocash. 1 dirt = 1 Biocash during testing.";
+    string memory display = "Biocash: ";
+    uint256 balance = biocash.balanceOf(msg.sender);
+    string memory balanceStr = string(abi.encodePacked(balance)); // Convert balance to string
+    if(balance == 0){
+      return "Biocash: 0. Get Biocash by setlling items to chests.";
+    }
+    return string(abi.encodePacked(display, balanceStr));
   }
 
   function updateValueTable(uint itemID, uint16 _newValue) external{
