@@ -41,6 +41,8 @@ contract Game is ICustomUnregisterDelegation, IOptionalSystemHook {
     StoreSwitch.setStoreAddress(_biomeWorldAddress);
 
     delegatorAddress = _delegatorAddress;
+
+    valueTable[38] = 1;
   }
 
   // Use this modifier to restrict access to the Biomes World contract only
