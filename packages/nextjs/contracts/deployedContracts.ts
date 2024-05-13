@@ -230,7 +230,7 @@ const deployedContracts = {
   },
   17069: {
     Game: {
-      address: "0xB1f332427AdE17d97686395cB109B216A2B51F03",
+      address: "0xCdb63c58b907e76872474A0597C5252eDC97c883",
       abi: [
         {
           inputs: [

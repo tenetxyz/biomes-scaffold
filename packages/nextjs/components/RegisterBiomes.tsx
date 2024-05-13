@@ -7,7 +7,9 @@ import { useTargetNetwork } from "~~/hooks/scaffold-eth/useTargetNetwork";
 import { useGlobalState } from "~~/services/store/store";
 import { getAllContracts } from "~~/utils/scaffold-eth/contractsData";
 
-const GameRequiredHooks: string[] = ["LogoffSystem"];
+const contractsData = getAllContracts();
+
+const GameRequiredHooks: string[] = ["TransferSystem"];
 
 export const RegisterBiomes: React.FC = ({}) => {
   const { address: connectedAddress } = useAccount();
@@ -87,7 +89,7 @@ export const RegisterBiomes: React.FC = ({}) => {
               <h3 className="text-xl font-bold text-left mt-8">HOOKS</h3>
               <CardSection
                 relevantSystems={GameRequiredHooks}
-                description={"Description of why you need the player to register the hooks on LogoffSystem"}
+                description={"We need the TransferSystem to transfer the items into a chest in order to sell it"}
               >
                 <RegisterHookButton
                   hookAddress={contractsData["Game"].address}
