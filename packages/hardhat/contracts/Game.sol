@@ -3,7 +3,6 @@ pragma solidity >=0.8.24;
 
 import { StoreSwitch } from "@latticexyz/store/src/StoreSwitch.sol";
 import { ResourceId, WorldResourceIdLib, WorldResourceIdInstance } from "@latticexyz/world/src/WorldResourceId.sol";
-import { Slice, SliceLib } from "@latticexyz/store/src/Slice.sol";
 import { Hook } from "@latticexyz/store/src/Hook.sol";
 import { IERC165 } from "@latticexyz/world/src/IERC165.sol";
 import { ICustomUnregisterDelegation } from "@latticexyz/world/src/ICustomUnregisterDelegation.sol";
