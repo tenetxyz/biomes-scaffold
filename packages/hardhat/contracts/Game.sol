@@ -19,6 +19,7 @@ import { ObjectTypeMetadata } from "@biomesaw/world/src/codegen/tables/ObjectTyp
 import { AirObjectID } from "@biomesaw/world/src/ObjectTypeIds.sol";
 import { getObjectType, getEntityAtCoord, getPosition, getEntityFromPlayer, getObjectTypeAtCoord } from "../utils/EntityUtils.sol";
 import { voxelCoordsAreEqual } from "@biomesaw/utils/src/VoxelCoordUtils.sol";
+import { decodeCallData } from "../utils/HookUtils.sol";
 
 import { NamedBuild } from "../utils/GameUtils.sol";
 
@@ -95,8 +96,8 @@ contract Game is ICustomUnregisterDelegation, IOptionalSystemHook {
     bytes memory callData
   ) external override onlyBiomeWorld {
     if (ResourceId.unwrap(systemId) == ResourceId.unwrap(BuildSystemId)) {
-      Slice callDataArgs = SliceLib.getSubslice(callData, 4);
-      (, VoxelCoord memory coord) = abi.decode(callDataArgs.toBytes(), (uint8, VoxelCoord));
+      (, bytes memory callDataArgs) = decodeCallData(callData);
+      (, VoxelCoord memory coord) = abi.decode(callDataArgs, (uint8, VoxelCoord));
       coordHashToBuilder[getCoordHash(coord)] = msgSender;
     }
   }
