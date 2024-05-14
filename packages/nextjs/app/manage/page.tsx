@@ -6,7 +6,7 @@ import { RegisterBiomes } from "~~/components/RegisterBiomes";
 const Manage: NextPage = () => {
   return (
     <>
-      <RegisterBiomes />;
+      <RegisterBiomes />
     </>
   );
 };
