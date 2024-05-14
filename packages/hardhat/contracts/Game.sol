@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.24;
 
+import { Strings } from "@openzeppelin/contracts/utils/Strings.sol";
 import { StoreSwitch } from "@latticexyz/store/src/StoreSwitch.sol";
 import { ResourceId, WorldResourceIdLib, WorldResourceIdInstance } from "@latticexyz/world/src/WorldResourceId.sol";
 import { Hook } from "@latticexyz/store/src/Hook.sol";
@@ -14,6 +15,8 @@ import { hasBeforeAndAfterSystemHook, getEntityAtCoord, getEntityFromPlayer, get
 
 import { IWorld } from "@biomesaw/world/src/codegen/world/IWorld.sol";
 import { VoxelCoord } from "@biomesaw/utils/src/Types.sol";
+import { decodeCallData } from "../utils/HookUtils.sol";
+import { weiToString } from "../utils/GameUtils.sol";
 
 struct LeaderboardEntry {
   address player;
@@ -179,8 +182,8 @@ contract Game is IOptionalSystemHook {
         lastHitter[msgSender] = address(0);
       }
     } else if (ResourceId.unwrap(systemId) == ResourceId.unwrap(HitSystemId)) {
-      Slice callDataArgs = SliceLib.getSubslice(callData, 4);
-      address hitPlayer = abi.decode(callDataArgs.toBytes(), (address));
+      (, bytes memory callDataArgs) = decodeCallData(callData);
+      address hitPlayer = abi.decode(callDataArgs, (address));
 
       if (isPlayerRegistered(hitPlayer)) {
         lastHitter[hitPlayer] = msgSender;
@@ -238,7 +241,6 @@ contract Game is IOptionalSystemHook {
     }
   }
 
-  //UNUSED:
   function onRegisterHook(
     address msgSender,
     ResourceId systemId,
@@ -256,4 +258,60 @@ contract Game is IOptionalSystemHook {
     ResourceId systemId,
     bytes memory callData
   ) external override onlyBiomeWorld {}
+
+  function getDisplayName() external view returns (string memory) {
+    return "Bounty Hunter";
+  }
+
+  function getAvatars() external view returns (bytes32[] memory) {
+    bytes32[] memory avatars = new bytes32[](players.length);
+    for (uint i = 0; i < players.length; i++) {
+      avatars[i] = getEntityFromPlayer(players[i]);
+    }
+    return avatars;
+  }
+
+  function getStatus() external view returns (string memory) {
+    if (!isPlayerRegistered(msg.sender)) {
+      return "You are not registered yet.";
+    }
+
+    uint256 playerBalanceWei = balance[msg.sender];
+    address recipient = lastHitter[msg.sender];
+    bool canWithdraw = lastWithdrawal[msg.sender] + 2 hours < block.timestamp;
+
+    return
+      string.concat(
+        "Your balance is ",
+        weiToString(playerBalanceWei),
+        " ether and your last hitter is ",
+        recipient != address(0) ? Strings.toHexString(recipient) : "no one",
+        canWithdraw ? ". You may withdraw!" : ". See countdown for next withdrawal."
+      );
+  }
+
+  function getUnregisterMessage() external view returns (string memory) {
+    if (!isPlayerRegistered(msg.sender)) {
+      return "";
+    }
+
+    uint256 playerBalance = balance[msg.sender];
+    address recipient = lastHitter[msg.sender];
+
+    if (playerBalance > 0) {
+      if (recipient == address(0)) {
+        return "You have unclaimed balance. You will be unregistered and the balance will be sent to you.";
+      } else {
+        return "You have unclaimed balance. You will be unregistered and the balance will be sent to your last hitter.";
+      }
+    }
+  }
+
+  function getCountdownEndTimestamp() external view returns (uint256) {
+    if (!isPlayerRegistered(msg.sender)) {
+      return 0;
+    }
+
+    return lastWithdrawal[msg.sender] + 2 hours;
+  }
 }
