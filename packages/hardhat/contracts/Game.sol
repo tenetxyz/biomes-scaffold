@@ -195,6 +195,8 @@ contract Game is IOptionalSystemHook {
 
     isGameStarted = true;
     gameEndBlock = block.number + numBlocksToEnd;
+
+    emit GameNotif("Game has started!");
   }
 
   function setMatchArea(VoxelCoord memory lowerSouthwestCorner, VoxelCoord memory size) external {
@@ -244,6 +246,8 @@ contract Game is IOptionalSystemHook {
     }
 
     alivePlayers.push(player);
+
+    emit GameNotif(string.concat("Player ", Strings.toHexString(player), " has joined the game"));
   }
 
   function updateAlivePlayers(address msgSender) internal returns (uint256, bool) {
@@ -265,6 +269,7 @@ contract Game is IOptionalSystemHook {
           }
         }
         if (!markedDead) {
+          emit GameNotif(string.concat("Player ", Strings.toHexString(alivePlayers[i]), " has died"));
           deadPlayers.push(alivePlayers[i]);
         }
       } else {
@@ -363,6 +368,8 @@ contract Game is IOptionalSystemHook {
       (bool sent, ) = playersWithMostKills[i].call{ value: rewardPerPlayer }("");
       require(sent, "Failed to send Ether");
     }
+
+    emit GameNotif("Game has ended. Reward pool has been distributed.");
 
     // reset the game state
     resetGame();
