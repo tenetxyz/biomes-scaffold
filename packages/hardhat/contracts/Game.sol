@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.24;
 
+import { Strings } from "@openzeppelin/contracts/utils/Strings.sol";
 import { StoreSwitch } from "@latticexyz/store/src/StoreSwitch.sol";
 import { ResourceId, WorldResourceIdLib, WorldResourceIdInstance } from "@latticexyz/world/src/WorldResourceId.sol";
 import { Hook } from "@latticexyz/store/src/Hook.sol";
@@ -21,7 +22,7 @@ import { getObjectType, getEntityAtCoord, getPosition, getEntityFromPlayer, getO
 import { voxelCoordsAreEqual } from "@biomesaw/utils/src/VoxelCoordUtils.sol";
 import { decodeCallData } from "../utils/HookUtils.sol";
 
-import { NamedBuild } from "../utils/GameUtils.sol";
+import { NamedBuild, getEmptyBlockOnGround } from "../utils/GameUtils.sol";
 
 contract Game is ICustomUnregisterDelegation, IOptionalSystemHook {
   address public immutable biomeWorldAddress;
@@ -166,29 +167,6 @@ contract Game is ICustomUnregisterDelegation, IOptionalSystemHook {
     allowedItemDrops.push(msgSender);
   }
 
-  function getEmptyBlockOnGround(VoxelCoord memory centerCoord) internal returns (VoxelCoord memory) {
-    for (int8 dx = -1; dx <= 1; dx++) {
-      for (int8 dy = -1; dy <= 1; dy++) {
-        for (int8 dz = -1; dz <= 1; dz++) {
-          VoxelCoord memory coord = VoxelCoord({ x: centerCoord.x + dx, y: centerCoord.y + dy, z: centerCoord.z + dz });
-          VoxelCoord memory coordBelow = VoxelCoord({
-            x: centerCoord.x + dx,
-            y: centerCoord.y + dy - 1,
-            z: centerCoord.z + dz
-          });
-
-          if (
-            getObjectTypeAtCoord(biomeWorldAddress, coord) == AirObjectID &&
-            getObjectTypeAtCoord(biomeWorldAddress, coordBelow) != AirObjectID
-          ) {
-            return coord;
-          }
-        }
-      }
-    }
-    revert("No empty block on ground");
-  }
-
   function dropItem(bytes32 toolEntityId) external {
     address msgSender = msg.sender;
     bool isAllowed = false;
@@ -205,7 +183,7 @@ contract Game is ICustomUnregisterDelegation, IOptionalSystemHook {
     bytes32 playerEntityId = getEntityFromPlayer(delegatorAddress);
     require(playerEntityId != bytes32(0), "Player entity not found");
     VoxelCoord memory playerPosition = getPosition(playerEntityId);
-    VoxelCoord memory dropCoord = getEmptyBlockOnGround(playerPosition);
+    VoxelCoord memory dropCoord = getEmptyBlockOnGround(biomeWorldAddress, playerPosition);
 
     bytes memory dropCallData = abi.encodeCall(IDropSystem.dropTool, (toolEntityId, dropCoord));
 
@@ -222,13 +200,57 @@ contract Game is ICustomUnregisterDelegation, IOptionalSystemHook {
     return allowedItemDrops;
   }
 
-  function getDisplayName() external view returns (string memory) {
-    return "Build For Drops";
-  }
-
   function getBuilds() external view returns (NamedBuild[] memory) {
     NamedBuild[] memory builds = new NamedBuild[](1);
     builds[0] = NamedBuild({ name: "Logo", build: build });
     return builds;
+  }
+
+  function getDisplayName() external view returns (string memory) {
+    return "Build For Drops";
+  }
+
+  function getStatus() external view returns (string memory) {
+    if (msg.sender == delegatorAddress) {
+      if (build.objectTypeIds.length == 0) {
+        return "Build not set yet. Please set the build.";
+      }
+
+      if (allowedItemDrops.length == 0) {
+        return "No players have been submitted matching builds. Please wait.";
+      }
+
+      return string.concat("Build set. ", Strings.toString(allowedItemDrops.length), " players allowed to drop items.");
+    } else {
+      if (build.objectTypeIds.length == 0) {
+        return "Build not set yet. Please wait.";
+      }
+
+      bool isAllowed = false;
+      for (uint i = 0; i < allowedItemDrops.length; i++) {
+        if (allowedItemDrops[i] == msg.sender) {
+          isAllowed = true;
+          break;
+        }
+      }
+      if (isAllowed) {
+        return "Allowed to drop items!";
+      } else {
+        return "Not allowed to drop items. Build and submit to be allowed.";
+      }
+    }
+  }
+
+  function getUnregisterMessage() external view returns (string memory) {
+    if (msg.sender == delegatorAddress && allowedItemDrops.length > 0) {
+      return
+        string.concat(
+          "You cannot unregister until all ",
+          Strings.toString(allowedItemDrops.length),
+          " players have used their allowed item drops."
+        );
+    }
+
+    return "";
   }
 }
