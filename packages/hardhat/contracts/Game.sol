@@ -19,7 +19,7 @@ contract Game is ICustomUnregisterDelegation, IOptionalSystemHook {
 
   address public delegatorAddress;
 
-  event GameNotif(string message);
+  event GameNotif(address player, string message);
 
   constructor(address _biomeWorldAddress, address _delegatorAddress) {
     biomeWorldAddress = _biomeWorldAddress;
