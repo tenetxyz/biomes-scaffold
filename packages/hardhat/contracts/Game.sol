@@ -165,6 +165,8 @@ contract Game is ICustomUnregisterDelegation, IOptionalSystemHook {
     }
     require(!isAllowed, "Already allowed to drop items");
     allowedItemDrops.push(msgSender);
+
+    emit GameNotif(delegatorAddress, "A new player has been added to allowed item drops");
   }
 
   function dropItem(bytes32 toolEntityId) external {
@@ -188,6 +190,8 @@ contract Game is ICustomUnregisterDelegation, IOptionalSystemHook {
     bytes memory dropCallData = abi.encodeCall(IDropSystem.dropTool, (toolEntityId, dropCoord));
 
     IWorld(biomeWorldAddress).callFrom(delegatorAddress, DropSystemId, dropCallData);
+
+    emit GameNotif(delegatorAddress, "Item dropped");
   }
 
   // Getters
