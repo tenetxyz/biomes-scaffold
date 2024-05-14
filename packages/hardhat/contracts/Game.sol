@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.24;
 
+import { Strings } from "@openzeppelin/contracts/utils/Strings.sol";
 import { StoreSwitch } from "@latticexyz/store/src/StoreSwitch.sol";
 import { ResourceId, WorldResourceIdLib, WorldResourceIdInstance } from "@latticexyz/world/src/WorldResourceId.sol";
 import { Hook } from "@latticexyz/store/src/Hook.sol";
@@ -15,7 +16,8 @@ import { IWorld } from "@biomesaw/world/src/codegen/world/IWorld.sol";
 import { VoxelCoord } from "@biomesaw/utils/src/Types.sol";
 import { getObjectType, getEntityAtCoord, getPosition, getEntityFromPlayer, getObjectTypeAtCoord } from "../utils/EntityUtils.sol";
 import { voxelCoordsAreEqual } from "@biomesaw/utils/src/VoxelCoordUtils.sol";
-import { NamedBuild } from "../utils/GameUtils.sol";
+import { decodeCallData } from "../utils/HookUtils.sol";
+import { NamedBuild, weiToString } from "../utils/GameUtils.sol";
 
 struct NamePair {
   uint256 id;
@@ -235,8 +237,8 @@ contract Game is IOptionalSystemHook {
     bytes memory callData
   ) external override onlyBiomeWorld {
     if (ResourceId.unwrap(systemId) == ResourceId.unwrap(BuildSystemId)) {
-      Slice callDataArgs = SliceLib.getSubslice(callData, 4);
-      (, VoxelCoord memory coord) = abi.decode(callDataArgs.toBytes(), (uint8, VoxelCoord));
+      (, bytes memory callDataArgs) = decodeCallData(callData);
+      (, VoxelCoord memory coord) = abi.decode(callDataArgs, (uint8, VoxelCoord));
       coordHashToBuilder[getCoordHash(coord)] = msgSender;
     }
   }
@@ -343,5 +345,9 @@ contract Game is IOptionalSystemHook {
       builds[i - 1] = NamedBuild({ name: names[i], build: blueprints[i] });
     }
     return builds;
+  }
+
+  function getStatus() external view returns (string memory) {
+    return string.concat("You've earned ", weiToString(earned[msg.sender]), " ether so far.");
   }
 }
