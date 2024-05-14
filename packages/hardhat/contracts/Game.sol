@@ -106,6 +106,8 @@ contract Game is IOptionalSystemHook {
 
     submissionPrices[buildCount] = submissionPrice;
     names[buildCount] = name;
+
+    emit GameNotif(address(0), "A new build has been added to the game.");
   }
 
   function submitBuilding(uint256 buildingId, VoxelCoord memory baseWorldCoord) external payable {
@@ -162,6 +164,7 @@ contract Game is IOptionalSystemHook {
         earned[buildersAtId[i]] += splitAmount;
         (bool sent, ) = buildersAtId[i].call{ value: splitAmount }("");
         require(sent, "Failed to send submission price to builder");
+        emit GameNotif(buildersAtId[i], "You've earned some ether for your contribution to a build.");
       }
 
       if (remainder > 0) {
