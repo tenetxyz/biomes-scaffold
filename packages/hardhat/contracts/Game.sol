@@ -100,6 +100,8 @@ contract Game is IOptionalSystemHook {
     balance[player] = msg.value;
     lastWithdrawal[player] = block.timestamp;
     lastHitter[player] = address(0);
+
+    emit GameNotif(address(0), string.concat("Player ", Strings.toHexString(player), " has joined the game"));
   }
 
   function withdraw() external {
