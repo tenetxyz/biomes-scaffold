@@ -16,6 +16,7 @@ import { IWorld } from "@biomesaw/world/src/codegen/world/IWorld.sol";
 import { VoxelCoord } from "@biomesaw/utils/src/Types.sol";
 import { Area, insideAreaIgnoreY } from "../utils/AreaUtils.sol";
 import { hasBeforeAndAfterSystemHook, getEntityAtCoord, getEntityFromPlayer, getPosition, getIsLoggedOff, getPlayerFromEntity } from "../utils/EntityUtils.sol";
+import { decodeCallData } from "../utils/HookUtils.sol";
 import { NamedArea } from "../utils/GameUtils.sol";
 
 struct LeaderboardEntry {
@@ -123,11 +124,15 @@ contract Game is IOptionalSystemHook {
     }
 
     if (ResourceId.unwrap(systemId) == ResourceId.unwrap(LogoffSystemId)) {
-      require(!isGameStarted, "Cannot logoff during the game");
+      require(!isGameStarted || block.number > gameEndBlock, "Cannot logoff during the game");
       return;
     } else if (ResourceId.unwrap(systemId) == ResourceId.unwrap(HitSystemId)) {
-      Slice callDataArgs = SliceLib.getSubslice(callData, 4);
-      address hitPlayer = abi.decode(callDataArgs.toBytes(), (address));
+      if (isGameStarted && block.number > gameEndBlock) {
+        return;
+      }
+
+      (, bytes memory callDataArgs) = decodeCallData(callData);
+      address hitPlayer = abi.decode(callDataArgs, (address));
 
       bool isHitAlivePlayer = false;
       for (uint i = 0; i < alivePlayers.length; i++) {
@@ -147,7 +152,7 @@ contract Game is IOptionalSystemHook {
         require(!isHitAlivePlayer, "Cannot hit game players before the game starts or if you died.");
       }
     } else if (ResourceId.unwrap(systemId) == ResourceId.unwrap(MineSystemId)) {
-      if (!isGameStarted || !isAlive) {
+      if (!isGameStarted || !isAlive || block.number > gameEndBlock) {
         return;
       }
 
@@ -157,7 +162,7 @@ contract Game is IOptionalSystemHook {
       }
       numKills[msgSender] += numNewDeadPlayers;
     } else if (ResourceId.unwrap(systemId) == ResourceId.unwrap(MoveSystemId)) {
-      if (!isGameStarted) {
+      if (!isGameStarted || block.number > gameEndBlock) {
         return;
       }
       bytes32 playerEntity = getEntityFromPlayer(msgSender);
