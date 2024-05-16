@@ -265,12 +265,8 @@ contract Game is IOptionalSystemHook {
     return "Bounty Hunter";
   }
 
-  function getAvatars() external view returns (bytes32[] memory) {
-    bytes32[] memory avatars = new bytes32[](players.length);
-    for (uint i = 0; i < players.length; i++) {
-      avatars[i] = getEntityFromPlayer(players[i]);
-    }
-    return avatars;
+  function getAvatars() external view returns (address[] memory) {
+    return players;
   }
 
   function getStatus() external view returns (string memory) {
