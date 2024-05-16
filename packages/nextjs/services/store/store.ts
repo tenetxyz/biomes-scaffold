@@ -32,6 +32,8 @@ type GlobalState = {
   setIsBiomesClientSetup: (newIsBiomesClientSetup: boolean) => void;
   stage: Stage;
   setStage: (newStage: Stage) => void;
+  addressToBiomesName: Record<string, string>;
+  setAddressToBiomesName: (newAddressToBiomesName: Record<string, string>) => void;
 };
 
 export const useGlobalState = create<GlobalState>(set => ({
@@ -48,4 +50,7 @@ export const useGlobalState = create<GlobalState>(set => ({
     set(() => ({ isBiomesClientSetup: newIsBiomesClientSetup })),
   stage: Stage.CONNECT_WALLET,
   setStage: (newStage: Stage) => set(() => ({ stage: newStage })),
+  addressToBiomesName: {},
+  setAddressToBiomesName: (newAddressToBiomesName: Record<string, string>) =>
+    set(() => ({ addressToBiomesName: newAddressToBiomesName })),
 }));

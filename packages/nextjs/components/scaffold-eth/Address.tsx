@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { garnet, redstone } from "@latticexyz/common/chains";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { Address as AddressType, getAddress, isAddress } from "viem";
 import { hardhat } from "viem/chains";
@@ -10,6 +11,7 @@ import { useEnsAvatar, useEnsName } from "wagmi";
 import { CheckCircleIcon, DocumentDuplicateIcon } from "@heroicons/react/24/outline";
 import { BlockieAvatar } from "~~/components/scaffold-eth";
 import { useTargetNetwork } from "~~/hooks/scaffold-eth/useTargetNetwork";
+import { useGlobalState } from "~~/services/store/store";
 import { getBlockExplorerAddressLink } from "~~/utils/scaffold-eth";
 
 type AddressProps = {
@@ -37,8 +39,39 @@ export const Address = ({ address, disableAddressLink, format, size = "base" }: 
   const [ensAvatar, setEnsAvatar] = useState<string | null>();
   const [addressCopied, setAddressCopied] = useState(false);
   const checkSumAddress = address ? getAddress(address) : undefined;
-
   const { targetNetwork } = useTargetNetwork();
+  const addressToBiomesName = useGlobalState(({ addressToBiomesName }) => addressToBiomesName);
+  const setAddressToBiomesName = useGlobalState(({ setAddressToBiomesName }) => setAddressToBiomesName);
+
+  const loadBiomeNames = async () => {
+    // Fetch Biome names from the client
+    let fetchUrl = "http://localhost:3000";
+    if (targetNetwork.id === redstone.id) {
+      fetchUrl = "https://biome1.biomes.aw";
+    } else if (targetNetwork.id === garnet.id) {
+      fetchUrl = "https://biome1.everlon.xyz";
+    }
+    try {
+      const namesData = await fetch(fetchUrl + "/api/user/names");
+      const names = await namesData.json();
+      const addressToBiomesName: Record<string, string> = {};
+      for (const [playerAddress, name] of Object.entries(names["addressToName"])) {
+        addressToBiomesName[playerAddress] = name;
+      }
+      setAddressToBiomesName(addressToBiomesName);
+    } catch (e) {
+      console.error("Error fetching Biome names", e);
+    }
+  };
+
+  useEffect(() => {
+    if (address === undefined) {
+      return;
+    }
+    if (addressToBiomesName[address.toLowerCase()] === undefined) {
+      loadBiomeNames();
+    }
+  }, [address]);
 
   const { data: fetchedEns } = useEnsName({
     address: checkSumAddress,
@@ -88,6 +121,9 @@ export const Address = ({ address, disableAddressLink, format, size = "base" }: 
     displayAddress = ens;
   } else if (format === "long") {
     displayAddress = checkSumAddress;
+  }
+  if (address !== undefined && addressToBiomesName[address.toLowerCase()] !== undefined) {
+    displayAddress = addressToBiomesName[address.toLowerCase()] + " (" + displayAddress + ")";
   }
 
   return (
