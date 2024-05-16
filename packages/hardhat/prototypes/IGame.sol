@@ -6,7 +6,7 @@ import { NamedArea, NamedBuild, NamedBuildWithPos, GameState } from "../utils/Ga
 interface IGame {
   function getDisplayName() external view returns (string memory);
 
-  function getAvatars() external view returns (bytes32[] memory);
+  function getAvatars() external view returns (address[] memory);
 
   function getAreas() external view returns (NamedArea[] memory);
 
