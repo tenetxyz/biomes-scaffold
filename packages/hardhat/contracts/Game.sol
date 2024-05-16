@@ -441,12 +441,8 @@ contract Game is IOptionalSystemHook {
     return "Deathmatch";
   }
 
-  function getAvatars() external view returns (bytes32[] memory) {
-    bytes32[] memory registeredPlayerEntityIds = new bytes32[](alivePlayers.length);
-    for (uint i = 0; i < alivePlayers.length; i++) {
-      registeredPlayerEntityIds[i] = getEntityFromPlayer(alivePlayers[i]);
-    }
-    return registeredPlayerEntityIds;
+  function getAvatars() external view returns (address[] memory) {
+    return alivePlayers;
   }
 
   function getAreas() external view returns (NamedArea[] memory) {
