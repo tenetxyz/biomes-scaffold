@@ -5,9 +5,9 @@
 import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 
 const deployedContracts = {
-  31337: {
+  690: {
     Game: {
-      address: "0x63fea6E447F120B8Faf85B53cdaD8348e645D80E",
+      address: "0x0900Ca30477b05e9Cc3512B99259EA8aC6728384",
       abi: [
         {
           inputs: [
@@ -686,6 +686,1163 @@ const deployedContracts = {
         onRegisterHook: "@latticexyz/world/src/IOptionalSystemHook.sol",
         onUnregisterHook: "@latticexyz/world/src/IOptionalSystemHook.sol",
         supportsInterface: "@latticexyz/world/src/IOptionalSystemHook.sol",
+      },
+    },
+  },
+  17069: {
+    Game: {
+      address: "0x25074032327f9a4ec7A8c193c310234AF6Ca62De",
+      abi: [
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "_biomeWorldAddress",
+              type: "address",
+            },
+            {
+              components: [
+                {
+                  internalType: "int16",
+                  name: "x",
+                  type: "int16",
+                },
+                {
+                  internalType: "int16",
+                  name: "y",
+                  type: "int16",
+                },
+                {
+                  internalType: "int16",
+                  name: "z",
+                  type: "int16",
+                },
+              ],
+              internalType: "struct VoxelCoord",
+              name: "lowerSouthwestCorner",
+              type: "tuple",
+            },
+            {
+              components: [
+                {
+                  internalType: "int16",
+                  name: "x",
+                  type: "int16",
+                },
+                {
+                  internalType: "int16",
+                  name: "y",
+                  type: "int16",
+                },
+                {
+                  internalType: "int16",
+                  name: "z",
+                  type: "int16",
+                },
+              ],
+              internalType: "struct VoxelCoord",
+              name: "size",
+              type: "tuple",
+            },
+            {
+              internalType: "address",
+              name: "_gameStarter",
+              type: "address",
+            },
+          ],
+          stateMutability: "nonpayable",
+          type: "constructor",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes",
+              name: "data",
+              type: "bytes",
+            },
+            {
+              internalType: "uint256",
+              name: "start",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "end",
+              type: "uint256",
+            },
+          ],
+          name: "Slice_OutOfBounds",
+          type: "error",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: false,
+              internalType: "address",
+              name: "player",
+              type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "string",
+              name: "message",
+              type: "string",
+            },
+          ],
+          name: "GameNotif",
+          type: "event",
+        },
+        {
+          inputs: [],
+          name: "biomeWorldAddress",
+          outputs: [
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "claimRewardPool",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "gameEndBlock",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "gameStarter",
+          outputs: [
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "getAlivePlayers",
+          outputs: [
+            {
+              internalType: "address[]",
+              name: "",
+              type: "address[]",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "getAreas",
+          outputs: [
+            {
+              components: [
+                {
+                  internalType: "string",
+                  name: "name",
+                  type: "string",
+                },
+                {
+                  components: [
+                    {
+                      components: [
+                        {
+                          internalType: "int16",
+                          name: "x",
+                          type: "int16",
+                        },
+                        {
+                          internalType: "int16",
+                          name: "y",
+                          type: "int16",
+                        },
+                        {
+                          internalType: "int16",
+                          name: "z",
+                          type: "int16",
+                        },
+                      ],
+                      internalType: "struct VoxelCoord",
+                      name: "lowerSouthwestCorner",
+                      type: "tuple",
+                    },
+                    {
+                      components: [
+                        {
+                          internalType: "int16",
+                          name: "x",
+                          type: "int16",
+                        },
+                        {
+                          internalType: "int16",
+                          name: "y",
+                          type: "int16",
+                        },
+                        {
+                          internalType: "int16",
+                          name: "z",
+                          type: "int16",
+                        },
+                      ],
+                      internalType: "struct VoxelCoord",
+                      name: "size",
+                      type: "tuple",
+                    },
+                  ],
+                  internalType: "struct Area",
+                  name: "area",
+                  type: "tuple",
+                },
+              ],
+              internalType: "struct NamedArea[]",
+              name: "",
+              type: "tuple[]",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "getAvatars",
+          outputs: [
+            {
+              internalType: "address[]",
+              name: "",
+              type: "address[]",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "getCountdownEndBlock",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "getDeadPlayers",
+          outputs: [
+            {
+              internalType: "address[]",
+              name: "",
+              type: "address[]",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "getDisplayName",
+          outputs: [
+            {
+              internalType: "string",
+              name: "",
+              type: "string",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "getDisqualifiedPlayers",
+          outputs: [
+            {
+              internalType: "address[]",
+              name: "",
+              type: "address[]",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "getKillsLeaderboard",
+          outputs: [
+            {
+              components: [
+                {
+                  internalType: "address",
+                  name: "player",
+                  type: "address",
+                },
+                {
+                  internalType: "bool",
+                  name: "isAlive",
+                  type: "bool",
+                },
+                {
+                  internalType: "uint256",
+                  name: "kills",
+                  type: "uint256",
+                },
+              ],
+              internalType: "struct LeaderboardEntry[]",
+              name: "",
+              type: "tuple[]",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "getMatchArea",
+          outputs: [
+            {
+              components: [
+                {
+                  components: [
+                    {
+                      internalType: "int16",
+                      name: "x",
+                      type: "int16",
+                    },
+                    {
+                      internalType: "int16",
+                      name: "y",
+                      type: "int16",
+                    },
+                    {
+                      internalType: "int16",
+                      name: "z",
+                      type: "int16",
+                    },
+                  ],
+                  internalType: "struct VoxelCoord",
+                  name: "lowerSouthwestCorner",
+                  type: "tuple",
+                },
+                {
+                  components: [
+                    {
+                      internalType: "int16",
+                      name: "x",
+                      type: "int16",
+                    },
+                    {
+                      internalType: "int16",
+                      name: "y",
+                      type: "int16",
+                    },
+                    {
+                      internalType: "int16",
+                      name: "z",
+                      type: "int16",
+                    },
+                  ],
+                  internalType: "struct VoxelCoord",
+                  name: "size",
+                  type: "tuple",
+                },
+              ],
+              internalType: "struct Area",
+              name: "",
+              type: "tuple",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "getRegisteredPlayerEntityIds",
+          outputs: [
+            {
+              internalType: "bytes32[]",
+              name: "",
+              type: "bytes32[]",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "getRewardPool",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "getStatus",
+          outputs: [
+            {
+              internalType: "string",
+              name: "",
+              type: "string",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "getUnregisterMessage",
+          outputs: [
+            {
+              internalType: "string",
+              name: "",
+              type: "string",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "isGameStarted",
+          outputs: [
+            {
+              internalType: "bool",
+              name: "",
+              type: "bool",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "msgSender",
+              type: "address",
+            },
+            {
+              internalType: "ResourceId",
+              name: "systemId",
+              type: "bytes32",
+            },
+            {
+              internalType: "bytes",
+              name: "callData",
+              type: "bytes",
+            },
+          ],
+          name: "onAfterCallSystem",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "msgSender",
+              type: "address",
+            },
+            {
+              internalType: "ResourceId",
+              name: "systemId",
+              type: "bytes32",
+            },
+            {
+              internalType: "bytes",
+              name: "callData",
+              type: "bytes",
+            },
+          ],
+          name: "onBeforeCallSystem",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "msgSender",
+              type: "address",
+            },
+            {
+              internalType: "ResourceId",
+              name: "systemId",
+              type: "bytes32",
+            },
+            {
+              internalType: "uint8",
+              name: "enabledHooksBitmap",
+              type: "uint8",
+            },
+            {
+              internalType: "bytes32",
+              name: "callDataHash",
+              type: "bytes32",
+            },
+          ],
+          name: "onRegisterHook",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "msgSender",
+              type: "address",
+            },
+            {
+              internalType: "ResourceId",
+              name: "systemId",
+              type: "bytes32",
+            },
+            {
+              internalType: "uint8",
+              name: "enabledHooksBitmap",
+              type: "uint8",
+            },
+            {
+              internalType: "bytes32",
+              name: "callDataHash",
+              type: "bytes32",
+            },
+          ],
+          name: "onUnregisterHook",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "registerPlayer",
+          outputs: [],
+          stateMutability: "payable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              components: [
+                {
+                  internalType: "int16",
+                  name: "x",
+                  type: "int16",
+                },
+                {
+                  internalType: "int16",
+                  name: "y",
+                  type: "int16",
+                },
+                {
+                  internalType: "int16",
+                  name: "z",
+                  type: "int16",
+                },
+              ],
+              internalType: "struct VoxelCoord",
+              name: "lowerSouthwestCorner",
+              type: "tuple",
+            },
+            {
+              components: [
+                {
+                  internalType: "int16",
+                  name: "x",
+                  type: "int16",
+                },
+                {
+                  internalType: "int16",
+                  name: "y",
+                  type: "int16",
+                },
+                {
+                  internalType: "int16",
+                  name: "z",
+                  type: "int16",
+                },
+              ],
+              internalType: "struct VoxelCoord",
+              name: "size",
+              type: "tuple",
+            },
+          ],
+          name: "setMatchArea",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "numBlocksToEnd",
+              type: "uint256",
+            },
+          ],
+          name: "startGame",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes4",
+              name: "interfaceId",
+              type: "bytes4",
+            },
+          ],
+          name: "supportsInterface",
+          outputs: [
+            {
+              internalType: "bool",
+              name: "",
+              type: "bool",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+      ],
+      inheritedFunctions: {
+        onAfterCallSystem: "@latticexyz/world/src/IOptionalSystemHook.sol",
+        onBeforeCallSystem: "@latticexyz/world/src/IOptionalSystemHook.sol",
+        onRegisterHook: "@latticexyz/world/src/IOptionalSystemHook.sol",
+        onUnregisterHook: "@latticexyz/world/src/IOptionalSystemHook.sol",
+        supportsInterface: "@latticexyz/world/src/IOptionalSystemHook.sol",
+      },
+    },
+  },
+  31337: {
+    Game: {
+      address: "0x9385556B571ab92bf6dC9a0DbD75429Dd4d56F91",
+      abi: [
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "_biomeWorldAddress",
+              type: "address",
+            },
+            {
+              internalType: "address",
+              name: "_delegatorAddress",
+              type: "address",
+            },
+          ],
+          stateMutability: "nonpayable",
+          type: "constructor",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes",
+              name: "data",
+              type: "bytes",
+            },
+            {
+              internalType: "uint256",
+              name: "start",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "end",
+              type: "uint256",
+            },
+          ],
+          name: "Slice_OutOfBounds",
+          type: "error",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: false,
+              internalType: "address",
+              name: "player",
+              type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "string",
+              name: "message",
+              type: "string",
+            },
+          ],
+          name: "GameNotif",
+          type: "event",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          name: "allowedItemDrops",
+          outputs: [
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "biomeWorldAddress",
+          outputs: [
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "delegator",
+              type: "address",
+            },
+          ],
+          name: "canUnregister",
+          outputs: [
+            {
+              internalType: "bool",
+              name: "",
+              type: "bool",
+            },
+          ],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "",
+              type: "bytes32",
+            },
+          ],
+          name: "coordHashToBuilder",
+          outputs: [
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "delegatorAddress",
+          outputs: [
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "toolEntityId",
+              type: "bytes32",
+            },
+          ],
+          name: "dropItem",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "getAllowedItemDrops",
+          outputs: [
+            {
+              internalType: "address[]",
+              name: "",
+              type: "address[]",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "getBuild",
+          outputs: [
+            {
+              components: [
+                {
+                  internalType: "uint8[]",
+                  name: "objectTypeIds",
+                  type: "uint8[]",
+                },
+                {
+                  components: [
+                    {
+                      internalType: "int16",
+                      name: "x",
+                      type: "int16",
+                    },
+                    {
+                      internalType: "int16",
+                      name: "y",
+                      type: "int16",
+                    },
+                    {
+                      internalType: "int16",
+                      name: "z",
+                      type: "int16",
+                    },
+                  ],
+                  internalType: "struct VoxelCoord[]",
+                  name: "relativePositions",
+                  type: "tuple[]",
+                },
+              ],
+              internalType: "struct Build",
+              name: "",
+              type: "tuple",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "getBuilds",
+          outputs: [
+            {
+              components: [
+                {
+                  internalType: "string",
+                  name: "name",
+                  type: "string",
+                },
+                {
+                  components: [
+                    {
+                      internalType: "uint8[]",
+                      name: "objectTypeIds",
+                      type: "uint8[]",
+                    },
+                    {
+                      components: [
+                        {
+                          internalType: "int16",
+                          name: "x",
+                          type: "int16",
+                        },
+                        {
+                          internalType: "int16",
+                          name: "y",
+                          type: "int16",
+                        },
+                        {
+                          internalType: "int16",
+                          name: "z",
+                          type: "int16",
+                        },
+                      ],
+                      internalType: "struct VoxelCoord[]",
+                      name: "relativePositions",
+                      type: "tuple[]",
+                    },
+                  ],
+                  internalType: "struct Build",
+                  name: "build",
+                  type: "tuple",
+                },
+              ],
+              internalType: "struct NamedBuild[]",
+              name: "",
+              type: "tuple[]",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "getDisplayName",
+          outputs: [
+            {
+              internalType: "string",
+              name: "",
+              type: "string",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "getStatus",
+          outputs: [
+            {
+              internalType: "string",
+              name: "",
+              type: "string",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "getUnregisterMessage",
+          outputs: [
+            {
+              internalType: "string",
+              name: "",
+              type: "string",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              components: [
+                {
+                  internalType: "int16",
+                  name: "x",
+                  type: "int16",
+                },
+                {
+                  internalType: "int16",
+                  name: "y",
+                  type: "int16",
+                },
+                {
+                  internalType: "int16",
+                  name: "z",
+                  type: "int16",
+                },
+              ],
+              internalType: "struct VoxelCoord",
+              name: "baseWorldCoord",
+              type: "tuple",
+            },
+          ],
+          name: "matchBuild",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "msgSender",
+              type: "address",
+            },
+            {
+              internalType: "ResourceId",
+              name: "systemId",
+              type: "bytes32",
+            },
+            {
+              internalType: "bytes",
+              name: "callData",
+              type: "bytes",
+            },
+          ],
+          name: "onAfterCallSystem",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "msgSender",
+              type: "address",
+            },
+            {
+              internalType: "ResourceId",
+              name: "systemId",
+              type: "bytes32",
+            },
+            {
+              internalType: "bytes",
+              name: "callData",
+              type: "bytes",
+            },
+          ],
+          name: "onBeforeCallSystem",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "msgSender",
+              type: "address",
+            },
+            {
+              internalType: "ResourceId",
+              name: "systemId",
+              type: "bytes32",
+            },
+            {
+              internalType: "uint8",
+              name: "enabledHooksBitmap",
+              type: "uint8",
+            },
+            {
+              internalType: "bytes32",
+              name: "callDataHash",
+              type: "bytes32",
+            },
+          ],
+          name: "onRegisterHook",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "msgSender",
+              type: "address",
+            },
+            {
+              internalType: "ResourceId",
+              name: "systemId",
+              type: "bytes32",
+            },
+            {
+              internalType: "uint8",
+              name: "enabledHooksBitmap",
+              type: "uint8",
+            },
+            {
+              internalType: "bytes32",
+              name: "callDataHash",
+              type: "bytes32",
+            },
+          ],
+          name: "onUnregisterHook",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint8[]",
+              name: "objectTypeIds",
+              type: "uint8[]",
+            },
+            {
+              components: [
+                {
+                  internalType: "int16",
+                  name: "x",
+                  type: "int16",
+                },
+                {
+                  internalType: "int16",
+                  name: "y",
+                  type: "int16",
+                },
+                {
+                  internalType: "int16",
+                  name: "z",
+                  type: "int16",
+                },
+              ],
+              internalType: "struct VoxelCoord[]",
+              name: "relativePositions",
+              type: "tuple[]",
+            },
+          ],
+          name: "setBuild",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes4",
+              name: "interfaceId",
+              type: "bytes4",
+            },
+          ],
+          name: "supportsInterface",
+          outputs: [
+            {
+              internalType: "bool",
+              name: "",
+              type: "bool",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+      ],
+      inheritedFunctions: {
+        canUnregister: "@latticexyz/world/src/ICustomUnregisterDelegation.sol",
+        supportsInterface: "@latticexyz/world/src/IOptionalSystemHook.sol",
+        onAfterCallSystem: "@latticexyz/world/src/IOptionalSystemHook.sol",
+        onBeforeCallSystem: "@latticexyz/world/src/IOptionalSystemHook.sol",
+        onRegisterHook: "@latticexyz/world/src/IOptionalSystemHook.sol",
+        onUnregisterHook: "@latticexyz/world/src/IOptionalSystemHook.sol",
       },
     },
   },
