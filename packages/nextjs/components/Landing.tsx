@@ -45,9 +45,10 @@ export const Landing: React.FC = ({}) => {
       <div className="grid grid-cols-12 flex flex-1">
         <div className="col-span-12 lg:col-span-9 p-12 flex flex-col justify-between items-center">
           <div style={{ width: "80%" }}>
-            <h1 className="text-3xl font-bold text-left mt-4">Your Game Title</h1>
+            <h1 className="text-3xl font-bold text-left mt-4">Build-A-Nomics</h1>
             <h1 className="text-left mt-4" style={{ lineHeight: "normal", margin: "0", wordWrap: "break-word" }}>
-              Your game description
+              Start your own architectural trend or join in on one, reward previous builders, and earn from future
+              builders.
             </h1>
             <div
               style={{
@@ -63,7 +64,14 @@ export const Landing: React.FC = ({}) => {
               }}
               className="mt-4"
             >
-              Your Game Image
+              <img
+                src="/moonumentslanding.webp"
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                }}
+              />
             </div>
           </div>
         </div>
