@@ -22,7 +22,7 @@ export interface Area {
 
 interface LeaderboardEntry {
   player: string;
-  kills: bigint;
+  balance: bigint;
 }
 
 function BuildComponent({ build }: { build: Build | BuildWithPos }) {
@@ -116,9 +116,9 @@ function AreaComponent({ area }: { area: Area }) {
 
 function LeaderboardComponent({ leaderboard }: { leaderboard: LeaderboardEntry[] }) {
   const sortedLeaderboard = leaderboard.sort((a, b) => {
-    if (a.kills > b.kills) {
+    if (a.balance > b.balance) {
       return -1;
-    } else if (a.kills < b.kills) {
+    } else if (a.balance < b.balance) {
       return 1;
     } else {
       return 0;
@@ -131,14 +131,14 @@ function LeaderboardComponent({ leaderboard }: { leaderboard: LeaderboardEntry[]
           <thead>
             <tr>
               <th style={{ border: "0.5px solid #ffffff47", padding: "8px", textAlign: "left" }}>Player</th>
-              <th style={{ border: "0.5px solid #ffffff47", padding: "8px", textAlign: "left" }}>Kills</th>
+              <th style={{ border: "0.5px solid #ffffff47", padding: "8px", textAlign: "left" }}>Balance</th>
             </tr>
           </thead>
           <tbody>
             {sortedLeaderboard.map((entry, index) => (
               <tr key={index}>
                 <td style={{ border: "0.5px solid #ffffff47", padding: "8px" }}>{displayTxResult(entry.player)}</td>
-                <td style={{ border: "0.5px solid #ffffff47", padding: "8px" }}>{entry.kills.toString()}</td>
+                <td style={{ border: "0.5px solid #ffffff47", padding: "8px" }}>{formatEther(entry.balance) + " Ξ"}</td>
               </tr>
             ))}
           </tbody>
@@ -227,11 +227,11 @@ export function isValidArea(area: DisplayContent | DisplayContent[]) {
 }
 
 export function isLeaderboardEntry(entry: DisplayContent | DisplayContent[]) {
-  // Checks if entry has the correct structure for address and numKills
+  // Checks if entry has the correct structure for address and balance
   if (entry === undefined || entry === null) return false;
   if (typeof entry !== "object") return false;
 
-  return isAddress(entry.player) && typeof entry.kills === "bigint";
+  return isAddress(entry.player) && typeof entry.balance === "bigint";
 }
 
 export function isLeaderboard(leaderboard: DisplayContent | DisplayContent[]) {
