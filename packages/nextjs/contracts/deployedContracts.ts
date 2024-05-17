@@ -7,7 +7,7 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 const deployedContracts = {
   690: {
     Game: {
-      address: "0x4FB8395E1B22E44b498A02fd2eb5a5C49f1DadF1",
+      address: "0x09F61e35b34EB7855fb234dc81109d774Bb16973",
       abi: [
         {
           inputs: [
@@ -24,6 +24,25 @@ const deployedContracts = {
           ],
           stateMutability: "nonpayable",
           type: "constructor",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: false,
+              internalType: "address",
+              name: "player",
+              type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "string",
+              name: "message",
+              type: "string",
+            },
+          ],
+          name: "GameNotif",
+          type: "event",
         },
         {
           inputs: [],
@@ -230,7 +249,7 @@ const deployedContracts = {
   },
   17069: {
     Game: {
-      address: "0xB1f332427AdE17d97686395cB109B216A2B51F03",
+      address: "0xaFFFd91f427b81e0e56be9A4b6369f8DE6f24994",
       abi: [
         {
           inputs: [
@@ -247,6 +266,25 @@ const deployedContracts = {
           ],
           stateMutability: "nonpayable",
           type: "constructor",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: false,
+              internalType: "address",
+              name: "player",
+              type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "string",
+              name: "message",
+              type: "string",
+            },
+          ],
+          name: "GameNotif",
+          type: "event",
         },
         {
           inputs: [],
@@ -453,7 +491,7 @@ const deployedContracts = {
   },
   31337: {
     Game: {
-      address: "0x12Bcb546bC60fF39F1Adfc7cE4605d5Bd6a6A876",
+      address: "0xddE78e6202518FF4936b5302cC2891ec180E8bFf",
       abi: [
         {
           inputs: [
@@ -463,52 +501,8 @@ const deployedContracts = {
               type: "address",
             },
             {
-              components: [
-                {
-                  internalType: "int16",
-                  name: "x",
-                  type: "int16",
-                },
-                {
-                  internalType: "int16",
-                  name: "y",
-                  type: "int16",
-                },
-                {
-                  internalType: "int16",
-                  name: "z",
-                  type: "int16",
-                },
-              ],
-              internalType: "struct VoxelCoord",
-              name: "lowerSouthwestCorner",
-              type: "tuple",
-            },
-            {
-              components: [
-                {
-                  internalType: "int16",
-                  name: "x",
-                  type: "int16",
-                },
-                {
-                  internalType: "int16",
-                  name: "y",
-                  type: "int16",
-                },
-                {
-                  internalType: "int16",
-                  name: "z",
-                  type: "int16",
-                },
-              ],
-              internalType: "struct VoxelCoord",
-              name: "size",
-              type: "tuple",
-            },
-            {
               internalType: "address",
-              name: "_gameStarter",
+              name: "_delegatorAddress",
               type: "address",
             },
           ],
@@ -516,25 +510,36 @@ const deployedContracts = {
           type: "constructor",
         },
         {
+          anonymous: false,
           inputs: [
             {
-              internalType: "bytes",
-              name: "data",
-              type: "bytes",
+              indexed: false,
+              internalType: "address",
+              name: "player",
+              type: "address",
             },
             {
-              internalType: "uint256",
-              name: "start",
-              type: "uint256",
+              indexed: false,
+              internalType: "string",
+              name: "message",
+              type: "string",
             },
+          ],
+          name: "GameNotif",
+          type: "event",
+        },
+        {
+          inputs: [],
+          name: "basicGetter",
+          outputs: [
             {
               internalType: "uint256",
-              name: "end",
+              name: "",
               type: "uint256",
             },
           ],
-          name: "Slice_OutOfBounds",
-          type: "error",
+          stateMutability: "view",
+          type: "function",
         },
         {
           inputs: [],
@@ -550,28 +555,27 @@ const deployedContracts = {
           type: "function",
         },
         {
-          inputs: [],
-          name: "claimRewardPool",
-          outputs: [],
+          inputs: [
+            {
+              internalType: "address",
+              name: "delegator",
+              type: "address",
+            },
+          ],
+          name: "canUnregister",
+          outputs: [
+            {
+              internalType: "bool",
+              name: "",
+              type: "bool",
+            },
+          ],
           stateMutability: "nonpayable",
           type: "function",
         },
         {
           inputs: [],
-          name: "gameEndBlock",
-          outputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [],
-          name: "gameStarter",
+          name: "delegatorAddress",
           outputs: [
             {
               internalType: "address",
@@ -584,289 +588,12 @@ const deployedContracts = {
         },
         {
           inputs: [],
-          name: "getAlivePlayers",
+          name: "getRegisteredPlayers",
           outputs: [
             {
               internalType: "address[]",
               name: "",
               type: "address[]",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [],
-          name: "getAreas",
-          outputs: [
-            {
-              components: [
-                {
-                  internalType: "string",
-                  name: "name",
-                  type: "string",
-                },
-                {
-                  components: [
-                    {
-                      components: [
-                        {
-                          internalType: "int16",
-                          name: "x",
-                          type: "int16",
-                        },
-                        {
-                          internalType: "int16",
-                          name: "y",
-                          type: "int16",
-                        },
-                        {
-                          internalType: "int16",
-                          name: "z",
-                          type: "int16",
-                        },
-                      ],
-                      internalType: "struct VoxelCoord",
-                      name: "lowerSouthwestCorner",
-                      type: "tuple",
-                    },
-                    {
-                      components: [
-                        {
-                          internalType: "int16",
-                          name: "x",
-                          type: "int16",
-                        },
-                        {
-                          internalType: "int16",
-                          name: "y",
-                          type: "int16",
-                        },
-                        {
-                          internalType: "int16",
-                          name: "z",
-                          type: "int16",
-                        },
-                      ],
-                      internalType: "struct VoxelCoord",
-                      name: "size",
-                      type: "tuple",
-                    },
-                  ],
-                  internalType: "struct Area",
-                  name: "area",
-                  type: "tuple",
-                },
-              ],
-              internalType: "struct NamedArea[]",
-              name: "",
-              type: "tuple[]",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [],
-          name: "getAvatars",
-          outputs: [
-            {
-              internalType: "bytes32[]",
-              name: "",
-              type: "bytes32[]",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [],
-          name: "getCountdownEndBlock",
-          outputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [],
-          name: "getDeadPlayers",
-          outputs: [
-            {
-              internalType: "address[]",
-              name: "",
-              type: "address[]",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [],
-          name: "getDisplayName",
-          outputs: [
-            {
-              internalType: "string",
-              name: "",
-              type: "string",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [],
-          name: "getDisqualifiedPlayers",
-          outputs: [
-            {
-              internalType: "address[]",
-              name: "",
-              type: "address[]",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [],
-          name: "getKillsLeaderboard",
-          outputs: [
-            {
-              components: [
-                {
-                  internalType: "address",
-                  name: "player",
-                  type: "address",
-                },
-                {
-                  internalType: "bool",
-                  name: "isAlive",
-                  type: "bool",
-                },
-                {
-                  internalType: "uint256",
-                  name: "kills",
-                  type: "uint256",
-                },
-              ],
-              internalType: "struct LeaderboardEntry[]",
-              name: "",
-              type: "tuple[]",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [],
-          name: "getMatchArea",
-          outputs: [
-            {
-              components: [
-                {
-                  components: [
-                    {
-                      internalType: "int16",
-                      name: "x",
-                      type: "int16",
-                    },
-                    {
-                      internalType: "int16",
-                      name: "y",
-                      type: "int16",
-                    },
-                    {
-                      internalType: "int16",
-                      name: "z",
-                      type: "int16",
-                    },
-                  ],
-                  internalType: "struct VoxelCoord",
-                  name: "lowerSouthwestCorner",
-                  type: "tuple",
-                },
-                {
-                  components: [
-                    {
-                      internalType: "int16",
-                      name: "x",
-                      type: "int16",
-                    },
-                    {
-                      internalType: "int16",
-                      name: "y",
-                      type: "int16",
-                    },
-                    {
-                      internalType: "int16",
-                      name: "z",
-                      type: "int16",
-                    },
-                  ],
-                  internalType: "struct VoxelCoord",
-                  name: "size",
-                  type: "tuple",
-                },
-              ],
-              internalType: "struct Area",
-              name: "",
-              type: "tuple",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [],
-          name: "getRewardPool",
-          outputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [],
-          name: "getStatus",
-          outputs: [
-            {
-              internalType: "string",
-              name: "",
-              type: "string",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [],
-          name: "getUnregisterMessage",
-          outputs: [
-            {
-              internalType: "string",
-              name: "",
-              type: "string",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [],
-          name: "isGameStarted",
-          outputs: [
-            {
-              internalType: "bool",
-              name: "",
-              type: "bool",
             },
           ],
           stateMutability: "view",
@@ -975,78 +702,6 @@ const deployedContracts = {
           type: "function",
         },
         {
-          inputs: [],
-          name: "registerPlayer",
-          outputs: [],
-          stateMutability: "payable",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              components: [
-                {
-                  internalType: "int16",
-                  name: "x",
-                  type: "int16",
-                },
-                {
-                  internalType: "int16",
-                  name: "y",
-                  type: "int16",
-                },
-                {
-                  internalType: "int16",
-                  name: "z",
-                  type: "int16",
-                },
-              ],
-              internalType: "struct VoxelCoord",
-              name: "lowerSouthwestCorner",
-              type: "tuple",
-            },
-            {
-              components: [
-                {
-                  internalType: "int16",
-                  name: "x",
-                  type: "int16",
-                },
-                {
-                  internalType: "int16",
-                  name: "y",
-                  type: "int16",
-                },
-                {
-                  internalType: "int16",
-                  name: "z",
-                  type: "int16",
-                },
-              ],
-              internalType: "struct VoxelCoord",
-              name: "size",
-              type: "tuple",
-            },
-          ],
-          name: "setMatchArea",
-          outputs: [],
-          stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "uint256",
-              name: "numBlocksToEnd",
-              type: "uint256",
-            },
-          ],
-          name: "startGame",
-          outputs: [],
-          stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
           inputs: [
             {
               internalType: "bytes4",
@@ -1067,11 +722,12 @@ const deployedContracts = {
         },
       ],
       inheritedFunctions: {
+        canUnregister: "@latticexyz/world/src/ICustomUnregisterDelegation.sol",
+        supportsInterface: "@latticexyz/world/src/IOptionalSystemHook.sol",
         onAfterCallSystem: "@latticexyz/world/src/IOptionalSystemHook.sol",
         onBeforeCallSystem: "@latticexyz/world/src/IOptionalSystemHook.sol",
         onRegisterHook: "@latticexyz/world/src/IOptionalSystemHook.sol",
         onUnregisterHook: "@latticexyz/world/src/IOptionalSystemHook.sol",
-        supportsInterface: "@latticexyz/world/src/IOptionalSystemHook.sol",
       },
     },
   },

@@ -1,7 +1,7 @@
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { DeployFunction } from "hardhat-deploy/types";
 import { Contract } from "ethers";
-import { garnet, redstone } from "@latticexyz/common/chains";
+import { garnet, mudFoundry, redstone } from "@latticexyz/common/chains";
 
 const BIOMES_MAINNET_WORLD_ADDRESS = "0xf75b1b7bdb6932e487c4aa8d210f4a682abeacf0";
 const BIOMES_TESTNET_WORLD_ADDRESS = "0x641554ed9d8a6c2c362e6c3fb2835ec2ca4da95c";
@@ -28,12 +28,19 @@ const deployGameContract: DeployFunction = async function (hre: HardhatRuntimeEn
 
   const chainId = await hre.getChainId();
 
-  const useBiomesWorldAddress =
+  let useBiomesWorldAddress =
     Number(chainId) === redstone.id
       ? BIOMES_MAINNET_WORLD_ADDRESS
       : Number(chainId) === garnet.id
       ? BIOMES_TESTNET_WORLD_ADDRESS
       : "";
+
+  if (Number(chainId) === mudFoundry.id) {
+    // read local worlds.json file
+    const worlds = require("../../../../biomes-contracts/packages/world/worlds.json");
+    useBiomesWorldAddress = worlds[chainId].address;
+  }
+
   if (useBiomesWorldAddress === "") {
     throw new Error("Biomes World Address not found for this chain");
   }

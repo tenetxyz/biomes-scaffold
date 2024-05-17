@@ -28,7 +28,7 @@ export const burnerWalletConfig = (): Wallet => ({
   iconBackground: "#ffffff",
   hidden: () => {
     if (onlyLocalBurnerWallet) {
-      return targetNetworks.some(({ id }) => id !== hardhat.id);
+      return !targetNetworks.some(({ id }) => id === hardhat.id);
     }
 
     return false;

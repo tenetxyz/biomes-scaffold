@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import IWorldAbi from "@biomesaw/world/IWorld.abi.json";
 import { resourceToHex } from "@latticexyz/common";
-import { garnet, redstone } from "@latticexyz/common/chains";
+import { garnet, mudFoundry, redstone } from "@latticexyz/common/chains";
 import { encodeSystemCalls } from "@latticexyz/world/internal";
 import { TransactionReceipt } from "viem";
 import { usePublicClient, useWriteContract } from "wagmi";
@@ -31,6 +31,19 @@ interface HookButtonProps {
   setHooksRegistered: (hooksRegistered: boolean) => void;
 }
 
+function getBiomesWorldAddress(chainId: number) {
+  let useBiomesWorldAddress =
+    chainId === redstone.id ? BIOMES_MAINNET_WORLD_ADDRESS : chainId === garnet.id ? BIOMES_TESTNET_WORLD_ADDRESS : "";
+
+  if (chainId === mudFoundry.id) {
+    // read local worlds.json file
+    const worlds = require("../../../../biomes-contracts/packages/world/worlds.json");
+    useBiomesWorldAddress = worlds[chainId].address;
+  }
+
+  return useBiomesWorldAddress;
+}
+
 export const RegisterHookButton: React.FC<HookButtonProps> = ({
   hookAddress,
   playerAddress,
@@ -45,12 +58,7 @@ export const RegisterHookButton: React.FC<HookButtonProps> = ({
   const publicClient = usePublicClient({ chainId: targetNetwork.id });
   const [isLoading, setIsLoading] = React.useState(false);
 
-  const useBiomesWorldAddress =
-    publicClient?.chain.id == redstone.id
-      ? BIOMES_MAINNET_WORLD_ADDRESS
-      : publicClient?.chain.id == garnet.id
-      ? BIOMES_TESTNET_WORLD_ADDRESS
-      : "";
+  const useBiomesWorldAddress = (publicClient && getBiomesWorldAddress(publicClient.chain.id)) || "";
 
   const anyCallDataHash = "0x0000000000000000000000000000000000000000000000000000000000000000";
   const registerSystemCalls = systemIdNames.map(systemIdName => {
@@ -210,12 +218,7 @@ export const RegisterDelegationButton: React.FC<DelegationButtonProps> = ({
   const { targetNetwork } = useTargetNetwork();
   const publicClient = usePublicClient({ chainId: targetNetwork.id });
 
-  const useBiomesWorldAddress =
-    publicClient?.chain.id == redstone.id
-      ? BIOMES_MAINNET_WORLD_ADDRESS
-      : publicClient?.chain.id == garnet.id
-      ? BIOMES_TESTNET_WORLD_ADDRESS
-      : "";
+  const useBiomesWorldAddress = (publicClient && getBiomesWorldAddress(publicClient.chain.id)) || "";
 
   const emptyInitCallData = "0x0000000000000000000000000000000000000000000000000000000000000000";
   const UNLIMITED_DELEGATION = resourceToHex({ type: "system", namespace: "", name: "unlimited" });
