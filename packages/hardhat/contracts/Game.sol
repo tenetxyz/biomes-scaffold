@@ -36,6 +36,7 @@ contract Game is IOptionalSystemHook {
   bool public isGameStarted = false;
   address public gameStarter;
   uint256 public gameEndBlock;
+  uint256 public joinFee = 0.0015 ether;
 
   event GameNotif(address player, string message);
 
@@ -207,9 +208,16 @@ contract Game is IOptionalSystemHook {
     matchArea.size = size;
   }
 
+  function setJoinFee(uint256 newJoinFee) external {
+    require(msg.sender == gameStarter, "Only the game starter can set the join fee");
+    require(!isGameStarted, "Game has already started.");
+
+    joinFee = newJoinFee;
+  }
+
   function registerPlayer() external payable {
     require(!isGameStarted, "Game has already started.");
-    require(msg.value >= 0.0015 ether, "Must send atleast minimum ETH to register");
+    require(msg.value >= joinFee, "Must send atleast minimum ETH to register");
 
     address player = msg.sender;
     require(
