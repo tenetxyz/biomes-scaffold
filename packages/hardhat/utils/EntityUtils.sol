@@ -77,6 +77,14 @@ function getDurability(uint8 objectTypeId) view returns (uint24) {
   return ObjectTypeMetadata.getDurability(objectTypeId);
 }
 
+function isTool(uint8 objectTypeId) view returns (bool) {
+  return ObjectTypeMetadata.getIsTool(objectTypeId);
+}
+
+function isBlock(uint8 objectTypeId) view returns (bool) {
+  return ObjectTypeMetadata.getIsBlock(objectTypeId);
+}
+
 function getEntityFromPlayer(address playerAddress) view returns (bytes32) {
   return Player.getEntityId(playerAddress);
 }
