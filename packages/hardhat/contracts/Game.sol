@@ -15,7 +15,7 @@ import { OptionalSystemHooks } from "@latticexyz/world/src/codegen/tables/Option
 import { IWorld } from "@biomesaw/world/src/codegen/world/IWorld.sol";
 import { VoxelCoord } from "@biomesaw/utils/src/Types.sol";
 import { Area, insideAreaIgnoreY } from "../utils/AreaUtils.sol";
-import { hasBeforeAndAfterSystemHook, getEntityAtCoord, getEntityFromPlayer, getPosition, getIsLoggedOff, getPlayerFromEntity } from "../utils/EntityUtils.sol";
+import { hasBeforeAndAfterSystemHook, getEntityAtCoord, getEntityFromPlayer, getPosition, getIsLoggedOff, getPlayerFromEntity, getInventoryTool, getInventoryObjects, getCount, isTool } from "../utils/EntityUtils.sol";
 import { decodeCallData } from "../utils/HookUtils.sol";
 import { NamedArea } from "../utils/GameUtils.sol";
 
@@ -182,6 +182,22 @@ contract Game is IOptionalSystemHook {
     }
   }
 
+  function hasValidInventory(bytes32 playerEntityId) internal view returns (bool) {
+    // maximum of 3 tools
+    bytes32[] memory playerTools = getInventoryTool(playerEntityId);
+    uint8[] memory playerObjects = getInventoryObjects(playerEntityId);
+
+    // maximum of 20 blocks, non-tools
+    uint256 numBlocks = 0;
+    for (uint i = 0; i < playerObjects.length; i++) {
+      if (isTool(playerObjects[i])) continue;
+      uint16 count = getCount(playerEntityId, playerObjects[i]);
+      numBlocks += count;
+    }
+
+    return playerTools.length <= 3 && numBlocks <= 20;
+  }
+
   function startGame(uint256 numBlocksToEnd) external {
     require(msg.sender == gameStarter, "Only the game starter can start the game.");
     require(!isGameStarted, "Game has already started.");
@@ -189,7 +205,12 @@ contract Game is IOptionalSystemHook {
     for (uint i = 0; i < alivePlayers.length; i++) {
       bytes32 playerEntity = getEntityFromPlayer(alivePlayers[i]);
       VoxelCoord memory playerPosition = getPosition(playerEntity);
-      if (playerEntity == bytes32(0) || getIsLoggedOff(playerEntity) || !insideAreaIgnoreY(matchArea, playerPosition)) {
+      if (
+        playerEntity == bytes32(0) ||
+        getIsLoggedOff(playerEntity) ||
+        !insideAreaIgnoreY(matchArea, playerPosition) ||
+        !hasValidInventory(playerEntity)
+      ) {
         disqualifyPlayer(alivePlayers[i]);
       }
     }
@@ -236,6 +257,8 @@ contract Game is IOptionalSystemHook {
       hasBeforeAndAfterSystemHook(address(this), player, MineSystemId),
       "The player hasn't allowed the mine hook yet"
     );
+    bytes32 playerEntityId = getEntityFromPlayer(player);
+    require(hasValidInventory(playerEntityId), "You can only have a maximum of 3 tools and 20 blocks");
 
     for (uint i = 0; i < alivePlayers.length; i++) {
       if (alivePlayers[i] == player) {
@@ -324,6 +347,7 @@ contract Game is IOptionalSystemHook {
       }
     }
     disqualifiedPlayers.push(player);
+    emit GameNotif(address(0), string.concat("Player ", Strings.toHexString(player), " has been disqualified"));
   }
 
   function claimRewardPool() external {
