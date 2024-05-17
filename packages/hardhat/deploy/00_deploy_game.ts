@@ -1,6 +1,6 @@
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { DeployFunction } from "hardhat-deploy/types";
-import { Contract } from "ethers";
+import { Contract, parseEther } from "ethers";
 import { garnet, mudFoundry, redstone } from "@latticexyz/common/chains";
 
 const BIOMES_MAINNET_WORLD_ADDRESS = "0xf75b1b7bdb6932e487c4aa8d210f4a682abeacf0";
@@ -54,6 +54,8 @@ const deployGameContract: DeployFunction = async function (hre: HardhatRuntimeEn
       { x: 271, y: -150, z: -235 },
       { x: 60, y: 250, z: 60 },
       "0x1f820052916970Ff09150b58F2f0Fb842C5a58be",
+      "0xe039608E695D21aB11675EBBA00261A0e750526c",
+      parseEther("20"),
     ],
     log: true,
     // autoMine: can be passed to the deploy function to make the deployment process faster on local networks by

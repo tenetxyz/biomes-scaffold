@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.24;
 
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import { Strings } from "@openzeppelin/contracts/utils/Strings.sol";
 import { StoreSwitch } from "@latticexyz/store/src/StoreSwitch.sol";
 import { ResourceId, WorldResourceIdLib, WorldResourceIdInstance } from "@latticexyz/world/src/WorldResourceId.sol";
@@ -26,6 +27,7 @@ struct LeaderboardEntry {
 }
 
 contract Game is IOptionalSystemHook {
+  IERC20 public token;
   address public immutable biomeWorldAddress;
 
   address[] private alivePlayers;
@@ -36,7 +38,7 @@ contract Game is IOptionalSystemHook {
   bool public isGameStarted = false;
   address public gameStarter;
   uint256 public gameEndBlock;
-  uint256 public joinFee = 0.0015 ether;
+  uint256 public joinFee;
 
   event GameNotif(address player, string message);
 
@@ -50,7 +52,9 @@ contract Game is IOptionalSystemHook {
     address _biomeWorldAddress,
     VoxelCoord memory lowerSouthwestCorner,
     VoxelCoord memory size,
-    address _gameStarter
+    address _gameStarter,
+    address _tokenAddress,
+    uint256 _joinFee
   ) {
     biomeWorldAddress = _biomeWorldAddress;
 
@@ -62,6 +66,8 @@ contract Game is IOptionalSystemHook {
     matchArea.size = size;
 
     gameStarter = _gameStarter;
+    token = IERC20(_tokenAddress);
+    joinFee = _joinFee;
   }
 
   // Use this modifier to restrict access to the Biomes World contract only
@@ -236,9 +242,9 @@ contract Game is IOptionalSystemHook {
     joinFee = newJoinFee;
   }
 
-  function registerPlayer() external payable {
+  function registerPlayer() external {
     require(!isGameStarted, "Game has already started.");
-    require(msg.value >= joinFee, "Must send atleast minimum ETH to register");
+    require(token.transferFrom(msg.sender, address(this), joinFee), "Transfer of join fee failed");
 
     address player = msg.sender;
     require(
@@ -386,19 +392,18 @@ contract Game is IOptionalSystemHook {
         numPlayersWithMostKills++;
       }
     }
-    if (numPlayersWithMostKills == 0 || address(this).balance == 0) {
+    if (numPlayersWithMostKills == 0 || token.balanceOf(address(this)) == 0) {
       resetGame();
       return;
     }
 
     // Divide the reward pool among the players with the most kills
-    uint256 rewardPerPlayer = address(this).balance / numPlayersWithMostKills;
+    uint256 rewardPerPlayer = token.balanceOf(address(this)) / numPlayersWithMostKills;
     for (uint i = 0; i < playersWithMostKills.length; i++) {
       if (playersWithMostKills[i] == address(0)) {
         continue;
       }
-      (bool sent, ) = playersWithMostKills[i].call{ value: rewardPerPlayer }("");
-      require(sent, "Failed to send Ether");
+      require(token.transfer(playersWithMostKills[i], rewardPerPlayer), "Token transfer failed");
     }
 
     emit GameNotif(address(0), "Game has ended. Reward pool has been distributed.");
@@ -427,7 +432,7 @@ contract Game is IOptionalSystemHook {
   // Getters
   // ------------------------------------------------------------------------
   function getRewardPool() external view returns (uint) {
-    return address(this).balance;
+    return token.balanceOf(address(this));
   }
 
   function getRegisteredPlayerEntityIds() external view returns (bytes32[] memory) {

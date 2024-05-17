@@ -3,7 +3,7 @@ import { Abi, AbiFunction } from "abitype";
 import { TransactionReceipt, formatEther } from "viem";
 import { useAccount, usePublicClient } from "wagmi";
 import { DisplayVariable } from "~~/app/debug/_components/contract";
-import { SendEthButton } from "~~/app/debug/_components/contract/SendEthButton";
+import { SendERC20Button } from "~~/app/debug/_components/contract/SendERC20Button";
 import { useDeployedContractInfo } from "~~/hooks/scaffold-eth";
 import { useTargetNetwork } from "~~/hooks/scaffold-eth/useTargetNetwork";
 import { useGlobalState } from "~~/services/store/store";
@@ -117,18 +117,20 @@ export const RegisterGame: React.FC = ({}) => {
             <div>
               <h1 className="text-3xl font-bold text-left mt-4">Join Game</h1>
               <h1 className="text-left mt-4" style={{ lineHeight: "normal", margin: "0", wordWrap: "break-word" }}>
-                Transfer 0.0015 ETH to prize pool. The player with the most kills will win the pool.
+                Transfer 20 ERC20 to prize pool. The player with the most kills will win the pool.
               </h1>
             </div>
             <div>
               {!isGameRegistered ? (
                 <div>
                   {registerPlayFunctionData ? (
-                    <SendEthButton
+                    <SendERC20Button
+                      playerAddress={connectedAddress}
                       contractAddress={deployedContractData.address}
                       abi={deployedContractData.abi as Abi}
                       functionName={registerPlayFunctionData.fn.name}
-                      value={"0.0015"}
+                      erc20Address="0xe039608E695D21aB11675EBBA00261A0e750526c"
+                      erc20Amount={"20"}
                       onWrite={(txnReceipt: TransactionReceipt) => {
                         console.log("txnReceipt", txnReceipt);
                         // poll every 2 seconds
