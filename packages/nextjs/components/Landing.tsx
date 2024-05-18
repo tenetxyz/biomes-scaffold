@@ -6,7 +6,7 @@ import { GenericContract, InheritedFunctions } from "~~/utils/scaffold-eth/contr
 
 export const Landing: React.FC = ({}) => {
   const [refreshDisplayVariables] = useReducer(value => !value, false);
-  const { data: deployedContractData, isLoading: deployedContractLoading } = useDeployedContractInfo("Game");
+  const { data: deployedContractData, isLoading: deployedContractLoading } = useDeployedContractInfo("Experience");
 
   if (deployedContractData === undefined || deployedContractLoading) {
     return <div>Loading...</div>;
@@ -45,9 +45,9 @@ export const Landing: React.FC = ({}) => {
       <div className="grid grid-cols-12 flex flex-1">
         <div className="col-span-12 lg:col-span-9 p-12 flex flex-col justify-between items-center">
           <div style={{ width: "80%" }}>
-            <h1 className="text-3xl font-bold text-left mt-4">Your Game Title</h1>
+            <h1 className="text-3xl font-bold text-left mt-4">Your Experience Title</h1>
             <h1 className="text-left mt-4" style={{ lineHeight: "normal", margin: "0", wordWrap: "break-word" }}>
-              Your game description
+              Your experience description
             </h1>
             <div
               style={{
@@ -63,7 +63,7 @@ export const Landing: React.FC = ({}) => {
               }}
               className="mt-4"
             >
-              Your Game Image
+              Your Experience Image
             </div>
           </div>
         </div>

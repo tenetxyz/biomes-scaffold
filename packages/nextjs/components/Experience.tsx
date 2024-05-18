@@ -5,10 +5,10 @@ import { DisplayVariable, displayTxResult } from "~~/app/debug/_components/contr
 import { useDeployedContractInfo } from "~~/hooks/scaffold-eth";
 import { GenericContract, InheritedFunctions } from "~~/utils/scaffold-eth/contract";
 
-export const Game: React.FC = ({}) => {
+export const Experience: React.FC = ({}) => {
   const { address: connectedAddress } = useAccount();
   const [refreshDisplayVariables] = useReducer(value => !value, false);
-  const { data: deployedContractData, isLoading: deployedContractLoading } = useDeployedContractInfo("Game");
+  const { data: deployedContractData, isLoading: deployedContractLoading } = useDeployedContractInfo("Experience");
 
   if (connectedAddress === undefined) {
     return <div>Connect your wallet to continue</div>;
@@ -62,9 +62,9 @@ export const Game: React.FC = ({}) => {
         <div className="col-span-12 lg:col-span-9 p-12 flex flex-col justify-between items-center">
           <div style={{ width: "80%" }} className="flex flex-col gap-12">
             <div>
-              <h1 className="text-3xl font-bold text-left mt-4">Play Game</h1>
+              <h1 className="text-3xl font-bold text-left mt-4">Play Experience</h1>
               <h1 className="text-left mt-4" style={{ lineHeight: "normal", margin: "0", wordWrap: "break-word" }}>
-                Your Main Game Screen
+                Your Main Experience Screen
               </h1>
             </div>
             <div></div>

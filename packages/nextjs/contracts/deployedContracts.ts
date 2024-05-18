@@ -6,7 +6,7 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 
 const deployedContracts = {
   690: {
-    Game: {
+    Experience: {
       address: "0x09F61e35b34EB7855fb234dc81109d774Bb16973",
       abi: [
         {
@@ -248,7 +248,7 @@ const deployedContracts = {
     },
   },
   17069: {
-    Game: {
+    Experience: {
       address: "0xaFFFd91f427b81e0e56be9A4b6369f8DE6f24994",
       abi: [
         {
@@ -490,8 +490,8 @@ const deployedContracts = {
     },
   },
   31337: {
-    Game: {
-      address: "0xddE78e6202518FF4936b5302cC2891ec180E8bFf",
+    Experience: {
+      address: "0x8F4ec854Dd12F1fe79500a1f53D0cbB30f9b6134",
       abi: [
         {
           inputs: [
@@ -588,12 +588,38 @@ const deployedContracts = {
         },
         {
           inputs: [],
+          name: "getDisplayName",
+          outputs: [
+            {
+              internalType: "string",
+              name: "",
+              type: "string",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
           name: "getRegisteredPlayers",
           outputs: [
             {
               internalType: "address[]",
               name: "",
               type: "address[]",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "getStatus",
+          outputs: [
+            {
+              internalType: "string",
+              name: "",
+              type: "string",
             },
           ],
           stateMutability: "view",

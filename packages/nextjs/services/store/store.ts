@@ -5,9 +5,9 @@ import { ChainWithAttributes } from "~~/utils/scaffold-eth";
 export enum Stage {
   CONNECT_WALLET,
   REGISTER_BIOMES,
-  REGISTER_PLAYER,
+  REGISTER_EXPERIENCE,
   SETUP_BIOMES_CLIENT,
-  GAME,
+  EXPERIENCE,
 }
 
 /**
@@ -26,8 +26,8 @@ type GlobalState = {
   setTargetNetwork: (newTargetNetwork: ChainWithAttributes) => void;
   isBiomesRegistered: boolean;
   setIsBiomesRegistered: (newIsBiomesRegistered: boolean) => void;
-  isGameRegistered: boolean;
-  setIsGameRegistered: (newIsGameRegistered: boolean) => void;
+  isExperienceRegistered: boolean;
+  setIsExperienceRegistered: (newIsExperienceRegistered: boolean) => void;
   isBiomesClientSetup: boolean;
   setIsBiomesClientSetup: (newIsBiomesClientSetup: boolean) => void;
   stage: Stage;
@@ -43,8 +43,9 @@ export const useGlobalState = create<GlobalState>(set => ({
   setTargetNetwork: (newTargetNetwork: ChainWithAttributes) => set(() => ({ targetNetwork: newTargetNetwork })),
   isBiomesRegistered: false,
   setIsBiomesRegistered: (newIsBiomesRegistered: boolean) => set(() => ({ isBiomesRegistered: newIsBiomesRegistered })),
-  isGameRegistered: false,
-  setIsGameRegistered: (newIsGameRegistered: boolean) => set(() => ({ isGameRegistered: newIsGameRegistered })),
+  isExperienceRegistered: false,
+  setIsExperienceRegistered: (newIsExperienceRegistered: boolean) =>
+    set(() => ({ isExperienceRegistered: newIsExperienceRegistered })),
   isBiomesClientSetup: false,
   setIsBiomesClientSetup: (newIsBiomesClientSetup: boolean) =>
     set(() => ({ isBiomesClientSetup: newIsBiomesClientSetup })),

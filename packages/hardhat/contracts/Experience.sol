@@ -14,11 +14,19 @@ import { OptionalSystemHooks } from "@latticexyz/world/src/codegen/tables/Option
 import { IWorld } from "@biomesaw/world/src/codegen/world/IWorld.sol";
 import { VoxelCoord } from "@biomesaw/utils/src/Types.sol";
 
-contract Game is ICustomUnregisterDelegation, IOptionalSystemHook {
+// Available utils, remove the ones you don't need
+import { getBuildArgs, getMineArgs, getMoveArgs, getHitArgs, getDropArgs, getTransferArgs, getCraftArgs, getEquipArgs, getLoginArgs, getSpawnArgs } from "../utils/HookUtils.sol";
+import { hasBeforeAndAfterSystemHook, getObjectTypeAtCoord, getEntityAtCoord, getPosition, getObjectType, getMiningDifficulty, getStackable, getDamage, getDurability, isTool, isBlock, getEntityFromPlayer, getPlayerFromEntity, getEquipped, getHealth, getStamina, getIsLoggedOff, getLastHitTime, getInventoryTool, getInventoryObjects, getCount, getNumSlotsUsed, getNumUsesLeft } from "../utils/EntityUtils.sol";
+import { Area, insideArea, insideAreaIgnoreY, getEntitiesInArea } from "../utils/AreaUtils.sol";
+import { Build, BuildWithPos, buildExistsInWorld, buildWithPosExistsInWorld } from "../utils/BuildUtils.sol";
+import { NamedArea, NamedBuild, NamedBuildWithPos, weiToString, getEmptyBlockOnGround } from "../utils/GameUtils.sol";
+
+contract Experience is ICustomUnregisterDelegation, IOptionalSystemHook {
   address public immutable biomeWorldAddress;
 
   address public delegatorAddress;
 
+  // Event to show a notification in the Biomes World
   event GameNotif(address player, string message);
 
   constructor(address _biomeWorldAddress, address _delegatorAddress) {
@@ -81,5 +89,13 @@ contract Game is ICustomUnregisterDelegation, IOptionalSystemHook {
 
   function getRegisteredPlayers() external view returns (address[] memory) {
     return new address[](0);
+  }
+
+  function getDisplayName() external view returns (string memory) {
+    return "Experience";
+  }
+
+  function getStatus() external view returns (string memory) {
+    return "You are in the Experience";
   }
 }

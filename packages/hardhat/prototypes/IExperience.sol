@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.24;
 
-import { NamedArea, NamedBuild, NamedBuildWithPos, GameState } from "../utils/GameUtils.sol";
+import { NamedArea, NamedBuild, NamedBuildWithPos } from "../utils/GameUtils.sol";
 
-interface IGame {
+interface IExperience {
   function getDisplayName() external view returns (string memory);
 
   function getAvatars() external view returns (address[] memory);

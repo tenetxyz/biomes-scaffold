@@ -47,7 +47,7 @@ const Modal = ({ isOpen, onClose }) => {
 export const SetupBiomesClient: React.FC = ({}) => {
   const { address: connectedAddress } = useAccount();
   const [refreshDisplayVariables] = useReducer(value => !value, false);
-  const { data: deployedContractData, isLoading: deployedContractLoading } = useDeployedContractInfo("Game");
+  const { data: deployedContractData, isLoading: deployedContractLoading } = useDeployedContractInfo("Experience");
   const [isModalOpen, setModalOpen] = useState(false);
 
   const toggleModal = () => setModalOpen(!isModalOpen);

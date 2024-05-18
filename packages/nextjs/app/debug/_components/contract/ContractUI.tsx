@@ -82,12 +82,12 @@ export const ContractUI = ({ contractName, className = "" }: ContractUIProps) =>
               </div>
               <div className="p-5 divide-y divide-base-300 bg-red">
                 <a
-                  href="https://github.com/tenetxyz/biomes-scaffold/blob/main/packages/hardhat/contracts/Game.sol"
+                  href="https://github.com/tenetxyz/biomes-scaffold/blob/main/packages/hardhat/contracts/Experience.sol"
                   target="_blank"
                   rel="noreferrer"
                   className="link"
                 >
-                  View Contract Code: Game.sol
+                  View Contract Code: Experience.sol
                 </a>
               </div>
             </div>

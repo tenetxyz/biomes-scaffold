@@ -3,10 +3,10 @@
 import React, { useCallback, useEffect } from "react";
 import type { NextPage } from "next";
 import { useAccount } from "wagmi";
-import { Game } from "~~/components/Game";
+import { Experience } from "~~/components/Experience";
 import { Landing } from "~~/components/Landing";
 import { RegisterBiomes } from "~~/components/RegisterBiomes";
-import { RegisterGame } from "~~/components/RegisterGame";
+import { RegisterExperience } from "~~/components/RegisterExperience";
 import { SetupBiomesClient } from "~~/components/SetupBiomesClient";
 import { Stage, useGlobalState } from "~~/services/store/store";
 
@@ -16,20 +16,20 @@ const Home: NextPage = () => {
   const setStage = useGlobalState(({ setStage }) => setStage);
 
   const isBiomesRegistered = useGlobalState(({ isBiomesRegistered }) => isBiomesRegistered);
-  const isGameRegistered = useGlobalState(({ isGameRegistered }) => isGameRegistered);
+  const isExperienceRegistered = useGlobalState(({ isExperienceRegistered }) => isExperienceRegistered);
   const isBiomesClientSetup = useGlobalState(({ isBiomesClientSetup }) => isBiomesClientSetup);
 
   useEffect(() => {
     if (connectedAddress) {
       if (isBiomesRegistered) {
-        if (isGameRegistered) {
+        if (isExperienceRegistered) {
           if (isBiomesClientSetup) {
-            setStage(Stage.GAME);
+            setStage(Stage.EXPERIENCE);
           } else {
             setStage(Stage.SETUP_BIOMES_CLIENT);
           }
         } else {
-          setStage(Stage.REGISTER_PLAYER);
+          setStage(Stage.REGISTER_EXPERIENCE);
         }
       } else {
         setStage(Stage.REGISTER_BIOMES);
@@ -37,7 +37,7 @@ const Home: NextPage = () => {
     } else {
       setStage(Stage.CONNECT_WALLET);
     }
-  }, [connectedAddress, isBiomesRegistered, isGameRegistered, isBiomesClientSetup]);
+  }, [connectedAddress, isBiomesRegistered, isExperienceRegistered, isBiomesClientSetup]);
 
   const renderStage = useCallback(() => {
     switch (stage) {
@@ -45,12 +45,12 @@ const Home: NextPage = () => {
         return <Landing />;
       case Stage.REGISTER_BIOMES:
         return <RegisterBiomes />;
-      case Stage.REGISTER_PLAYER:
-        return <RegisterGame />;
+      case Stage.REGISTER_EXPERIENCE:
+        return <RegisterExperience />;
       case Stage.SETUP_BIOMES_CLIENT:
         return <SetupBiomesClient />;
-      case Stage.GAME:
-        return <Game />;
+      case Stage.EXPERIENCE:
+        return <Experience />;
     }
   }, [stage, connectedAddress]);
 

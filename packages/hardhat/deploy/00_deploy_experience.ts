@@ -7,12 +7,12 @@ const BIOMES_MAINNET_WORLD_ADDRESS = "0xf75b1b7bdb6932e487c4aa8d210f4a682abeacf0
 const BIOMES_TESTNET_WORLD_ADDRESS = "0x641554ed9d8a6c2c362e6c3fb2835ec2ca4da95c";
 
 /**
- * Deploys a contract named "Game" using the deployer account and
+ * Deploys a contract named "Experience" using the deployer account and
  * constructor arguments set to the deployer address
  *
  * @param hre HardhatRuntimeEnvironment object.
  */
-const deployGameContract: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
+const deployExperienceContract: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   /*
     On localhost, the deployer account is the one that comes with Hardhat, which is already funded.
 
@@ -46,7 +46,7 @@ const deployGameContract: DeployFunction = async function (hre: HardhatRuntimeEn
   }
   console.log("useBiomesWorldAddress", useBiomesWorldAddress);
 
-  await deploy("Game", {
+  await deploy("Experience", {
     from: deployer,
     // Contract constructor arguments
     args: [useBiomesWorldAddress, "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266"],
@@ -57,12 +57,12 @@ const deployGameContract: DeployFunction = async function (hre: HardhatRuntimeEn
   });
 
   // Get the deployed contract to interact with it after deploying.
-  const gameContract = await hre.ethers.getContract<Contract>("Game", deployer);
-  console.log("Biomes World Address:", await gameContract.biomeWorldAddress());
+  const experienceContract = await hre.ethers.getContract<Contract>("Experience", deployer);
+  console.log("Biomes World Address:", await experienceContract.biomeWorldAddress());
 };
 
-export default deployGameContract;
+export default deployExperienceContract;
 
 // Tags are useful if you have multiple deploy files and only want to run one of them.
-// e.g. yarn deploy --tags Game
-deployGameContract.tags = ["Game"];
+// e.g. yarn deploy --tags Experience
+deployExperienceContract.tags = ["Experience"];

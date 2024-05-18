@@ -9,18 +9,18 @@ import { useTargetNetwork } from "~~/hooks/scaffold-eth/useTargetNetwork";
 import { useGlobalState } from "~~/services/store/store";
 import { GenericContract, InheritedFunctions } from "~~/utils/scaffold-eth/contract";
 
-export const RegisterGame: React.FC = ({}) => {
+export const RegisterExperience: React.FC = ({}) => {
   const { address: connectedAddress } = useAccount();
-  const { data: deployedContractData, isLoading: deployedContractLoading } = useDeployedContractInfo("Game");
-  const isGameRegistered = useGlobalState(({ isGameRegistered }) => isGameRegistered);
-  const setIsGameRegistered = useGlobalState(({ setIsGameRegistered }) => setIsGameRegistered);
+  const { data: deployedContractData, isLoading: deployedContractLoading } = useDeployedContractInfo("Experience");
+  const isExperienceRegistered = useGlobalState(({ isExperienceRegistered }) => isExperienceRegistered);
+  const setIsExperienceRegistered = useGlobalState(({ setIsExperienceRegistered }) => setIsExperienceRegistered);
   const { targetNetwork } = useTargetNetwork();
   const publicClient = usePublicClient({ chainId: targetNetwork.id });
   const [refreshDisplayVariables] = useReducer(value => !value, false);
 
   const checkPlayerRegistered = async () => {
     if (connectedAddress === undefined || deployedContractData === undefined || deployedContractLoading) {
-      setIsGameRegistered(false);
+      setIsExperienceRegistered(false);
       return;
     }
     if (!publicClient) return;
@@ -37,7 +37,7 @@ export const RegisterGame: React.FC = ({}) => {
     const isPlayerRegistered = registeredPlayers.some(
       playerAddress => playerAddress.toLowerCase() === connectedAddress.toLowerCase(),
     );
-    setIsGameRegistered(isPlayerRegistered);
+    setIsExperienceRegistered(isPlayerRegistered);
   };
 
   useEffect(() => {
@@ -96,13 +96,13 @@ export const RegisterGame: React.FC = ({}) => {
         <div className="col-span-12 lg:col-span-9 p-12 flex flex-col justify-between items-center">
           <div style={{ width: "80%" }} className="flex flex-col gap-12">
             <div>
-              <h1 className="text-3xl font-bold text-left mt-4">Join Game</h1>
+              <h1 className="text-3xl font-bold text-left mt-4">Join Experience</h1>
               <h1 className="text-left mt-4" style={{ lineHeight: "normal", margin: "0", wordWrap: "break-word" }}>
-                Your Register Game Description
+                Your Register Experience Description
               </h1>
             </div>
             <div>
-              {!isGameRegistered ? (
+              {!isExperienceRegistered ? (
                 <div>
                   {registerPlayFunctionData ? (
                     <SendEthButton
@@ -118,14 +118,14 @@ export const RegisterGame: React.FC = ({}) => {
                   ) : (
                     <button
                       className="w-full btn btn-primary bg-secondary rounded-sm"
-                      onClick={() => setIsGameRegistered(true)}
+                      onClick={() => setIsExperienceRegistered(true)}
                     >
-                      Mock Game Register
+                      Mock Experience Register
                     </button>
                   )}
                 </div>
               ) : (
-                <div>You&apos;re already registered for the game</div>
+                <div>You&apos;re already registered for the experience</div>
               )}
             </div>
           </div>

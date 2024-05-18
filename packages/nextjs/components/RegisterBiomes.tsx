@@ -7,14 +7,14 @@ import { useTargetNetwork } from "~~/hooks/scaffold-eth/useTargetNetwork";
 import { useGlobalState } from "~~/services/store/store";
 import { getAllContracts } from "~~/utils/scaffold-eth/contractsData";
 
-const GameRequiredHooks: string[] = ["LogoffSystem"];
+const ExperienceRequiredHooks: string[] = ["LogoffSystem"];
 
 export const RegisterBiomes: React.FC = ({}) => {
   const { address: connectedAddress } = useAccount();
   const { targetNetwork } = useTargetNetwork();
   const contractsData = getAllContracts(targetNetwork);
   const publicClient = usePublicClient({ chainId: targetNetwork.id });
-  const { data: deployedContractData, isLoading: deployedContractLoading } = useDeployedContractInfo("Game");
+  const { data: deployedContractData, isLoading: deployedContractLoading } = useDeployedContractInfo("Experience");
 
   const setIsBiomesRegistered = useGlobalState(({ setIsBiomesRegistered }) => setIsBiomesRegistered);
 
@@ -86,13 +86,13 @@ export const RegisterBiomes: React.FC = ({}) => {
             <div>
               <h3 className="text-xl font-bold text-left mt-8">HOOKS</h3>
               <CardSection
-                relevantSystems={GameRequiredHooks}
+                relevantSystems={ExperienceRequiredHooks}
                 description={"Description of why you need the player to register the hooks on LogoffSystem"}
               >
                 <RegisterHookButton
-                  hookAddress={contractsData["Game"].address}
+                  hookAddress={contractsData["Experience"].address}
                   playerAddress={connectedAddress}
-                  systemIdNames={GameRequiredHooks}
+                  systemIdNames={ExperienceRequiredHooks}
                   enabledHooksBitmap={BEFORE_AND_AFTER_CALL_SYSTEM}
                   hooksRegistered={hooksRegistered}
                   setHooksRegistered={setHooksRegistered}
@@ -102,9 +102,9 @@ export const RegisterBiomes: React.FC = ({}) => {
             {deployedContractData.abi.some(abi => abi.name === "delegatorAddress") && isDelegatorAddress && (
               <div className="pt-4">
                 <h3 className="text-xl font-bold text-left">DELEGATIONS</h3>
-                <CardSection description={"Delegate unlimited access to the Game contract"}>
+                <CardSection description={"Delegate unlimited access to the Experience contract"}>
                   <RegisterDelegationButton
-                    delegateeAddress={contractsData["Game"].address}
+                    delegateeAddress={contractsData["Experience"].address}
                     playerAddress={connectedAddress}
                     delegationRegistered={delegationRegistered}
                     setDelegationRegistered={setDelegationRegistered}
@@ -128,7 +128,7 @@ export const RegisterBiomes: React.FC = ({}) => {
                 Hooks execute additional logic every time you take the action they are registered on.
               </div>
               <div className="text-sm">
-                Delegations allow this game&apos;s smart contract to perform actions on your behalf.
+                Delegations allow this experience&apos;s smart contract to perform actions on your behalf.
               </div>
             </div>
 
