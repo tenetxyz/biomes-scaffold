@@ -39,7 +39,7 @@ contract Experience is ICustomUnregisterDelegation, IOptionalSystemHook {
   mapping(bytes32 => address) public vaultChestToolOwners;
   mapping(address => mapping(uint8 => uint16)) public vaultChestObjectCounts;
 
-  constructor(address _biomeWorldAddress, address _guardAddress, VoxelCoord memory _vaultChestCoord) {
+  constructor(address _biomeWorldAddress, address _guardAddress) {
     biomeWorldAddress = _biomeWorldAddress;
 
     // Set the store address, so that when reading from MUD tables in the
@@ -47,7 +47,6 @@ contract Experience is ICustomUnregisterDelegation, IOptionalSystemHook {
     StoreSwitch.setStoreAddress(_biomeWorldAddress);
 
     guardAddress = _guardAddress;
-    vaultChestCoord = _vaultChestCoord;
   }
 
   // Use this modifier to restrict access to the Biomes World contract only
@@ -95,6 +94,7 @@ contract Experience is ICustomUnregisterDelegation, IOptionalSystemHook {
         bytes32 toolEntityId
       ) = getTransferArgs(callData);
       // Check if dstEntityId is a chest that is beside the guard
+      require(srcEntityId != vaultChestEntityId, "You can't transfer from the vault chest");
       require(dstEntityId != vaultChestEntityId, "You can't transfer to the vault chest");
       uint8 dstObjectType = getObjectType(dstEntityId);
       if (dstObjectType != ChestObjectID) {
@@ -247,18 +247,21 @@ contract Experience is ICustomUnregisterDelegation, IOptionalSystemHook {
     return "Guard Service";
   }
 
+  function getNumItemsInVaultChest() public view returns (uint256) {
+    uint256 numItemsInVaultChest = 0;
+    for (uint16 i = 0; i < 256; i++) {
+      numItemsInVaultChest += vaultChestObjectCounts[msg.sender][uint8(i)];
+    }
+    return numItemsInVaultChest;
+  }
+
   function getStatus() external view returns (string memory) {
     bytes32 guardEntityId = getEntityFromPlayer(guardAddress);
     if (guardEntityId == bytes32(0)) {
       return "ALERT: Guard is dead!";
     }
 
-    uint256 numItemsInVaultChest = 0;
-    for (uint8 i = 0; i < 256; i++) {
-      numItemsInVaultChest += vaultChestObjectCounts[msg.sender][i];
-    }
-
-    return string.concat("You have ", Strings.toString(numItemsInVaultChest), " items in the vault chest");
+    return string.concat("You have ", Strings.toString(getNumItemsInVaultChest()), " items in the vault chest");
   }
 
   function onRegisterHook(

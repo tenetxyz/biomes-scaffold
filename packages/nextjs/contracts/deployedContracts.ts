@@ -6,7 +6,7 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 
 const deployedContracts = {
   690: {
-    Experience: {
+    Game: {
       address: "0x09F61e35b34EB7855fb234dc81109d774Bb16973",
       abi: [
         {
@@ -248,7 +248,7 @@ const deployedContracts = {
     },
   },
   17069: {
-    Experience: {
+    Game: {
       address: "0xaFFFd91f427b81e0e56be9A4b6369f8DE6f24994",
       abi: [
         {
@@ -491,7 +491,7 @@ const deployedContracts = {
   },
   31337: {
     Experience: {
-      address: "0x71089Ba41e478702e1904692385Be3972B2cBf9e",
+      address: "0x63fea6E447F120B8Faf85B53cdaD8348e645D80E",
       abi: [
         {
           inputs: [
@@ -502,12 +502,33 @@ const deployedContracts = {
             },
             {
               internalType: "address",
-              name: "_delegatorAddress",
+              name: "_guardAddress",
               type: "address",
             },
           ],
           stateMutability: "nonpayable",
           type: "constructor",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes",
+              name: "data",
+              type: "bytes",
+            },
+            {
+              internalType: "uint256",
+              name: "start",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "end",
+              type: "uint256",
+            },
+          ],
+          name: "Slice_OutOfBounds",
+          type: "error",
         },
         {
           anonymous: false,
@@ -527,19 +548,6 @@ const deployedContracts = {
           ],
           name: "GameNotif",
           type: "event",
-        },
-        {
-          inputs: [],
-          name: "basicGetter",
-          outputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
         },
         {
           inputs: [],
@@ -575,19 +583,6 @@ const deployedContracts = {
         },
         {
           inputs: [],
-          name: "delegatorAddress",
-          outputs: [
-            {
-              internalType: "address",
-              name: "",
-              type: "address",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [],
           name: "getDisplayName",
           outputs: [
             {
@@ -601,12 +596,12 @@ const deployedContracts = {
         },
         {
           inputs: [],
-          name: "getRegisteredPlayers",
+          name: "getNumItemsInVaultChest",
           outputs: [
             {
-              internalType: "address[]",
+              internalType: "uint256",
               name: "",
-              type: "address[]",
+              type: "uint256",
             },
           ],
           stateMutability: "view",
@@ -620,6 +615,19 @@ const deployedContracts = {
               internalType: "string",
               name: "",
               type: "string",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "guardAddress",
+          outputs: [
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
             },
           ],
           stateMutability: "view",
@@ -730,6 +738,36 @@ const deployedContracts = {
         {
           inputs: [
             {
+              components: [
+                {
+                  internalType: "int16",
+                  name: "x",
+                  type: "int16",
+                },
+                {
+                  internalType: "int16",
+                  name: "y",
+                  type: "int16",
+                },
+                {
+                  internalType: "int16",
+                  name: "z",
+                  type: "int16",
+                },
+              ],
+              internalType: "struct VoxelCoord",
+              name: "_vaultChestCoord",
+              type: "tuple",
+            },
+          ],
+          name: "setVaultChestCoord",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
               internalType: "bytes4",
               name: "interfaceId",
               type: "bytes4",
@@ -744,6 +782,113 @@ const deployedContracts = {
             },
           ],
           stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "vaultChestCoord",
+          outputs: [
+            {
+              internalType: "int16",
+              name: "x",
+              type: "int16",
+            },
+            {
+              internalType: "int16",
+              name: "y",
+              type: "int16",
+            },
+            {
+              internalType: "int16",
+              name: "z",
+              type: "int16",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
+            },
+            {
+              internalType: "uint8",
+              name: "",
+              type: "uint8",
+            },
+          ],
+          name: "vaultChestObjectCounts",
+          outputs: [
+            {
+              internalType: "uint16",
+              name: "",
+              type: "uint16",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "",
+              type: "bytes32",
+            },
+          ],
+          name: "vaultChestToolOwners",
+          outputs: [
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint8",
+              name: "objectTypeId",
+              type: "uint8",
+            },
+            {
+              internalType: "uint16",
+              name: "numToWithdraw",
+              type: "uint16",
+            },
+            {
+              internalType: "bytes32",
+              name: "withdrawChestEntityId",
+              type: "bytes32",
+            },
+          ],
+          name: "withdraw",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "toolEntityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "bytes32",
+              name: "withdrawChestEntityId",
+              type: "bytes32",
+            },
+          ],
+          name: "withdrawTool",
+          outputs: [],
+          stateMutability: "nonpayable",
           type: "function",
         },
       ],
