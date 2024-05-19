@@ -15,7 +15,7 @@ import {
 } from "./utilsDisplay";
 import { Abi, AbiFunction } from "abitype";
 import { Address } from "viem";
-import { useReadContract } from "wagmi";
+import { useAccount, useReadContract } from "wagmi";
 import {
   ContractInput,
   displayTxResult,
@@ -43,9 +43,11 @@ export const ReadOnlyFunctionForm = ({
   const [form, setForm] = useState<Record<string, any>>(() => getInitialFormState(abiFunction));
   const [result, setResult] = useState<unknown>();
   const { targetNetwork } = useTargetNetwork();
+  const { address: connectedAddress } = useAccount();
 
   const { isFetching, refetch, error } = useReadContract({
     address: contractAddress,
+    account: connectedAddress,
     functionName: abiFunction.name,
     abi: abi,
     args: getParsedContractFunctionArgs(form),
