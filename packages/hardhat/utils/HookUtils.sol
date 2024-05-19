@@ -43,10 +43,10 @@ function getMoveArgs(bytes memory callData) pure returns (VoxelCoord[] memory ne
   return abi.decode(args, (VoxelCoord[]));
 }
 
-function getHitArgs(bytes memory callData) pure returns (bytes32 hitPlayer) {
+function getHitArgs(bytes memory callData) pure returns (address hitPlayer) {
   (bytes4 selector, bytes memory args) = decodeCallData(callData);
   require(selector == IHitSystem.hit.selector, "Invalid selector");
-  return abi.decode(args, (bytes32));
+  return abi.decode(args, (address));
 }
 
 function getDropArgs(
