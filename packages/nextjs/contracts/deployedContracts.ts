@@ -491,7 +491,7 @@ const deployedContracts = {
   },
   31337: {
     Experience: {
-      address: "0xaC47e91215fb80462139756f43438402998E4A3a",
+      address: "0x8F4ec854Dd12F1fe79500a1f53D0cbB30f9b6134",
       abi: [
         {
           inputs: [
@@ -641,6 +641,19 @@ const deployedContracts = {
         },
         {
           inputs: [],
+          name: "getIntruders",
+          outputs: [
+            {
+              internalType: "address[]",
+              name: "",
+              type: "address[]",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
           name: "getStatus",
           outputs: [
             {
@@ -716,6 +729,19 @@ const deployedContracts = {
             },
           ],
           stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "intruder",
+              type: "address",
+            },
+          ],
+          name: "hitIntruder",
+          outputs: [],
+          stateMutability: "nonpayable",
           type: "function",
         },
         {

@@ -152,6 +152,54 @@ contract Experience is ICustomUnregisterDelegation, IOptionalSystemHook {
     }
   }
 
+  function hitIntruder(address intruder) external {
+    for (uint i = 0; i < allowedPlayers.length; i++) {
+      require(allowedPlayers[i] != intruder, "Cannot hit allowed players");
+    }
+    callHit(biomeWorldAddress, guardAddress, intruder);
+  }
+
+  function getIntruders() external view returns (address[] memory) {
+    bytes32 guardEntityId = getEntityFromPlayer(guardAddress);
+    if (guardEntityId == bytes32(0)) {
+      return new address[](0);
+    }
+    VoxelCoord memory guardCoord = getPosition(guardEntityId);
+    // Check all possible locations around the guard
+    address[] memory allIntruders = new address[](26);
+    uint intrudersCount = 0;
+    for (int8 dx = -1; dx <= 1; dx++) {
+      for (int8 dy = -1; dy <= 1; dy++) {
+        for (int8 dz = -1; dz <= 1; dz++) {
+          if (dx == 0 && dy == 0 && dz == 0) {
+            continue;
+          }
+          VoxelCoord memory coord = VoxelCoord({ x: guardCoord.x + dx, y: guardCoord.y + dy, z: guardCoord.z + dz });
+          address player = getPlayerFromEntity(getEntityAtCoord(coord));
+          if (player != address(0)) {
+            bool isAllowed = false;
+            for (uint i = 0; i < allowedPlayers.length; i++) {
+              if (allowedPlayers[i] == player) {
+                isAllowed = true;
+                break;
+              }
+            }
+            if (!isAllowed) {
+              allIntruders[intrudersCount] = player;
+              intrudersCount++;
+            }
+          }
+        }
+      }
+    }
+    address[] memory intruders = new address[](intrudersCount);
+    for (uint i = 0; i < intrudersCount; i++) {
+      intruders[i] = allIntruders[i];
+    }
+
+    return intruders;
+  }
+
   function getDisplayName() external view returns (string memory) {
     return "Location Guard Service";
   }
