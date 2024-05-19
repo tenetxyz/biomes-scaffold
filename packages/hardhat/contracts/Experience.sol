@@ -244,7 +244,7 @@ contract Experience is ICustomUnregisterDelegation, IOptionalSystemHook {
   }
 
   function getDisplayName() external view returns (string memory) {
-    return "Guard Service";
+    return "Vault Guard Service";
   }
 
   function getNumItemsInVaultChest() public view returns (uint256) {
