@@ -26,6 +26,10 @@ function getSystemId(bytes16 systemName) view returns (ResourceId) {
   return WorldResourceIdLib.encode({ typeId: RESOURCE_SYSTEM, namespace: "", name: systemName });
 }
 
+function isSystemId(ResourceId checkSystemId, bytes16 systemId) view returns (bool) {
+  return ResourceId.unwrap(checkSystemId) == ResourceId.unwrap(getSystemId(systemId));
+}
+
 function callBuild(
   address biomeWorldAddress,
   address delegatorAddress,
