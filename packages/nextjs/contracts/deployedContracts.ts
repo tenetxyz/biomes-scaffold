@@ -6,7 +6,7 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 
 const deployedContracts = {
   690: {
-    Experience: {
+    Game: {
       address: "0x09F61e35b34EB7855fb234dc81109d774Bb16973",
       abi: [
         {
@@ -248,7 +248,7 @@ const deployedContracts = {
     },
   },
   17069: {
-    Experience: {
+    Game: {
       address: "0xaFFFd91f427b81e0e56be9A4b6369f8DE6f24994",
       abi: [
         {
@@ -491,7 +491,7 @@ const deployedContracts = {
   },
   31337: {
     Experience: {
-      address: "0x71089Ba41e478702e1904692385Be3972B2cBf9e",
+      address: "0xaC47e91215fb80462139756f43438402998E4A3a",
       abi: [
         {
           inputs: [
@@ -502,12 +502,33 @@ const deployedContracts = {
             },
             {
               internalType: "address",
-              name: "_delegatorAddress",
+              name: "_guardAddress",
               type: "address",
             },
           ],
           stateMutability: "nonpayable",
           type: "constructor",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes",
+              name: "data",
+              type: "bytes",
+            },
+            {
+              internalType: "uint256",
+              name: "start",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "end",
+              type: "uint256",
+            },
+          ],
+          name: "Slice_OutOfBounds",
+          type: "error",
         },
         {
           anonymous: false,
@@ -529,13 +550,32 @@ const deployedContracts = {
           type: "event",
         },
         {
-          inputs: [],
-          name: "basicGetter",
-          outputs: [
+          inputs: [
+            {
+              internalType: "address",
+              name: "player",
+              type: "address",
+            },
+          ],
+          name: "addAllowedPlayer",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
             {
               internalType: "uint256",
               name: "",
               type: "uint256",
+            },
+          ],
+          name: "allowedPlayers",
+          outputs: [
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
             },
           ],
           stateMutability: "view",
@@ -575,12 +615,12 @@ const deployedContracts = {
         },
         {
           inputs: [],
-          name: "delegatorAddress",
+          name: "getAllowedPlayers",
           outputs: [
             {
-              internalType: "address",
+              internalType: "address[]",
               name: "",
-              type: "address",
+              type: "address[]",
             },
           ],
           stateMutability: "view",
@@ -601,12 +641,12 @@ const deployedContracts = {
         },
         {
           inputs: [],
-          name: "getRegisteredPlayers",
+          name: "getStatus",
           outputs: [
             {
-              internalType: "address[]",
+              internalType: "string",
               name: "",
-              type: "address[]",
+              type: "string",
             },
           ],
           stateMutability: "view",
@@ -614,12 +654,65 @@ const deployedContracts = {
         },
         {
           inputs: [],
-          name: "getStatus",
+          name: "getUnguardPositions",
           outputs: [
             {
-              internalType: "string",
+              components: [
+                {
+                  internalType: "int16",
+                  name: "x",
+                  type: "int16",
+                },
+                {
+                  internalType: "int16",
+                  name: "y",
+                  type: "int16",
+                },
+                {
+                  internalType: "int16",
+                  name: "z",
+                  type: "int16",
+                },
+              ],
+              internalType: "struct VoxelCoord[]",
               name: "",
-              type: "string",
+              type: "tuple[]",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "guardAddress",
+          outputs: [
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "guardPosition",
+          outputs: [
+            {
+              internalType: "int16",
+              name: "x",
+              type: "int16",
+            },
+            {
+              internalType: "int16",
+              name: "y",
+              type: "int16",
+            },
+            {
+              internalType: "int16",
+              name: "z",
+              type: "int16",
             },
           ],
           stateMutability: "view",
@@ -730,6 +823,66 @@ const deployedContracts = {
         {
           inputs: [
             {
+              components: [
+                {
+                  internalType: "int16",
+                  name: "x",
+                  type: "int16",
+                },
+                {
+                  internalType: "int16",
+                  name: "y",
+                  type: "int16",
+                },
+                {
+                  internalType: "int16",
+                  name: "z",
+                  type: "int16",
+                },
+              ],
+              internalType: "struct VoxelCoord",
+              name: "position",
+              type: "tuple",
+            },
+          ],
+          name: "setGuardPosition",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              components: [
+                {
+                  internalType: "int16",
+                  name: "x",
+                  type: "int16",
+                },
+                {
+                  internalType: "int16",
+                  name: "y",
+                  type: "int16",
+                },
+                {
+                  internalType: "int16",
+                  name: "z",
+                  type: "int16",
+                },
+              ],
+              internalType: "struct VoxelCoord[]",
+              name: "positions",
+              type: "tuple[]",
+            },
+          ],
+          name: "setUnGuardPosition",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
               internalType: "bytes4",
               name: "interfaceId",
               type: "bytes4",
@@ -741,6 +894,35 @@ const deployedContracts = {
               internalType: "bool",
               name: "",
               type: "bool",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          name: "unGuardPositions",
+          outputs: [
+            {
+              internalType: "int16",
+              name: "x",
+              type: "int16",
+            },
+            {
+              internalType: "int16",
+              name: "y",
+              type: "int16",
+            },
+            {
+              internalType: "int16",
+              name: "z",
+              type: "int16",
             },
           ],
           stateMutability: "view",
