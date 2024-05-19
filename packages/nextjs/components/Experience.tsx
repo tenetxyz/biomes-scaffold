@@ -64,7 +64,7 @@ export const Experience: React.FC = ({}) => {
             <div>
               <h1 className="text-3xl font-bold text-left mt-4">Play Experience</h1>
               <h1 className="text-left mt-4" style={{ lineHeight: "normal", margin: "0", wordWrap: "break-word" }}>
-                Your Main Experience Screen
+                Your Main Experience Page
               </h1>
             </div>
             <div></div>

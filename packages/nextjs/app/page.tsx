@@ -7,7 +7,6 @@ import { Experience } from "~~/components/Experience";
 import { Landing } from "~~/components/Landing";
 import { RegisterBiomes } from "~~/components/RegisterBiomes";
 import { RegisterExperience } from "~~/components/RegisterExperience";
-import { SetupBiomesClient } from "~~/components/SetupBiomesClient";
 import { Stage, useGlobalState } from "~~/services/store/store";
 
 const Home: NextPage = () => {
@@ -17,17 +16,12 @@ const Home: NextPage = () => {
 
   const isBiomesRegistered = useGlobalState(({ isBiomesRegistered }) => isBiomesRegistered);
   const isExperienceRegistered = useGlobalState(({ isExperienceRegistered }) => isExperienceRegistered);
-  const isBiomesClientSetup = useGlobalState(({ isBiomesClientSetup }) => isBiomesClientSetup);
 
   useEffect(() => {
     if (connectedAddress) {
       if (isBiomesRegistered) {
         if (isExperienceRegistered) {
-          if (isBiomesClientSetup) {
-            setStage(Stage.EXPERIENCE);
-          } else {
-            setStage(Stage.SETUP_BIOMES_CLIENT);
-          }
+          setStage(Stage.EXPERIENCE);
         } else {
           setStage(Stage.REGISTER_EXPERIENCE);
         }
@@ -37,7 +31,7 @@ const Home: NextPage = () => {
     } else {
       setStage(Stage.CONNECT_WALLET);
     }
-  }, [connectedAddress, isBiomesRegistered, isExperienceRegistered, isBiomesClientSetup]);
+  }, [connectedAddress, isBiomesRegistered, isExperienceRegistered]);
 
   const renderStage = useCallback(() => {
     switch (stage) {
@@ -47,8 +41,6 @@ const Home: NextPage = () => {
         return <RegisterBiomes />;
       case Stage.REGISTER_EXPERIENCE:
         return <RegisterExperience />;
-      case Stage.SETUP_BIOMES_CLIENT:
-        return <SetupBiomesClient />;
       case Stage.EXPERIENCE:
         return <Experience />;
     }

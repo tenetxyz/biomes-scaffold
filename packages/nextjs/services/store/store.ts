@@ -6,7 +6,6 @@ export enum Stage {
   CONNECT_WALLET,
   REGISTER_BIOMES,
   REGISTER_EXPERIENCE,
-  SETUP_BIOMES_CLIENT,
   EXPERIENCE,
 }
 
@@ -28,8 +27,6 @@ type GlobalState = {
   setIsBiomesRegistered: (newIsBiomesRegistered: boolean) => void;
   isExperienceRegistered: boolean;
   setIsExperienceRegistered: (newIsExperienceRegistered: boolean) => void;
-  isBiomesClientSetup: boolean;
-  setIsBiomesClientSetup: (newIsBiomesClientSetup: boolean) => void;
   stage: Stage;
   setStage: (newStage: Stage) => void;
   addressToBiomesName: Record<string, string>;
@@ -46,9 +43,6 @@ export const useGlobalState = create<GlobalState>(set => ({
   isExperienceRegistered: false,
   setIsExperienceRegistered: (newIsExperienceRegistered: boolean) =>
     set(() => ({ isExperienceRegistered: newIsExperienceRegistered })),
-  isBiomesClientSetup: false,
-  setIsBiomesClientSetup: (newIsBiomesClientSetup: boolean) =>
-    set(() => ({ isBiomesClientSetup: newIsBiomesClientSetup })),
   stage: Stage.CONNECT_WALLET,
   setStage: (newStage: Stage) => set(() => ({ stage: newStage })),
   addressToBiomesName: {},

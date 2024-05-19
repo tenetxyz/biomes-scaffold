@@ -491,7 +491,7 @@ const deployedContracts = {
   },
   31337: {
     Experience: {
-      address: "0x8F4ec854Dd12F1fe79500a1f53D0cbB30f9b6134",
+      address: "0x71089Ba41e478702e1904692385Be3972B2cBf9e",
       abi: [
         {
           inputs: [
