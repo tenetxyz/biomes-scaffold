@@ -66,7 +66,7 @@ export const Experience: React.FC = ({}) => {
         <div className="col-span-12 lg:col-span-9 p-12 flex flex-col justify-between items-center">
           <div style={{ width: "80%" }} className="flex flex-col gap-12">
             <div>
-              <h1 className="text-3xl font-bold text-left mt-4">Guard Service</h1>
+              <h1 className="text-3xl font-bold text-left mt-4">Location Guard Service</h1>
               <h1 className="text-left mt-4" style={{ lineHeight: "normal", margin: "0", wordWrap: "break-word" }}>
                 Will move when you&apos;re near it, and move back once you&apos;re away from it
               </h1>

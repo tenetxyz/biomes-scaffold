@@ -153,7 +153,7 @@ contract Experience is ICustomUnregisterDelegation, IOptionalSystemHook {
   }
 
   function getDisplayName() external view returns (string memory) {
-    return "Guard Service";
+    return "Location Guard Service";
   }
 
   function getStatus() external view returns (string memory) {
