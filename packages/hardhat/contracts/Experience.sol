@@ -84,6 +84,10 @@ contract Experience is ICustomUnregisterDelegation, IOptionalSystemHook {
     bytes memory callData
   ) external override onlyBiomeWorld {
     if (isSystemId(systemId, "TransferSystem")) {
+      if (msgSender == guardAddress) {
+        return;
+      }
+
       bytes32 vaultChestEntityId = getEntityAtCoord(vaultChestCoord);
 
       (
