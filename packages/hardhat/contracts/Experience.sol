@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.24;
 
+import { Strings } from "@openzeppelin/contracts/utils/Strings.sol";
 import { StoreSwitch } from "@latticexyz/store/src/StoreSwitch.sol";
 import { ResourceId, WorldResourceIdLib, WorldResourceIdInstance } from "@latticexyz/world/src/WorldResourceId.sol";
 import { Hook } from "@latticexyz/store/src/Hook.sol";
@@ -28,19 +29,25 @@ import { NamedArea, NamedBuild, NamedBuildWithPos, weiToString, getEmptyBlockOnG
 contract Experience is ICustomUnregisterDelegation, IOptionalSystemHook {
   address public immutable biomeWorldAddress;
 
-  address public delegatorAddress;
-
   // Event to show a notification in the Biomes World
   event GameNotif(address player, string message);
 
-  constructor(address _biomeWorldAddress, address _delegatorAddress) {
+  address public guardAddress;
+  VoxelCoord public vaultChestCoord;
+
+  // Track who put what in the vault chest
+  mapping(bytes32 => address) public vaultChestToolOwners;
+  mapping(address => mapping(uint8 => uint16)) public vaultChestObjectCounts;
+
+  constructor(address _biomeWorldAddress, address _guardAddress, VoxelCoord memory _vaultChestCoord) {
     biomeWorldAddress = _biomeWorldAddress;
 
     // Set the store address, so that when reading from MUD tables in the
     // Biomes world, we don't need to pass the store address every time.
     StoreSwitch.setStoreAddress(_biomeWorldAddress);
 
-    delegatorAddress = _delegatorAddress;
+    guardAddress = _guardAddress;
+    vaultChestCoord = _vaultChestCoord;
   }
 
   // Use this modifier to restrict access to the Biomes World contract only
@@ -48,6 +55,11 @@ contract Experience is ICustomUnregisterDelegation, IOptionalSystemHook {
   modifier onlyBiomeWorld() {
     require(msg.sender == biomeWorldAddress, "Caller is not the Biomes World contract");
     _; // Continue execution
+  }
+
+  function setVaultChestCoord(VoxelCoord memory _vaultChestCoord) external {
+    require(msg.sender == guardAddress, "Only the guard can set the vault chest coord");
+    vaultChestCoord = _vaultChestCoord;
   }
 
   function supportsInterface(bytes4 interfaceId) external view override returns (bool) {
@@ -58,7 +70,195 @@ contract Experience is ICustomUnregisterDelegation, IOptionalSystemHook {
   }
 
   function canUnregister(address delegator) external override onlyBiomeWorld returns (bool) {
+    bytes32 vaultChestEntityId = getEntityAtCoord(vaultChestCoord);
+    if (vaultChestEntityId != bytes32(0) && getNumSlotsUsed(vaultChestEntityId) > 0) {
+      return false;
+    }
+
     return true;
+  }
+
+  // Deposit into vault chest
+  function onAfterCallSystem(
+    address msgSender,
+    ResourceId systemId,
+    bytes memory callData
+  ) external override onlyBiomeWorld {
+    if (isSystemId(systemId, "TransferSystem")) {
+      bytes32 vaultChestEntityId = getEntityAtCoord(vaultChestCoord);
+
+      (
+        bytes32 srcEntityId,
+        bytes32 dstEntityId,
+        uint8 transferObjectTypeId,
+        uint16 numToTransfer,
+        bytes32 toolEntityId
+      ) = getTransferArgs(callData);
+      // Check if dstEntityId is a chest that is beside the guard
+      require(dstEntityId != vaultChestEntityId, "You can't transfer to the vault chest");
+      uint8 dstObjectType = getObjectType(dstEntityId);
+      if (dstObjectType != ChestObjectID) {
+        return;
+      }
+      bytes32 guardEntityId = getEntityFromPlayer(guardAddress);
+      if (guardEntityId == bytes32(0)) {
+        return;
+      }
+      VoxelCoord memory guardCoord = getPosition(guardEntityId);
+      VoxelCoord memory dstCoord = getPosition(dstEntityId);
+      if (inSurroundingCube(dstCoord, 1, guardCoord)) {
+        if (vaultChestEntityId == bytes32(0)) {
+          emit GameNotif(msgSender, "The vault chest is missing");
+          return;
+        }
+
+        // Note: we don't check if the inventory of the guard or chest is full here
+        // as the tansfer call will fail if the inventory is full
+
+        // Transfer the items to the guard
+        callTransfer(
+          biomeWorldAddress,
+          guardAddress,
+          dstEntityId,
+          guardEntityId,
+          transferObjectTypeId,
+          numToTransfer,
+          toolEntityId
+        );
+
+        // Then, transfer the items to the vault chest
+        callTransfer(
+          biomeWorldAddress,
+          guardAddress,
+          guardEntityId,
+          vaultChestEntityId,
+          transferObjectTypeId,
+          numToTransfer,
+          toolEntityId
+        );
+
+        // Update the vault chest tool owners and object counts
+        if (toolEntityId != bytes32(0)) {
+          vaultChestToolOwners[toolEntityId] = msgSender;
+        }
+
+        vaultChestObjectCounts[msgSender][transferObjectTypeId] += numToTransfer;
+
+        emit GameNotif(msgSender, "Items transferred to the vault chest");
+      }
+    }
+  }
+
+  function withdraw(uint8 objectTypeId, uint16 numToWithdraw, bytes32 withdrawChestEntityId) external {
+    require(withdrawChestEntityId != bytes32(0), "The withdrawl chest is missing");
+    bytes32 vaultChestEntityId = getEntityAtCoord(vaultChestCoord);
+    require(withdrawChestEntityId != bytes32(0), "The vault chest is missing");
+    bytes32 guardEntityId = getEntityFromPlayer(guardAddress);
+    require(guardEntityId != bytes32(0), "The guard is missing");
+    VoxelCoord memory guardCoord = getPosition(guardEntityId);
+    VoxelCoord memory withdrawChestCoord = getPosition(withdrawChestEntityId);
+    require(inSurroundingCube(withdrawChestCoord, 1, guardCoord), "The withdrawl chest is not beside the guard");
+    require(!isTool(objectTypeId), "Use the withdrawTool function to withdraw tools");
+
+    // Check if the player owns the items in the vault chest
+    address player = msg.sender;
+    require(
+      vaultChestObjectCounts[player][objectTypeId] >= numToWithdraw,
+      "You don't have enough items in the vault chest"
+    );
+
+    // Transfer the items to the guard
+    callTransfer(
+      biomeWorldAddress,
+      guardAddress,
+      vaultChestEntityId,
+      guardEntityId,
+      objectTypeId,
+      numToWithdraw,
+      bytes32(0)
+    );
+
+    // Then, transfer the items to the withdrawl chest
+    callTransfer(
+      biomeWorldAddress,
+      guardAddress,
+      guardEntityId,
+      withdrawChestEntityId,
+      objectTypeId,
+      numToWithdraw,
+      bytes32(0)
+    );
+
+    // Update the vault chest object counts
+    vaultChestObjectCounts[player][objectTypeId] -= numToWithdraw;
+  }
+
+  function withdrawTool(bytes32 toolEntityId, bytes32 withdrawChestEntityId) external {
+    require(withdrawChestEntityId != bytes32(0), "The withdrawl chest is missing");
+    bytes32 vaultChestEntityId = getEntityAtCoord(vaultChestCoord);
+    require(withdrawChestEntityId != bytes32(0), "The vault chest is missing");
+    bytes32 guardEntityId = getEntityFromPlayer(guardAddress);
+    require(guardEntityId != bytes32(0), "The guard is missing");
+    VoxelCoord memory guardCoord = getPosition(guardEntityId);
+    VoxelCoord memory withdrawChestCoord = getPosition(withdrawChestEntityId);
+    require(inSurroundingCube(withdrawChestCoord, 1, guardCoord), "The withdrawl chest is not beside the guard");
+
+    uint8 objectTypeId = getObjectType(toolEntityId);
+    require(objectTypeId != uint8(0), "The tool is missing");
+    require(isTool(objectTypeId), "The entity is not a tool");
+    uint16 numToWithdraw = 1;
+
+    // Check if the player owns the items in the vault chest
+    address player = msg.sender;
+    require(
+      vaultChestObjectCounts[player][objectTypeId] >= numToWithdraw,
+      "You don't have enough items in the vault chest"
+    );
+    require(vaultChestToolOwners[toolEntityId] == player, "You don't own the tool");
+
+    // Transfer the items to the guard
+    callTransfer(
+      biomeWorldAddress,
+      guardAddress,
+      vaultChestEntityId,
+      guardEntityId,
+      objectTypeId,
+      numToWithdraw,
+      toolEntityId
+    );
+
+    // Then, transfer the items to the withdrawl chest
+    callTransfer(
+      biomeWorldAddress,
+      guardAddress,
+      guardEntityId,
+      withdrawChestEntityId,
+      objectTypeId,
+      numToWithdraw,
+      toolEntityId
+    );
+
+    // Update the vault chest object counts
+    vaultChestObjectCounts[player][objectTypeId] -= numToWithdraw;
+    vaultChestToolOwners[toolEntityId] = address(0);
+  }
+
+  function getDisplayName() external view returns (string memory) {
+    return "Guard Service";
+  }
+
+  function getStatus() external view returns (string memory) {
+    bytes32 guardEntityId = getEntityFromPlayer(guardAddress);
+    if (guardEntityId == bytes32(0)) {
+      return "ALERT: Guard is dead!";
+    }
+
+    uint256 numItemsInVaultChest = 0;
+    for (uint8 i = 0; i < 256; i++) {
+      numItemsInVaultChest += vaultChestObjectCounts[msg.sender][i];
+    }
+
+    return string.concat("You have ", Strings.toString(numItemsInVaultChest), " items in the vault chest");
   }
 
   function onRegisterHook(
@@ -80,26 +280,4 @@ contract Experience is ICustomUnregisterDelegation, IOptionalSystemHook {
     ResourceId systemId,
     bytes memory callData
   ) external override onlyBiomeWorld {}
-
-  function onAfterCallSystem(
-    address msgSender,
-    ResourceId systemId,
-    bytes memory callData
-  ) external override onlyBiomeWorld {}
-
-  function basicGetter() external view returns (uint256) {
-    return 42;
-  }
-
-  function getRegisteredPlayers() external view returns (address[] memory) {
-    return new address[](0);
-  }
-
-  function getDisplayName() external view returns (string memory) {
-    return "Experience";
-  }
-
-  function getStatus() external view returns (string memory) {
-    return "You are in the Experience";
-  }
 }
