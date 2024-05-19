@@ -9,9 +9,9 @@ const baseUrl = process.env.VERCEL_URL
   : `http://localhost:${process.env.PORT || 3000}`;
 const imageUrl = `${baseUrl}/thumbnail.jpg`;
 
-const title = "Biomes AW Extension";
-const titleTemplate = "%s | Biomes AW Extension";
-const description = "Built with Biomes AW Extensions Scaffold-ETH Template";
+const title = "Biomes AW Experience";
+const titleTemplate = "%s | Biomes AW Experience";
+const description = "Built with Biomes AW Experience Scaffold-ETH Template";
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
