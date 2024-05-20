@@ -2,6 +2,8 @@
 pragma solidity >=0.8.24;
 
 import { Strings } from "@openzeppelin/contracts/utils/Strings.sol";
+
+import "@openzeppelin/contracts/utils/introspection/IERC165.sol";
 import "@openzeppelin/contracts/governance/Governor.sol";
 import "@openzeppelin/contracts/governance/extensions/GovernorSettings.sol";
 import "@openzeppelin/contracts/governance/extensions/GovernorCountingSimple.sol";
@@ -12,7 +14,6 @@ import "@openzeppelin/contracts/governance/extensions/GovernorVotesQuorumFractio
 import { StoreSwitch } from "@latticexyz/store/src/StoreSwitch.sol";
 import { ResourceId, WorldResourceIdLib, WorldResourceIdInstance } from "@latticexyz/world/src/WorldResourceId.sol";
 import { Hook } from "@latticexyz/store/src/Hook.sol";
-import { IERC165 } from "@latticexyz/world/src/IERC165.sol";
 import { ICustomUnregisterDelegation } from "@latticexyz/world/src/ICustomUnregisterDelegation.sol";
 import { IOptionalSystemHook } from "@latticexyz/world/src/IOptionalSystemHook.sol";
 import { BEFORE_CALL_SYSTEM, AFTER_CALL_SYSTEM, ALL } from "@latticexyz/world/src/systemHookTypes.sol";
@@ -25,7 +26,7 @@ import { voxelCoordsAreEqual, inSurroundingCube } from "@biomesaw/utils/src/Voxe
 
 // Available utils, remove the ones you don't need
 // See ObjectTypeIds.sol for all available object types
-import { PlayerObjectID, AirObjectID, DirtObjectID, ChestObjectID } from "@biomesaw/world/src/ObjectTypeIds.sol";
+import { PlayerObjectID, AirObjectID, DirtObjectID, ChestObjectID, BedrockObjectID } from "@biomesaw/world/src/ObjectTypeIds.sol";
 import { getBuildArgs, getMineArgs, getMoveArgs, getHitArgs, getDropArgs, getTransferArgs, getCraftArgs, getEquipArgs, getLoginArgs, getSpawnArgs } from "../utils/HookUtils.sol";
 import { getSystemId, isSystemId, callBuild, callMine, callMove, callHit, callDrop, callTransfer, callCraft, callEquip, callUnequip, callLogin, callLogout, callSpawn, callActivate } from "../utils/DelegationUtils.sol";
 import { hasBeforeAndAfterSystemHook, getObjectTypeAtCoord, getEntityAtCoord, getPosition, getObjectType, getMiningDifficulty, getStackable, getDamage, getDurability, isTool, isBlock, getEntityFromPlayer, getPlayerFromEntity, getEquipped, getHealth, getStamina, getIsLoggedOff, getLastHitTime, getInventoryTool, getInventoryObjects, getCount, getNumSlotsUsed, getNumUsesLeft } from "../utils/EntityUtils.sol";
@@ -68,8 +69,8 @@ contract BedrockDAO is
   constructor(
     address _biomeWorldAddress,
     IBedrockToken _token,
-    address[] commitors,
-    uint256[] commitments
+    address[] memory commitors,
+    uint256[] memory commitments
   )
     Governor("MyGovernor")
     GovernorSettings(43200 /* 1 day */, 302400 /* 1 week */, 0)
@@ -202,15 +203,8 @@ contract BedrockDAO is
     _; // Continue execution
   }
 
-  function supportsInterface(bytes4 interfaceId) external view override returns (bool) {
-    return
-      interfaceId == type(ICustomUnregisterDelegation).interfaceId ||
-      interfaceId == type(IOptionalSystemHook).interfaceId ||
-      interfaceId == type(IERC165).interfaceId;
-  }
-
-  function canUnregister(address delegator) external override onlyBiomeWorld returns (bool) {
-    return true;
+  function supportsInterface(bytes4 interfaceId) public view override(Governor, IERC165) returns (bool) {
+    return interfaceId == type(IOptionalSystemHook).interfaceId || super.supportsInterface(interfaceId);
   }
 
   function onRegisterHook(
@@ -232,6 +226,10 @@ contract BedrockDAO is
     ResourceId systemId,
     bytes memory callData
   ) external override onlyBiomeWorld {}
+
+  function getCoordHash(VoxelCoord memory coord) internal pure returns (bytes32) {
+    return bytes32(keccak256(abi.encode(coord.x, coord.y, coord.z)));
+  }
 
   function onAfterCallSystem(
     address msgSender,
@@ -255,7 +253,7 @@ contract BedrockDAO is
         numIncompleteBuilds++;
       }
     }
-    return string.concat("There are ", Strings.toString(numIncompleteBuilds.length), " build jobs pending");
+    return string.concat("There are ", Strings.toString(numIncompleteBuilds), " build jobs pending");
   }
 
   // The following functions are overrides required by Solidity.
