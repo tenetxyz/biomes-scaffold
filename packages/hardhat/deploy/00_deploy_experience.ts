@@ -46,10 +46,10 @@ const deployExperienceContract: DeployFunction = async function (hre: HardhatRun
   }
   console.log("useBiomesWorldAddress", useBiomesWorldAddress);
 
-  await deploy("Experience", {
+  await deploy("BedrockToken", {
     from: deployer,
     // Contract constructor arguments
-    args: [useBiomesWorldAddress, "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266"],
+    args: ["0x0000000000000000000000000000000000000000"],
     log: true,
     // autoMine: can be passed to the deploy function to make the deployment process faster on local networks by
     // automatically mining the contract deployment transaction. There is no effect on live networks.
@@ -57,7 +57,20 @@ const deployExperienceContract: DeployFunction = async function (hre: HardhatRun
   });
 
   // Get the deployed contract to interact with it after deploying.
-  const experienceContract = await hre.ethers.getContract<Contract>("Experience", deployer);
+  const bedrockTokenContract = await hre.ethers.getContract<Contract>("BedrockToken", deployer);
+
+  await deploy("BedrockDAO", {
+    from: deployer,
+    // Contract constructor arguments
+    args: [useBiomesWorldAddress, bedrockTokenContract.address, ["0xE0ae70caBb529336e25FA7a1f036b77ad0089d2a"], [100]],
+    log: true,
+    // autoMine: can be passed to the deploy function to make the deployment process faster on local networks by
+    // automatically mining the contract deployment transaction. There is no effect on live networks.
+    autoMine: true,
+  });
+
+  // Get the deployed contract to interact with it after deploying.
+  const experienceContract = await hre.ethers.getContract<Contract>("BedrockDAO", deployer);
   console.log("Biomes World Address:", await experienceContract.biomeWorldAddress());
 };
 
