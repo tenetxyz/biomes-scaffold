@@ -7,6 +7,8 @@ import "@openzeppelin/contracts/governance/extensions/GovernorCountingSimple.sol
 import "@openzeppelin/contracts/governance/extensions/GovernorVotes.sol";
 import "@openzeppelin/contracts/governance/extensions/GovernorVotesQuorumFraction.sol";
 
+import { IERC165 as IERC165MUD } from "@latticexyz/world/src/IERC165.sol";
+
 import { StoreSwitch } from "@latticexyz/store/src/StoreSwitch.sol";
 import { ResourceId } from "@latticexyz/world/src/WorldResourceId.sol";
 import { ISystemHook } from "@latticexyz/world/src/ISystemHook.sol";
@@ -44,7 +46,7 @@ contract Experience is
     _; // Continue execution
   }
 
-  function supportsInterface(bytes4 interfaceId) public view override(IERC165, Governor) returns (bool) {
+  function supportsInterface(bytes4 interfaceId) public view override(IERC165MUD, Governor) returns (bool) {
     return interfaceId == type(ISystemHook).interfaceId || super.supportsInterface(interfaceId);
   }
 
