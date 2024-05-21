@@ -364,7 +364,13 @@ export const displayTxResult = (
     } else {
       const mostReadable = (v: DisplayContent) =>
         ["number", "boolean"].includes(typeof v) ? v : displayTxResultAsText(v);
-      const displayable = JSON.stringify(displayContent.map(mostReadable), replacer);
+
+      let displayable = "";
+      try {
+        displayable = JSON.stringify(displayContent.map(mostReadable), replacer);
+      } catch (e) {
+        displayable = "Could not stringify array";
+      }
 
       return asText ? (
         displayable
