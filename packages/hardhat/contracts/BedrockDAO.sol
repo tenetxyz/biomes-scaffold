@@ -156,9 +156,24 @@ contract BedrockDAO is
     require(currentTreasury + budget <= address(this).balance, "Not enough funds in the treasury");
 
     uint256 proposalId = buildJobs.length;
-    buildJobs.push(
-      BuildJob({ id: proposalId, description: description, budget: budget, builder: address(0), build: build })
-    );
+
+    buildJobs.push();
+    BuildJob storage newBuildJob = buildJobs[proposalId];
+    newBuildJob.id = proposalId;
+    newBuildJob.description = description;
+    newBuildJob.budget = budget;
+    newBuildJob.builder = address(0);
+    newBuildJob.build.baseWorldCoord = build.baseWorldCoord;
+    newBuildJob.build.objectTypeIds = build.objectTypeIds;
+
+    for (uint256 i = 0; i < build.objectTypeIds.length; i++) {
+      newBuildJob.build.relativePositions.push();
+      newBuildJob.build.relativePositions[i] = VoxelCoord({
+        x: build.relativePositions[i].x,
+        y: build.relativePositions[i].y,
+        z: build.relativePositions[i].z
+      });
+    }
   }
 
   function submitBuild(uint256 buildJobId) external {
