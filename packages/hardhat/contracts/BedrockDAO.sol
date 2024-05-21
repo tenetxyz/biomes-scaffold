@@ -20,6 +20,7 @@ import { BEFORE_CALL_SYSTEM, AFTER_CALL_SYSTEM, ALL } from "@latticexyz/world/sr
 import { RESOURCE_SYSTEM } from "@latticexyz/world/src/worldResourceTypes.sol";
 import { OptionalSystemHooks } from "@latticexyz/world/src/codegen/tables/OptionalSystemHooks.sol";
 
+import { IERC165 as IERC165MUD } from "@latticexyz/world/src/IERC165.sol";
 import { IWorld } from "@biomesaw/world/src/codegen/world/IWorld.sol";
 import { VoxelCoord } from "@biomesaw/utils/src/Types.sol";
 import { voxelCoordsAreEqual, inSurroundingCube } from "@biomesaw/utils/src/VoxelCoordUtils.sol";
@@ -203,7 +204,7 @@ contract BedrockDAO is
     _; // Continue execution
   }
 
-  function supportsInterface(bytes4 interfaceId) public view override(Governor, IERC165) returns (bool) {
+  function supportsInterface(bytes4 interfaceId) public view override(IERC165MUD, Governor) returns (bool) {
     return interfaceId == type(IOptionalSystemHook).interfaceId || super.supportsInterface(interfaceId);
   }
 
