@@ -59,10 +59,10 @@ const deployExperienceContract: DeployFunction = async function (hre: HardhatRun
   // Get the deployed contract to interact with it after deploying.
   const bedrockTokenContract = await hre.ethers.getContract<Contract>("BedrockToken", deployer);
 
-  await deploy("BedrockDAO", {
+  await deploy("Experience", {
     from: deployer,
     // Contract constructor arguments
-    args: [useBiomesWorldAddress, bedrockTokenContract.address, ["0xE0ae70caBb529336e25FA7a1f036b77ad0089d2a"], [100]],
+    args: [useBiomesWorldAddress],
     log: true,
     // autoMine: can be passed to the deploy function to make the deployment process faster on local networks by
     // automatically mining the contract deployment transaction. There is no effect on live networks.
@@ -70,8 +70,28 @@ const deployExperienceContract: DeployFunction = async function (hre: HardhatRun
   });
 
   // Get the deployed contract to interact with it after deploying.
-  const experienceContract = await hre.ethers.getContract<Contract>("BedrockDAO", deployer);
+  const experienceContract = await hre.ethers.getContract<Contract>("Experience", deployer);
   console.log("Biomes World Address:", await experienceContract.biomeWorldAddress());
+
+  await deploy("BedrockDAO", {
+    from: deployer,
+    // Contract constructor arguments
+    args: [
+      useBiomesWorldAddress,
+      experienceContract.target,
+      bedrockTokenContract.target,
+      ["0xE0ae70caBb529336e25FA7a1f036b77ad0089d2a"],
+      [100],
+    ],
+    log: true,
+    // autoMine: can be passed to the deploy function to make the deployment process faster on local networks by
+    // automatically mining the contract deployment transaction. There is no effect on live networks.
+    autoMine: true,
+  });
+
+  // Get the deployed contract to interact with it after deploying.
+  const bedrockDaoContract = await hre.ethers.getContract<Contract>("BedrockDAO", deployer);
+  console.log("Biomes World Address:", await bedrockDaoContract.biomeWorldAddress());
 };
 
 export default deployExperienceContract;

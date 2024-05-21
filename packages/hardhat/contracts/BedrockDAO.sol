@@ -12,15 +12,6 @@ import "@openzeppelin/contracts/governance/extensions/GovernorVotes.sol";
 import "@openzeppelin/contracts/governance/extensions/GovernorVotesQuorumFraction.sol";
 
 import { StoreSwitch } from "@latticexyz/store/src/StoreSwitch.sol";
-import { ResourceId, WorldResourceIdLib, WorldResourceIdInstance } from "@latticexyz/world/src/WorldResourceId.sol";
-import { Hook } from "@latticexyz/store/src/Hook.sol";
-import { ICustomUnregisterDelegation } from "@latticexyz/world/src/ICustomUnregisterDelegation.sol";
-import { IOptionalSystemHook } from "@latticexyz/world/src/IOptionalSystemHook.sol";
-import { BEFORE_CALL_SYSTEM, AFTER_CALL_SYSTEM, ALL } from "@latticexyz/world/src/systemHookTypes.sol";
-import { RESOURCE_SYSTEM } from "@latticexyz/world/src/worldResourceTypes.sol";
-import { OptionalSystemHooks } from "@latticexyz/world/src/codegen/tables/OptionalSystemHooks.sol";
-
-import { IERC165 as IERC165MUD } from "@latticexyz/world/src/IERC165.sol";
 import { IWorld } from "@biomesaw/world/src/codegen/world/IWorld.sol";
 import { VoxelCoord } from "@biomesaw/utils/src/Types.sol";
 import { voxelCoordsAreEqual, inSurroundingCube } from "@biomesaw/utils/src/VoxelCoordUtils.sol";
@@ -45,30 +36,25 @@ struct BuildJob {
   BuildWithPos build;
 }
 
+interface IBuilderTracker {
+  function getBuilder(VoxelCoord memory coord) external view returns (address);
+}
+
 // Bedrock DAO Contract
-contract BedrockDAO is
-  IOptionalSystemHook,
-  Governor,
-  GovernorSettings,
-  GovernorCountingSimple,
-  GovernorVotes,
-  GovernorVotesQuorumFraction
-{
+contract BedrockDAO is Governor, GovernorSettings, GovernorCountingSimple, GovernorVotes, GovernorVotesQuorumFraction {
   address public immutable biomeWorldAddress;
+  IBuilderTracker public builderTrackerAddress;
   IBedrockToken public bedrockToken;
 
   uint256 public bedrockTokenBuyPrice = 1 ether;
 
-  // Event to show a notification in the Biomes World
-  event GameNotif(address player, string message);
-
   BuildJob[] public buildJobs;
-  mapping(bytes32 => address) public coordHashToBuilder;
   mapping(address => uint256) public commitedBedrock;
   uint256 public commitmentEndBlockNumber;
 
   constructor(
     address _biomeWorldAddress,
+    IBuilderTracker _builderTrackerAddress,
     IBedrockToken _token,
     address[] memory commitors,
     uint256[] memory commitments
@@ -84,6 +70,7 @@ contract BedrockDAO is
     // Biomes world, we don't need to pass the store address every time.
     StoreSwitch.setStoreAddress(_biomeWorldAddress);
 
+    builderTrackerAddress = _builderTrackerAddress;
     bedrockToken = _token;
 
     for (uint256 i = 0; i < commitors.length; i++) {
@@ -96,7 +83,7 @@ contract BedrockDAO is
 
   function buyBedrockTokens(uint256 amount) external payable {
     require(msg.value == amount * bedrockTokenBuyPrice, "Incorrect Ether value");
-    bedrockToken.mint(_msgSender(), amount);
+    bedrockToken.mint(_msgSender(), amount * 10 ** bedrockToken.decimals());
   }
 
   function claimBedrockTokens() external {
@@ -137,7 +124,7 @@ contract BedrockDAO is
   }
 
   function addBuildJob(string memory description, uint256 budget, BuildWithPos memory build) external {
-    require(_msgSender() == address(this), "Only the contract can add build jobs");
+    // require(_msgSender() == address(this), "Only the contract can add build jobs");
     require(build.objectTypeIds.length > 0, "Build must have at least one object type");
     require(
       build.objectTypeIds.length == build.relativePositions.length,
@@ -201,7 +188,8 @@ contract BedrockDAO is
       } else {
         objectTypeId = getObjectType(entityId);
 
-        address builder = coordHashToBuilder[getCoordHash(absolutePosition)];
+        address builder = builderTrackerAddress.getBuilder(absolutePosition);
+
         require(builder == msgSender, "Builder does not match");
       }
       if (objectTypeId != buildJob.build.objectTypeIds[i]) {
@@ -212,64 +200,8 @@ contract BedrockDAO is
     buildJob.builder = msgSender;
   }
 
-  // Use this modifier to restrict access to the Biomes World contract only
-  // eg. for hooks that are only allowed to be called by the Biomes World contract
-  modifier onlyBiomeWorld() {
-    require(msg.sender == biomeWorldAddress, "Caller is not the Biomes World contract");
-    _; // Continue execution
-  }
-
-  function supportsInterface(bytes4 interfaceId) public view override(IERC165MUD, Governor) returns (bool) {
-    return interfaceId == type(IOptionalSystemHook).interfaceId || super.supportsInterface(interfaceId);
-  }
-
-  function onRegisterHook(
-    address msgSender,
-    ResourceId systemId,
-    uint8 enabledHooksBitmap,
-    bytes32 callDataHash
-  ) external override onlyBiomeWorld {}
-
-  function onUnregisterHook(
-    address msgSender,
-    ResourceId systemId,
-    uint8 enabledHooksBitmap,
-    bytes32 callDataHash
-  ) external override onlyBiomeWorld {}
-
-  function onBeforeCallSystem(
-    address msgSender,
-    ResourceId systemId,
-    bytes memory callData
-  ) external override onlyBiomeWorld {}
-
-  function getCoordHash(VoxelCoord memory coord) internal pure returns (bytes32) {
-    return bytes32(keccak256(abi.encode(coord.x, coord.y, coord.z)));
-  }
-
-  function onAfterCallSystem(
-    address msgSender,
-    ResourceId systemId,
-    bytes memory callData
-  ) external override onlyBiomeWorld {
-    if (isSystemId(systemId, "BuildSystem")) {
-      (, VoxelCoord memory coord) = getBuildArgs(callData);
-      coordHashToBuilder[getCoordHash(coord)] = msgSender;
-    }
-  }
-
-  function getDisplayName() external view returns (string memory) {
-    return "Bedrock DAO";
-  }
-
-  function getStatus() external view returns (string memory) {
-    uint256 numIncompleteBuilds = 0;
-    for (uint256 i = 0; i < buildJobs.length; i++) {
-      if (buildJobs[i].builder == address(0)) {
-        numIncompleteBuilds++;
-      }
-    }
-    return string.concat("There are ", Strings.toString(numIncompleteBuilds), " build jobs pending");
+  function getBuildJobs() external view returns (BuildJob[] memory) {
+    return buildJobs;
   }
 
   // The following functions are overrides required by Solidity.

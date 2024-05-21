@@ -18,7 +18,7 @@ contract BedrockToken is ERC20, ERC20Permit, ERC20Votes {
   }
 
   function mint(address to, uint256 amount) public {
-    require(_msgSender() == bedrockDaoAddress);
+    require(_msgSender() == bedrockDaoAddress, "BedrockToken: only DAO can mint");
     _mint(to, amount);
   }
 
