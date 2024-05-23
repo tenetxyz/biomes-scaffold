@@ -41,7 +41,7 @@ interface IBuilderTracker {
 }
 
 // Bedrock DAO Contract
-contract BedrockDAO is Governor, GovernorSettings, GovernorCountingSimple, GovernorVotes, GovernorVotesQuorumFraction {
+contract BedrockDAO is Governor, GovernorCountingSimple, GovernorVotes {
   address public immutable biomeWorldAddress;
   IBuilderTracker public builderTrackerAddress;
   IBedrockToken public bedrockToken;
@@ -58,12 +58,7 @@ contract BedrockDAO is Governor, GovernorSettings, GovernorCountingSimple, Gover
     IBedrockToken _token,
     address[] memory commitors,
     uint256[] memory commitments
-  )
-    Governor("MyGovernor")
-    GovernorSettings(43200 /* 1 day */, 302400 /* 1 week */, 0)
-    GovernorVotes(_token)
-    GovernorVotesQuorumFraction(4)
-  {
+  ) Governor("MyGovernor") GovernorVotes(_token) {
     biomeWorldAddress = _biomeWorldAddress;
 
     // Set the store address, so that when reading from MUD tables in the
@@ -124,7 +119,7 @@ contract BedrockDAO is Governor, GovernorSettings, GovernorCountingSimple, Gover
   }
 
   function addBuildJob(string memory description, uint256 budget, BuildWithPos memory build) external {
-    // require(_msgSender() == address(this), "Only the contract can add build jobs");
+    require(_msgSender() == address(this), "Only the contract can add build jobs");
     require(build.objectTypeIds.length > 0, "Build must have at least one object type");
     require(
       build.objectTypeIds.length == build.relativePositions.length,
@@ -206,19 +201,15 @@ contract BedrockDAO is Governor, GovernorSettings, GovernorCountingSimple, Gover
 
   // The following functions are overrides required by Solidity.
 
-  function votingDelay() public view override(Governor, GovernorSettings) returns (uint256) {
-    return super.votingDelay();
+  function votingDelay() public pure override returns (uint256) {
+    return 0; // 0 day
   }
 
-  function votingPeriod() public view override(Governor, GovernorSettings) returns (uint256) {
-    return super.votingPeriod();
+  function votingPeriod() public pure override returns (uint256) {
+    return 150; // 1 week
   }
 
-  function quorum(uint256 blockNumber) public view override(Governor, GovernorVotesQuorumFraction) returns (uint256) {
-    return super.quorum(blockNumber);
-  }
-
-  function proposalThreshold() public view override(Governor, GovernorSettings) returns (uint256) {
-    return super.proposalThreshold();
+  function quorum(uint256 blockNumber) public pure override returns (uint256) {
+    return 1e18;
   }
 }

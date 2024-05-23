@@ -288,7 +288,7 @@ const deployedContracts = {
   },
   31337: {
     BedrockDAO: {
-      address: "0xf090f16dEc8b6D24082Edd25B1C8D26f2bC86128",
+      address: "0xC66AB83418C20A65C3f8e83B3d11c8C3a6097b6F",
       abi: [
         {
           inputs: [
@@ -320,11 +320,6 @@ const deployedContracts = {
           ],
           stateMutability: "nonpayable",
           type: "constructor",
-        },
-        {
-          inputs: [],
-          name: "CheckpointUnorderedInsertion",
-          type: "error",
         },
         {
           inputs: [],
@@ -398,22 +393,6 @@ const deployedContracts = {
             },
           ],
           name: "GovernorInvalidProposalLength",
-          type: "error",
-        },
-        {
-          inputs: [
-            {
-              internalType: "uint256",
-              name: "quorumNumerator",
-              type: "uint256",
-            },
-            {
-              internalType: "uint256",
-              name: "quorumDenominator",
-              type: "uint256",
-            },
-          ],
-          name: "GovernorInvalidQuorumFraction",
           type: "error",
         },
         {
@@ -698,44 +677,6 @@ const deployedContracts = {
           anonymous: false,
           inputs: [
             {
-              indexed: false,
-              internalType: "uint256",
-              name: "oldProposalThreshold",
-              type: "uint256",
-            },
-            {
-              indexed: false,
-              internalType: "uint256",
-              name: "newProposalThreshold",
-              type: "uint256",
-            },
-          ],
-          name: "ProposalThresholdSet",
-          type: "event",
-        },
-        {
-          anonymous: false,
-          inputs: [
-            {
-              indexed: false,
-              internalType: "uint256",
-              name: "oldQuorumNumerator",
-              type: "uint256",
-            },
-            {
-              indexed: false,
-              internalType: "uint256",
-              name: "newQuorumNumerator",
-              type: "uint256",
-            },
-          ],
-          name: "QuorumNumeratorUpdated",
-          type: "event",
-        },
-        {
-          anonymous: false,
-          inputs: [
-            {
               indexed: true,
               internalType: "address",
               name: "voter",
@@ -810,44 +751,6 @@ const deployedContracts = {
             },
           ],
           name: "VoteCastWithParams",
-          type: "event",
-        },
-        {
-          anonymous: false,
-          inputs: [
-            {
-              indexed: false,
-              internalType: "uint256",
-              name: "oldVotingDelay",
-              type: "uint256",
-            },
-            {
-              indexed: false,
-              internalType: "uint256",
-              name: "newVotingDelay",
-              type: "uint256",
-            },
-          ],
-          name: "VotingDelaySet",
-          type: "event",
-        },
-        {
-          anonymous: false,
-          inputs: [
-            {
-              indexed: false,
-              internalType: "uint256",
-              name: "oldVotingPeriod",
-              type: "uint256",
-            },
-            {
-              indexed: false,
-              internalType: "uint256",
-              name: "newVotingPeriod",
-              type: "uint256",
-            },
-          ],
-          name: "VotingPeriodSet",
           type: "event",
         },
         {
@@ -2026,52 +1929,7 @@ const deployedContracts = {
               type: "uint256",
             },
           ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [],
-          name: "quorumDenominator",
-          outputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "uint256",
-              name: "timepoint",
-              type: "uint256",
-            },
-          ],
-          name: "quorumNumerator",
-          outputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [],
-          name: "quorumNumerator",
-          outputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
-            },
-          ],
-          stateMutability: "view",
+          stateMutability: "pure",
           type: "function",
         },
         {
@@ -2095,45 +1953,6 @@ const deployedContracts = {
           name: "relay",
           outputs: [],
           stateMutability: "payable",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "uint256",
-              name: "newProposalThreshold",
-              type: "uint256",
-            },
-          ],
-          name: "setProposalThreshold",
-          outputs: [],
-          stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "uint48",
-              name: "newVotingDelay",
-              type: "uint48",
-            },
-          ],
-          name: "setVotingDelay",
-          outputs: [],
-          stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "uint32",
-              name: "newVotingPeriod",
-              type: "uint32",
-            },
-          ],
-          name: "setVotingPeriod",
-          outputs: [],
-          stateMutability: "nonpayable",
           type: "function",
         },
         {
@@ -2201,19 +2020,6 @@ const deployedContracts = {
           type: "function",
         },
         {
-          inputs: [
-            {
-              internalType: "uint256",
-              name: "newQuorumNumerator",
-              type: "uint256",
-            },
-          ],
-          name: "updateQuorumNumerator",
-          outputs: [],
-          stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
           inputs: [],
           name: "version",
           outputs: [
@@ -2236,7 +2042,7 @@ const deployedContracts = {
               type: "uint256",
             },
           ],
-          stateMutability: "view",
+          stateMutability: "pure",
           type: "function",
         },
         {
@@ -2249,7 +2055,7 @@ const deployedContracts = {
               type: "uint256",
             },
           ],
-          stateMutability: "view",
+          stateMutability: "pure",
           type: "function",
         },
         {
@@ -2258,56 +2064,87 @@ const deployedContracts = {
         },
       ],
       inheritedFunctions: {
-        BALLOT_TYPEHASH: "@openzeppelin/contracts/governance/extensions/GovernorVotesQuorumFraction.sol",
-        CLOCK_MODE: "@openzeppelin/contracts/governance/extensions/GovernorVotesQuorumFraction.sol",
-        COUNTING_MODE: "@openzeppelin/contracts/governance/extensions/GovernorVotesQuorumFraction.sol",
-        EXTENDED_BALLOT_TYPEHASH: "@openzeppelin/contracts/governance/extensions/GovernorVotesQuorumFraction.sol",
-        cancel: "@openzeppelin/contracts/governance/extensions/GovernorVotesQuorumFraction.sol",
-        castVote: "@openzeppelin/contracts/governance/extensions/GovernorVotesQuorumFraction.sol",
-        castVoteBySig: "@openzeppelin/contracts/governance/extensions/GovernorVotesQuorumFraction.sol",
-        castVoteWithReason: "@openzeppelin/contracts/governance/extensions/GovernorVotesQuorumFraction.sol",
-        castVoteWithReasonAndParams: "@openzeppelin/contracts/governance/extensions/GovernorVotesQuorumFraction.sol",
+        BALLOT_TYPEHASH:
+          "@openzeppelin/contracts/governance/extensions/GovernorVotes.sol",
+        CLOCK_MODE:
+          "@openzeppelin/contracts/governance/extensions/GovernorVotes.sol",
+        COUNTING_MODE:
+          "@openzeppelin/contracts/governance/extensions/GovernorVotes.sol",
+        EXTENDED_BALLOT_TYPEHASH:
+          "@openzeppelin/contracts/governance/extensions/GovernorVotes.sol",
+        cancel:
+          "@openzeppelin/contracts/governance/extensions/GovernorVotes.sol",
+        castVote:
+          "@openzeppelin/contracts/governance/extensions/GovernorVotes.sol",
+        castVoteBySig:
+          "@openzeppelin/contracts/governance/extensions/GovernorVotes.sol",
+        castVoteWithReason:
+          "@openzeppelin/contracts/governance/extensions/GovernorVotes.sol",
+        castVoteWithReasonAndParams:
+          "@openzeppelin/contracts/governance/extensions/GovernorVotes.sol",
         castVoteWithReasonAndParamsBySig:
-          "@openzeppelin/contracts/governance/extensions/GovernorVotesQuorumFraction.sol",
-        clock: "@openzeppelin/contracts/governance/extensions/GovernorVotesQuorumFraction.sol",
-        eip712Domain: "@openzeppelin/contracts/governance/extensions/GovernorVotesQuorumFraction.sol",
-        execute: "@openzeppelin/contracts/governance/extensions/GovernorVotesQuorumFraction.sol",
-        getVotes: "@openzeppelin/contracts/governance/extensions/GovernorVotesQuorumFraction.sol",
-        getVotesWithParams: "@openzeppelin/contracts/governance/extensions/GovernorVotesQuorumFraction.sol",
-        hasVoted: "@openzeppelin/contracts/governance/extensions/GovernorVotesQuorumFraction.sol",
-        hashProposal: "@openzeppelin/contracts/governance/extensions/GovernorVotesQuorumFraction.sol",
-        name: "@openzeppelin/contracts/governance/extensions/GovernorVotesQuorumFraction.sol",
-        nonces: "@openzeppelin/contracts/governance/extensions/GovernorVotesQuorumFraction.sol",
-        onERC1155BatchReceived: "@openzeppelin/contracts/governance/extensions/GovernorVotesQuorumFraction.sol",
-        onERC1155Received: "@openzeppelin/contracts/governance/extensions/GovernorVotesQuorumFraction.sol",
-        onERC721Received: "@openzeppelin/contracts/governance/extensions/GovernorVotesQuorumFraction.sol",
-        proposalDeadline: "@openzeppelin/contracts/governance/extensions/GovernorVotesQuorumFraction.sol",
-        proposalEta: "@openzeppelin/contracts/governance/extensions/GovernorVotesQuorumFraction.sol",
-        proposalNeedsQueuing: "@openzeppelin/contracts/governance/extensions/GovernorVotesQuorumFraction.sol",
-        proposalProposer: "@openzeppelin/contracts/governance/extensions/GovernorVotesQuorumFraction.sol",
-        proposalSnapshot: "@openzeppelin/contracts/governance/extensions/GovernorVotesQuorumFraction.sol",
-        proposalThreshold: "@openzeppelin/contracts/governance/extensions/GovernorVotesQuorumFraction.sol",
-        propose: "@openzeppelin/contracts/governance/extensions/GovernorVotesQuorumFraction.sol",
-        queue: "@openzeppelin/contracts/governance/extensions/GovernorVotesQuorumFraction.sol",
-        quorum: "@openzeppelin/contracts/governance/extensions/GovernorVotesQuorumFraction.sol",
-        relay: "@openzeppelin/contracts/governance/extensions/GovernorVotesQuorumFraction.sol",
-        state: "@openzeppelin/contracts/governance/extensions/GovernorVotesQuorumFraction.sol",
-        supportsInterface: "@openzeppelin/contracts/governance/extensions/GovernorVotesQuorumFraction.sol",
-        version: "@openzeppelin/contracts/governance/extensions/GovernorVotesQuorumFraction.sol",
-        votingDelay: "@openzeppelin/contracts/governance/extensions/GovernorVotesQuorumFraction.sol",
-        votingPeriod: "@openzeppelin/contracts/governance/extensions/GovernorVotesQuorumFraction.sol",
-        setProposalThreshold: "@openzeppelin/contracts/governance/extensions/GovernorSettings.sol",
-        setVotingDelay: "@openzeppelin/contracts/governance/extensions/GovernorSettings.sol",
-        setVotingPeriod: "@openzeppelin/contracts/governance/extensions/GovernorSettings.sol",
-        proposalVotes: "@openzeppelin/contracts/governance/extensions/GovernorCountingSimple.sol",
-        token: "@openzeppelin/contracts/governance/extensions/GovernorVotesQuorumFraction.sol",
-        quorumDenominator: "@openzeppelin/contracts/governance/extensions/GovernorVotesQuorumFraction.sol",
-        quorumNumerator: "@openzeppelin/contracts/governance/extensions/GovernorVotesQuorumFraction.sol",
-        updateQuorumNumerator: "@openzeppelin/contracts/governance/extensions/GovernorVotesQuorumFraction.sol",
+          "@openzeppelin/contracts/governance/extensions/GovernorVotes.sol",
+        clock:
+          "@openzeppelin/contracts/governance/extensions/GovernorVotes.sol",
+        eip712Domain:
+          "@openzeppelin/contracts/governance/extensions/GovernorVotes.sol",
+        execute:
+          "@openzeppelin/contracts/governance/extensions/GovernorVotes.sol",
+        getVotes:
+          "@openzeppelin/contracts/governance/extensions/GovernorVotes.sol",
+        getVotesWithParams:
+          "@openzeppelin/contracts/governance/extensions/GovernorVotes.sol",
+        hasVoted:
+          "@openzeppelin/contracts/governance/extensions/GovernorVotes.sol",
+        hashProposal:
+          "@openzeppelin/contracts/governance/extensions/GovernorVotes.sol",
+        name: "@openzeppelin/contracts/governance/extensions/GovernorVotes.sol",
+        nonces:
+          "@openzeppelin/contracts/governance/extensions/GovernorVotes.sol",
+        onERC1155BatchReceived:
+          "@openzeppelin/contracts/governance/extensions/GovernorVotes.sol",
+        onERC1155Received:
+          "@openzeppelin/contracts/governance/extensions/GovernorVotes.sol",
+        onERC721Received:
+          "@openzeppelin/contracts/governance/extensions/GovernorVotes.sol",
+        proposalDeadline:
+          "@openzeppelin/contracts/governance/extensions/GovernorVotes.sol",
+        proposalEta:
+          "@openzeppelin/contracts/governance/extensions/GovernorVotes.sol",
+        proposalNeedsQueuing:
+          "@openzeppelin/contracts/governance/extensions/GovernorVotes.sol",
+        proposalProposer:
+          "@openzeppelin/contracts/governance/extensions/GovernorVotes.sol",
+        proposalSnapshot:
+          "@openzeppelin/contracts/governance/extensions/GovernorVotes.sol",
+        proposalThreshold:
+          "@openzeppelin/contracts/governance/extensions/GovernorVotes.sol",
+        propose:
+          "@openzeppelin/contracts/governance/extensions/GovernorVotes.sol",
+        queue:
+          "@openzeppelin/contracts/governance/extensions/GovernorVotes.sol",
+        quorum:
+          "@openzeppelin/contracts/governance/extensions/GovernorVotes.sol",
+        relay:
+          "@openzeppelin/contracts/governance/extensions/GovernorVotes.sol",
+        state:
+          "@openzeppelin/contracts/governance/extensions/GovernorVotes.sol",
+        supportsInterface:
+          "@openzeppelin/contracts/governance/extensions/GovernorVotes.sol",
+        version:
+          "@openzeppelin/contracts/governance/extensions/GovernorVotes.sol",
+        votingDelay:
+          "@openzeppelin/contracts/governance/extensions/GovernorVotes.sol",
+        votingPeriod:
+          "@openzeppelin/contracts/governance/extensions/GovernorVotes.sol",
+        proposalVotes:
+          "@openzeppelin/contracts/governance/extensions/GovernorCountingSimple.sol",
+        token:
+          "@openzeppelin/contracts/governance/extensions/GovernorVotes.sol",
       },
     },
     BedrockToken: {
-      address: "0x38A70c040CA5F5439ad52d0e821063b0EC0B52b6",
+      address: "0x71089Ba41e478702e1904692385Be3972B2cBf9e",
       abi: [
         {
           inputs: [
@@ -3216,33 +3053,52 @@ const deployedContracts = {
         },
       ],
       inheritedFunctions: {
-        allowance: "@openzeppelin/contracts/token/ERC20/extensions/ERC20Votes.sol",
-        approve: "@openzeppelin/contracts/token/ERC20/extensions/ERC20Votes.sol",
-        balanceOf: "@openzeppelin/contracts/token/ERC20/extensions/ERC20Votes.sol",
-        decimals: "@openzeppelin/contracts/token/ERC20/extensions/ERC20Votes.sol",
+        allowance:
+          "@openzeppelin/contracts/token/ERC20/extensions/ERC20Votes.sol",
+        approve:
+          "@openzeppelin/contracts/token/ERC20/extensions/ERC20Votes.sol",
+        balanceOf:
+          "@openzeppelin/contracts/token/ERC20/extensions/ERC20Votes.sol",
+        decimals:
+          "@openzeppelin/contracts/token/ERC20/extensions/ERC20Votes.sol",
         name: "@openzeppelin/contracts/token/ERC20/extensions/ERC20Votes.sol",
         symbol: "@openzeppelin/contracts/token/ERC20/extensions/ERC20Votes.sol",
-        totalSupply: "@openzeppelin/contracts/token/ERC20/extensions/ERC20Votes.sol",
-        transfer: "@openzeppelin/contracts/token/ERC20/extensions/ERC20Votes.sol",
-        transferFrom: "@openzeppelin/contracts/token/ERC20/extensions/ERC20Votes.sol",
-        DOMAIN_SEPARATOR: "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol",
-        eip712Domain: "@openzeppelin/contracts/token/ERC20/extensions/ERC20Votes.sol",
+        totalSupply:
+          "@openzeppelin/contracts/token/ERC20/extensions/ERC20Votes.sol",
+        transfer:
+          "@openzeppelin/contracts/token/ERC20/extensions/ERC20Votes.sol",
+        transferFrom:
+          "@openzeppelin/contracts/token/ERC20/extensions/ERC20Votes.sol",
+        DOMAIN_SEPARATOR:
+          "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol",
+        eip712Domain:
+          "@openzeppelin/contracts/token/ERC20/extensions/ERC20Votes.sol",
         nonces: "@openzeppelin/contracts/token/ERC20/extensions/ERC20Votes.sol",
-        permit: "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol",
-        CLOCK_MODE: "@openzeppelin/contracts/token/ERC20/extensions/ERC20Votes.sol",
-        checkpoints: "@openzeppelin/contracts/token/ERC20/extensions/ERC20Votes.sol",
+        permit:
+          "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol",
+        CLOCK_MODE:
+          "@openzeppelin/contracts/token/ERC20/extensions/ERC20Votes.sol",
+        checkpoints:
+          "@openzeppelin/contracts/token/ERC20/extensions/ERC20Votes.sol",
         clock: "@openzeppelin/contracts/token/ERC20/extensions/ERC20Votes.sol",
-        delegate: "@openzeppelin/contracts/token/ERC20/extensions/ERC20Votes.sol",
-        delegateBySig: "@openzeppelin/contracts/token/ERC20/extensions/ERC20Votes.sol",
-        delegates: "@openzeppelin/contracts/token/ERC20/extensions/ERC20Votes.sol",
-        getPastTotalSupply: "@openzeppelin/contracts/token/ERC20/extensions/ERC20Votes.sol",
-        getPastVotes: "@openzeppelin/contracts/token/ERC20/extensions/ERC20Votes.sol",
-        getVotes: "@openzeppelin/contracts/token/ERC20/extensions/ERC20Votes.sol",
-        numCheckpoints: "@openzeppelin/contracts/token/ERC20/extensions/ERC20Votes.sol",
+        delegate:
+          "@openzeppelin/contracts/token/ERC20/extensions/ERC20Votes.sol",
+        delegateBySig:
+          "@openzeppelin/contracts/token/ERC20/extensions/ERC20Votes.sol",
+        delegates:
+          "@openzeppelin/contracts/token/ERC20/extensions/ERC20Votes.sol",
+        getPastTotalSupply:
+          "@openzeppelin/contracts/token/ERC20/extensions/ERC20Votes.sol",
+        getPastVotes:
+          "@openzeppelin/contracts/token/ERC20/extensions/ERC20Votes.sol",
+        getVotes:
+          "@openzeppelin/contracts/token/ERC20/extensions/ERC20Votes.sol",
+        numCheckpoints:
+          "@openzeppelin/contracts/token/ERC20/extensions/ERC20Votes.sol",
       },
     },
     Experience: {
-      address: "0x54B8d8E2455946f2A5B8982283f2359812e815ce",
+      address: "0x8F4ec854Dd12F1fe79500a1f53D0cbB30f9b6134",
       abi: [
         {
           inputs: [
