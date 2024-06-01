@@ -1,6 +1,5 @@
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { DeployFunction } from "hardhat-deploy/types";
-import { Contract } from "ethers";
 import { garnet, mudFoundry, redstone } from "@latticexyz/common/chains";
 
 const BIOMES_MAINNET_WORLD_ADDRESS = "0xf75b1b7bdb6932e487c4aa8d210f4a682abeacf0";
@@ -46,19 +45,25 @@ const deployExperienceContract: DeployFunction = async function (hre: HardhatRun
   }
   console.log("useBiomesWorldAddress", useBiomesWorldAddress);
 
-  await deploy("Experience", {
+  await deploy("BuyChest", {
     from: deployer,
     // Contract constructor arguments
-    args: [useBiomesWorldAddress, "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266"],
+    args: [useBiomesWorldAddress],
     log: true,
     // autoMine: can be passed to the deploy function to make the deployment process faster on local networks by
     // automatically mining the contract deployment transaction. There is no effect on live networks.
     autoMine: true,
   });
 
-  // Get the deployed contract to interact with it after deploying.
-  const experienceContract = await hre.ethers.getContract<Contract>("Experience", deployer);
-  console.log("Biomes World Address:", await experienceContract.biomeWorldAddress());
+  await deploy("SellChest", {
+    from: deployer,
+    // Contract constructor arguments
+    args: [useBiomesWorldAddress],
+    log: true,
+    // autoMine: can be passed to the deploy function to make the deployment process faster on local networks by
+    // automatically mining the contract deployment transaction. There is no effect on live networks.
+    autoMine: true,
+  });
 };
 
 export default deployExperienceContract;
