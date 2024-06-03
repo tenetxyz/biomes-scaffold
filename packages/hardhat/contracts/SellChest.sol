@@ -11,6 +11,11 @@ import { ChestMetadata, ChestMetadataData } from "@biomesaw/world/src/codegen/ta
 import { IChestTransferHook } from "@biomesaw/world/src/prototypes/IChestTransferHook.sol";
 import { PlayerObjectID } from "@biomesaw/world/src/ObjectTypeIds.sol";
 
+struct ShopData {
+  uint8 objectTypeId;
+  uint256 price;
+}
+
 // Players send it ether, and are given items in return.
 contract SellChest is IChestTransferHook {
   address public immutable biomeWorldAddress;
@@ -109,5 +114,14 @@ contract SellChest is IChestTransferHook {
 
   function supportsInterface(bytes4 interfaceId) external view override returns (bool) {
     return interfaceId == type(IChestTransferHook).interfaceId || interfaceId == type(IERC165).interfaceId;
+  }
+
+  function getShopData(bytes32 chestEntityId) external view returns (ShopData[] memory) {
+    uint8[] memory objectTypes = sellObjectTypes[chestEntityId];
+    ShopData[] memory shopData = new ShopData[](objectTypes.length);
+    for (uint i = 0; i < objectTypes.length; i++) {
+      shopData[i] = ShopData({ objectTypeId: objectTypes[i], price: sellObjectPrices[chestEntityId][objectTypes[i]] });
+    }
+    return shopData;
   }
 }

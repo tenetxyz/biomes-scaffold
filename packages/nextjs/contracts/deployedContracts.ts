@@ -7,42 +7,12 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 const deployedContracts = {
   690: {
     Experience: {
-      address: "0x09F61e35b34EB7855fb234dc81109d774Bb16973",
+      address: "0xaE5328d1652f59ba257F1138dC1064F58158A613",
       abi: [
         {
-          inputs: [
-            {
-              internalType: "address",
-              name: "_biomeWorldAddress",
-              type: "address",
-            },
-            {
-              internalType: "address",
-              name: "_delegatorAddress",
-              type: "address",
-            },
-          ],
+          inputs: [],
           stateMutability: "nonpayable",
           type: "constructor",
-        },
-        {
-          anonymous: false,
-          inputs: [
-            {
-              indexed: false,
-              internalType: "address",
-              name: "player",
-              type: "address",
-            },
-            {
-              indexed: false,
-              internalType: "string",
-              name: "message",
-              type: "string",
-            },
-          ],
-          name: "GameNotif",
-          type: "event",
         },
         {
           inputs: [],
@@ -59,38 +29,6 @@ const deployedContracts = {
         },
         {
           inputs: [],
-          name: "biomeWorldAddress",
-          outputs: [
-            {
-              internalType: "address",
-              name: "",
-              type: "address",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "address",
-              name: "delegator",
-              type: "address",
-            },
-          ],
-          name: "canUnregister",
-          outputs: [
-            {
-              internalType: "bool",
-              name: "",
-              type: "bool",
-            },
-          ],
-          stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          inputs: [],
           name: "delegatorAddress",
           outputs: [
             {
@@ -102,153 +40,12 @@ const deployedContracts = {
           stateMutability: "view",
           type: "function",
         },
-        {
-          inputs: [],
-          name: "getRegisteredPlayers",
-          outputs: [
-            {
-              internalType: "address[]",
-              name: "",
-              type: "address[]",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "address",
-              name: "msgSender",
-              type: "address",
-            },
-            {
-              internalType: "ResourceId",
-              name: "systemId",
-              type: "bytes32",
-            },
-            {
-              internalType: "bytes",
-              name: "callData",
-              type: "bytes",
-            },
-          ],
-          name: "onAfterCallSystem",
-          outputs: [],
-          stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "address",
-              name: "msgSender",
-              type: "address",
-            },
-            {
-              internalType: "ResourceId",
-              name: "systemId",
-              type: "bytes32",
-            },
-            {
-              internalType: "bytes",
-              name: "callData",
-              type: "bytes",
-            },
-          ],
-          name: "onBeforeCallSystem",
-          outputs: [],
-          stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "address",
-              name: "msgSender",
-              type: "address",
-            },
-            {
-              internalType: "ResourceId",
-              name: "systemId",
-              type: "bytes32",
-            },
-            {
-              internalType: "uint8",
-              name: "enabledHooksBitmap",
-              type: "uint8",
-            },
-            {
-              internalType: "bytes32",
-              name: "callDataHash",
-              type: "bytes32",
-            },
-          ],
-          name: "onRegisterHook",
-          outputs: [],
-          stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "address",
-              name: "msgSender",
-              type: "address",
-            },
-            {
-              internalType: "ResourceId",
-              name: "systemId",
-              type: "bytes32",
-            },
-            {
-              internalType: "uint8",
-              name: "enabledHooksBitmap",
-              type: "uint8",
-            },
-            {
-              internalType: "bytes32",
-              name: "callDataHash",
-              type: "bytes32",
-            },
-          ],
-          name: "onUnregisterHook",
-          outputs: [],
-          stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "bytes4",
-              name: "interfaceId",
-              type: "bytes4",
-            },
-          ],
-          name: "supportsInterface",
-          outputs: [
-            {
-              internalType: "bool",
-              name: "",
-              type: "bool",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
       ],
-      inheritedFunctions: {
-        canUnregister: "@latticexyz/world/src/ICustomUnregisterDelegation.sol",
-        supportsInterface: "@latticexyz/world/src/IOptionalSystemHook.sol",
-        onAfterCallSystem: "@latticexyz/world/src/IOptionalSystemHook.sol",
-        onBeforeCallSystem: "@latticexyz/world/src/IOptionalSystemHook.sol",
-        onRegisterHook: "@latticexyz/world/src/IOptionalSystemHook.sol",
-        onUnregisterHook: "@latticexyz/world/src/IOptionalSystemHook.sol",
-      },
+      inheritedFunctions: {},
     },
   },
   17069: {
-    Experience: {
+    Game: {
       address: "0xaFFFd91f427b81e0e56be9A4b6369f8DE6f24994",
       abi: [
         {
@@ -490,8 +287,8 @@ const deployedContracts = {
     },
   },
   31337: {
-    Experience: {
-      address: "0x71089Ba41e478702e1904692385Be3972B2cBf9e",
+    BuyChest: {
+      address: "0x139e1D41943ee15dDe4DF876f9d0E7F85e26660A",
       abi: [
         {
           inputs: [
@@ -500,45 +297,73 @@ const deployedContracts = {
               name: "_biomeWorldAddress",
               type: "address",
             },
-            {
-              internalType: "address",
-              name: "_delegatorAddress",
-              type: "address",
-            },
           ],
           stateMutability: "nonpayable",
           type: "constructor",
         },
         {
-          anonymous: false,
           inputs: [
             {
-              indexed: false,
-              internalType: "address",
-              name: "player",
-              type: "address",
+              internalType: "bytes",
+              name: "data",
+              type: "bytes",
             },
-            {
-              indexed: false,
-              internalType: "string",
-              name: "message",
-              type: "string",
-            },
-          ],
-          name: "GameNotif",
-          type: "event",
-        },
-        {
-          inputs: [],
-          name: "basicGetter",
-          outputs: [
             {
               internalType: "uint256",
-              name: "",
+              name: "start",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "end",
               type: "uint256",
             },
           ],
-          stateMutability: "view",
+          name: "Slice_OutOfBounds",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "srcEntityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "bytes32",
+              name: "dstEntityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "uint8",
+              name: "transferObjectTypeId",
+              type: "uint8",
+            },
+            {
+              internalType: "uint16",
+              name: "numToTransfer",
+              type: "uint16",
+            },
+            {
+              internalType: "bytes32",
+              name: "toolEntityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "bytes",
+              name: "extraData",
+              type: "bytes",
+            },
+          ],
+          name: "allowTransfer",
+          outputs: [
+            {
+              internalType: "bool",
+              name: "",
+              type: "bool",
+            },
+          ],
+          stateMutability: "payable",
           type: "function",
         },
         {
@@ -557,12 +382,197 @@ const deployedContracts = {
         {
           inputs: [
             {
-              internalType: "address",
-              name: "delegator",
-              type: "address",
+              internalType: "bytes32",
+              name: "",
+              type: "bytes32",
+            },
+            {
+              internalType: "uint8",
+              name: "",
+              type: "uint8",
             },
           ],
-          name: "canUnregister",
+          name: "buyObjectBalances",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "",
+              type: "bytes32",
+            },
+            {
+              internalType: "uint8",
+              name: "",
+              type: "uint8",
+            },
+          ],
+          name: "buyObjectPrices",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "",
+              type: "bytes32",
+            },
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          name: "buyObjectTypes",
+          outputs: [
+            {
+              internalType: "uint8",
+              name: "",
+              type: "uint8",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "chestEntityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "uint8",
+              name: "buyObjectTypeId",
+              type: "uint8",
+            },
+            {
+              internalType: "uint256",
+              name: "newPrice",
+              type: "uint256",
+            },
+          ],
+          name: "changeBuyPrice",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "chestEntityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "uint8",
+              name: "buyObjectTypeId",
+              type: "uint8",
+            },
+          ],
+          name: "destroyBuyChest",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "chestEntityId",
+              type: "bytes32",
+            },
+          ],
+          name: "getShopData",
+          outputs: [
+            {
+              components: [
+                {
+                  internalType: "uint8",
+                  name: "objectTypeId",
+                  type: "uint8",
+                },
+                {
+                  internalType: "uint256",
+                  name: "price",
+                  type: "uint256",
+                },
+              ],
+              internalType: "struct ShopData[]",
+              name: "",
+              type: "tuple[]",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "chestEntityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "uint8",
+              name: "buyObjectTypeId",
+              type: "uint8",
+            },
+          ],
+          name: "refillBuyChestBalance",
+          outputs: [],
+          stateMutability: "payable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "chestEntityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "uint8",
+              name: "buyObjectTypeId",
+              type: "uint8",
+            },
+            {
+              internalType: "uint256",
+              name: "buyPrice",
+              type: "uint256",
+            },
+          ],
+          name: "setupBuyChest",
+          outputs: [],
+          stateMutability: "payable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes4",
+              name: "interfaceId",
+              type: "bytes4",
+            },
+          ],
+          name: "supportsInterface",
           outputs: [
             {
               internalType: "bool",
@@ -570,131 +580,144 @@ const deployedContracts = {
               type: "bool",
             },
           ],
-          stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          inputs: [],
-          name: "delegatorAddress",
-          outputs: [
-            {
-              internalType: "address",
-              name: "",
-              type: "address",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [],
-          name: "getDisplayName",
-          outputs: [
-            {
-              internalType: "string",
-              name: "",
-              type: "string",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [],
-          name: "getRegisteredPlayers",
-          outputs: [
-            {
-              internalType: "address[]",
-              name: "",
-              type: "address[]",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [],
-          name: "getStatus",
-          outputs: [
-            {
-              internalType: "string",
-              name: "",
-              type: "string",
-            },
-          ],
           stateMutability: "view",
           type: "function",
         },
         {
           inputs: [
             {
-              internalType: "address",
-              name: "msgSender",
-              type: "address",
-            },
-            {
-              internalType: "ResourceId",
-              name: "systemId",
-              type: "bytes32",
-            },
-            {
-              internalType: "bytes",
-              name: "callData",
-              type: "bytes",
-            },
-          ],
-          name: "onAfterCallSystem",
-          outputs: [],
-          stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "address",
-              name: "msgSender",
-              type: "address",
-            },
-            {
-              internalType: "ResourceId",
-              name: "systemId",
-              type: "bytes32",
-            },
-            {
-              internalType: "bytes",
-              name: "callData",
-              type: "bytes",
-            },
-          ],
-          name: "onBeforeCallSystem",
-          outputs: [],
-          stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "address",
-              name: "msgSender",
-              type: "address",
-            },
-            {
-              internalType: "ResourceId",
-              name: "systemId",
+              internalType: "bytes32",
+              name: "chestEntityId",
               type: "bytes32",
             },
             {
               internalType: "uint8",
-              name: "enabledHooksBitmap",
+              name: "buyObjectTypeId",
               type: "uint8",
             },
             {
-              internalType: "bytes32",
-              name: "callDataHash",
-              type: "bytes32",
+              internalType: "uint256",
+              name: "amount",
+              type: "uint256",
             },
           ],
-          name: "onRegisterHook",
+          name: "withdrawBuyChestBalance",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+      ],
+      inheritedFunctions: {
+        allowTransfer: "@biomesaw/world/src/prototypes/IChestTransferHook.sol",
+        supportsInterface: "@biomesaw/world/src/prototypes/IChestTransferHook.sol",
+      },
+    },
+    SellChest: {
+      address: "0xAdE429ba898c34722e722415D722A70a297cE3a2",
+      abi: [
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "_biomeWorldAddress",
+              type: "address",
+            },
+          ],
+          stateMutability: "nonpayable",
+          type: "constructor",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes",
+              name: "data",
+              type: "bytes",
+            },
+            {
+              internalType: "uint256",
+              name: "start",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "end",
+              type: "uint256",
+            },
+          ],
+          name: "Slice_OutOfBounds",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "srcEntityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "bytes32",
+              name: "dstEntityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "uint8",
+              name: "transferObjectTypeId",
+              type: "uint8",
+            },
+            {
+              internalType: "uint16",
+              name: "numToTransfer",
+              type: "uint16",
+            },
+            {
+              internalType: "bytes32",
+              name: "toolEntityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "bytes",
+              name: "extraData",
+              type: "bytes",
+            },
+          ],
+          name: "allowTransfer",
+          outputs: [
+            {
+              internalType: "bool",
+              name: "",
+              type: "bool",
+            },
+          ],
+          stateMutability: "payable",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "biomeWorldAddress",
+          outputs: [
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "chestEntityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "uint8",
+              name: "sellObjectTypeId",
+              type: "uint8",
+            },
+          ],
+          name: "destroySellChest",
           outputs: [],
           stateMutability: "nonpayable",
           type: "function",
@@ -702,27 +725,101 @@ const deployedContracts = {
         {
           inputs: [
             {
-              internalType: "address",
-              name: "msgSender",
-              type: "address",
+              internalType: "bytes32",
+              name: "chestEntityId",
+              type: "bytes32",
             },
+          ],
+          name: "getShopData",
+          outputs: [
             {
-              internalType: "ResourceId",
-              name: "systemId",
+              components: [
+                {
+                  internalType: "uint8",
+                  name: "objectTypeId",
+                  type: "uint8",
+                },
+                {
+                  internalType: "uint256",
+                  name: "price",
+                  type: "uint256",
+                },
+              ],
+              internalType: "struct ShopData[]",
+              name: "",
+              type: "tuple[]",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "",
               type: "bytes32",
             },
             {
               internalType: "uint8",
-              name: "enabledHooksBitmap",
+              name: "",
+              type: "uint8",
+            },
+          ],
+          name: "sellObjectPrices",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "",
+              type: "bytes32",
+            },
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          name: "sellObjectTypes",
+          outputs: [
+            {
+              internalType: "uint8",
+              name: "",
+              type: "uint8",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "chestEntityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "uint8",
+              name: "sellObjectTypeId",
               type: "uint8",
             },
             {
-              internalType: "bytes32",
-              name: "callDataHash",
-              type: "bytes32",
+              internalType: "uint256",
+              name: "sellPrice",
+              type: "uint256",
             },
           ],
-          name: "onUnregisterHook",
+          name: "setupSellChest",
           outputs: [],
           stateMutability: "nonpayable",
           type: "function",
@@ -748,12 +845,8 @@ const deployedContracts = {
         },
       ],
       inheritedFunctions: {
-        canUnregister: "@latticexyz/world/src/ICustomUnregisterDelegation.sol",
-        supportsInterface: "@latticexyz/world/src/IOptionalSystemHook.sol",
-        onAfterCallSystem: "@latticexyz/world/src/IOptionalSystemHook.sol",
-        onBeforeCallSystem: "@latticexyz/world/src/IOptionalSystemHook.sol",
-        onRegisterHook: "@latticexyz/world/src/IOptionalSystemHook.sol",
-        onUnregisterHook: "@latticexyz/world/src/IOptionalSystemHook.sol",
+        allowTransfer: "@biomesaw/world/src/prototypes/IChestTransferHook.sol",
+        supportsInterface: "@biomesaw/world/src/prototypes/IChestTransferHook.sol",
       },
     },
   },
