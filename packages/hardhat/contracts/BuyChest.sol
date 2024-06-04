@@ -59,7 +59,13 @@ contract BuyChest is IChestTransferHook {
   }
 
   function onHookSet(bytes32 chestEntityId) external onlyBiomeWorld {
+    ChestMetadataData memory chestMetadata = ChestMetadata.get(chestEntityId);
     shopData[chestEntityId] = ShopData({ objectTypeId: 0, price: 0 });
+
+    uint256 currentBalance = balances[chestMetadata.owner][chestEntityId];
+    if (currentBalance > 0) {
+      doWithdraw(chestMetadata.owner, chestEntityId, currentBalance);
+    }
   }
 
   function setupBuyChest(bytes32 chestEntityId, uint8 buyObjectTypeId, uint256 buyPrice) external payable {
@@ -99,14 +105,19 @@ contract BuyChest is IChestTransferHook {
 
   function withdrawBuyChestBalance(bytes32 chestEntityId, uint256 amount) public {
     // Note: We don't read ChestMetadataData here because the chest may have been destroyed.
-    require(balances[msg.sender][chestEntityId] >= amount, "Insufficient balance");
-    balances[msg.sender][chestEntityId] -= amount;
+    doWithdraw(msg.sender, chestEntityId, amount);
+  }
 
-    if (balances[msg.sender][chestEntityId] == 0) {
-      removeOwnedChest(msg.sender, chestEntityId);
+  function doWithdraw(address player, bytes32 chestEntityId, uint256 amount) internal {
+    require(amount > 0, "Amount must be greater than 0");
+    require(balances[player][chestEntityId] >= amount, "Insufficient balance");
+    balances[player][chestEntityId] -= amount;
+
+    if (balances[player][chestEntityId] == 0) {
+      removeOwnedChest(player, chestEntityId);
     }
 
-    (bool sent, ) = msg.sender.call{ value: amount }("");
+    (bool sent, ) = player.call{ value: amount }("");
     require(sent, "Failed to send Ether");
   }
 

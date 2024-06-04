@@ -288,7 +288,7 @@ const deployedContracts = {
   },
   31337: {
     BuyChest: {
-      address: "0x63fea6E447F120B8Faf85B53cdaD8348e645D80E",
+      address: "0xaC9fCBA56E42d5960f813B9D0387F3D3bC003338",
       abi: [
         {
           inputs: [
@@ -598,7 +598,7 @@ const deployedContracts = {
       },
     },
     SellChest: {
-      address: "0x9BcC604D4381C5b0Ad12Ff3Bf32bEdE063416BC7",
+      address: "0x38A70c040CA5F5439ad52d0e821063b0EC0B52b6",
       abi: [
         {
           inputs: [
