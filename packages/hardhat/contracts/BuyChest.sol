@@ -59,7 +59,6 @@ contract BuyChest is IChestTransferHook {
   }
 
   function onHookSet(bytes32 chestEntityId) external onlyBiomeWorld {
-    ChestMetadataData memory chestMetadata = ChestMetadata.get(chestEntityId);
     shopData[chestEntityId] = ShopData({ objectTypeId: 0, price: 0 });
   }
 
@@ -78,16 +77,19 @@ contract BuyChest is IChestTransferHook {
     uint8 buyObjectTypeId,
     uint256 newPrice,
     uint256 withdrawAmount
-  ) external {
+  ) external payable {
     ChestMetadataData memory chestMetadata = ChestMetadata.get(chestEntityId);
     require(chestMetadata.owner == msg.sender, "Only the owner can change the price");
     require(shopData[chestEntityId].objectTypeId == buyObjectTypeId, "Chest is not set up");
 
     shopData[chestEntityId].price = newPrice;
+
+    balances[chestMetadata.owner][chestEntityId] += msg.value;
+
     withdrawBuyChestBalance(chestEntityId, withdrawAmount);
   }
 
-  function refillBuyChestBalance(bytes32 chestEntityId, uint8 buyObjectTypeId) external payable {
+  function refillBuyChestBalance(bytes32 chestEntityId, uint8 buyObjectTypeId) public payable {
     ChestMetadataData memory chestMetadata = ChestMetadata.get(chestEntityId);
     require(chestMetadata.owner == msg.sender, "Only the owner can refill the chest");
     require(shopData[chestEntityId].objectTypeId == buyObjectTypeId, "Chest is not set up");
@@ -100,6 +102,10 @@ contract BuyChest is IChestTransferHook {
     require(balances[msg.sender][chestEntityId] >= amount, "Insufficient balance");
     balances[msg.sender][chestEntityId] -= amount;
 
+    if (balances[msg.sender][chestEntityId] == 0) {
+      removeOwnedChest(msg.sender, chestEntityId);
+    }
+
     (bool sent, ) = msg.sender.call{ value: amount }("");
     require(sent, "Failed to send Ether");
   }
@@ -111,7 +117,6 @@ contract BuyChest is IChestTransferHook {
 
     withdrawBuyChestBalance(chestEntityId, balances[chestMetadata.owner][chestEntityId]);
     shopData[chestEntityId] = ShopData({ objectTypeId: 0, price: 0 });
-    removeOwnedChest(chestMetadata.owner, chestEntityId);
   }
 
   function allowTransfer(
@@ -148,11 +153,11 @@ contract BuyChest is IChestTransferHook {
       return false;
     }
 
+    balances[chestMetadata.owner][dstEntityId] -= amountToPay;
+
     address player = ReversePlayer.get(srcEntityId);
     (bool sent, ) = player.call{ value: amountToPay }("");
     require(sent, "Failed to send Ether");
-
-    balances[chestMetadata.owner][dstEntityId] -= amountToPay;
 
     return true;
   }

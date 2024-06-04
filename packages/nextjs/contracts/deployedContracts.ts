@@ -288,7 +288,7 @@ const deployedContracts = {
   },
   31337: {
     BuyChest: {
-      address: "0xaC47e91215fb80462139756f43438402998E4A3a",
+      address: "0x63fea6E447F120B8Faf85B53cdaD8348e645D80E",
       abi: [
         {
           inputs: [
@@ -404,7 +404,7 @@ const deployedContracts = {
           ],
           name: "changeBuyPrice",
           outputs: [],
-          stateMutability: "nonpayable",
+          stateMutability: "payable",
           type: "function",
         },
         {
