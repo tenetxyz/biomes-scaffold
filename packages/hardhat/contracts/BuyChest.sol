@@ -78,24 +78,15 @@ contract BuyChest is IChestTransferHook {
     safeAddOwnedChest(chestMetadata.owner, chestEntityId);
   }
 
-  function changeBuyPrice(
-    bytes32 chestEntityId,
-    uint8 buyObjectTypeId,
-    uint256 newPrice,
-    uint256 withdrawAmount
-  ) external payable {
+  function changeBuyPrice(bytes32 chestEntityId, uint8 buyObjectTypeId, uint256 newPrice) external {
     ChestMetadataData memory chestMetadata = ChestMetadata.get(chestEntityId);
     require(chestMetadata.owner == msg.sender, "Only the owner can change the price");
     require(shopData[chestEntityId].objectTypeId == buyObjectTypeId, "Chest is not set up");
 
     shopData[chestEntityId].price = newPrice;
-
-    balances[chestMetadata.owner][chestEntityId] += msg.value;
-
-    withdrawBuyChestBalance(chestEntityId, withdrawAmount);
   }
 
-  function refillBuyChestBalance(bytes32 chestEntityId, uint8 buyObjectTypeId) public payable {
+  function refillBuyChestBalance(bytes32 chestEntityId, uint8 buyObjectTypeId) external payable {
     ChestMetadataData memory chestMetadata = ChestMetadata.get(chestEntityId);
     require(chestMetadata.owner == msg.sender, "Only the owner can refill the chest");
     require(shopData[chestEntityId].objectTypeId == buyObjectTypeId, "Chest is not set up");

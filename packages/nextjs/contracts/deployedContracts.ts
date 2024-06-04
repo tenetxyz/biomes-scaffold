@@ -288,7 +288,7 @@ const deployedContracts = {
   },
   31337: {
     BuyChest: {
-      address: "0xaC9fCBA56E42d5960f813B9D0387F3D3bC003338",
+      address: "0xaC47e91215fb80462139756f43438402998E4A3a",
       abi: [
         {
           inputs: [
@@ -396,15 +396,10 @@ const deployedContracts = {
               name: "newPrice",
               type: "uint256",
             },
-            {
-              internalType: "uint256",
-              name: "withdrawAmount",
-              type: "uint256",
-            },
           ],
           name: "changeBuyPrice",
           outputs: [],
-          stateMutability: "payable",
+          stateMutability: "nonpayable",
           type: "function",
         },
         {
@@ -598,7 +593,7 @@ const deployedContracts = {
       },
     },
     SellChest: {
-      address: "0x38A70c040CA5F5439ad52d0e821063b0EC0B52b6",
+      address: "0x9BcC604D4381C5b0Ad12Ff3Bf32bEdE063416BC7",
       abi: [
         {
           inputs: [
