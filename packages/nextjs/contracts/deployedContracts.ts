@@ -288,7 +288,7 @@ const deployedContracts = {
   },
   31337: {
     BuyChest: {
-      address: "0x139e1D41943ee15dDe4DF876f9d0E7F85e26660A",
+      address: "0xaC47e91215fb80462139756f43438402998E4A3a",
       abi: [
         {
           inputs: [
@@ -383,78 +383,6 @@ const deployedContracts = {
           inputs: [
             {
               internalType: "bytes32",
-              name: "",
-              type: "bytes32",
-            },
-            {
-              internalType: "uint8",
-              name: "",
-              type: "uint8",
-            },
-          ],
-          name: "buyObjectBalances",
-          outputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "bytes32",
-              name: "",
-              type: "bytes32",
-            },
-            {
-              internalType: "uint8",
-              name: "",
-              type: "uint8",
-            },
-          ],
-          name: "buyObjectPrices",
-          outputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "bytes32",
-              name: "",
-              type: "bytes32",
-            },
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
-            },
-          ],
-          name: "buyObjectTypes",
-          outputs: [
-            {
-              internalType: "uint8",
-              name: "",
-              type: "uint8",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "bytes32",
               name: "chestEntityId",
               type: "bytes32",
             },
@@ -466,6 +394,11 @@ const deployedContracts = {
             {
               internalType: "uint256",
               name: "newPrice",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "withdrawAmount",
               type: "uint256",
             },
           ],
@@ -495,6 +428,49 @@ const deployedContracts = {
         {
           inputs: [
             {
+              internalType: "address",
+              name: "player",
+              type: "address",
+            },
+            {
+              internalType: "bytes32",
+              name: "chestEntityId",
+              type: "bytes32",
+            },
+          ],
+          name: "getBalance",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "player",
+              type: "address",
+            },
+          ],
+          name: "getOwnedChests",
+          outputs: [
+            {
+              internalType: "bytes32[]",
+              name: "",
+              type: "bytes32[]",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
               internalType: "bytes32",
               name: "chestEntityId",
               type: "bytes32",
@@ -515,12 +491,25 @@ const deployedContracts = {
                   type: "uint256",
                 },
               ],
-              internalType: "struct ShopData[]",
+              internalType: "struct ShopData",
               name: "",
-              type: "tuple[]",
+              type: "tuple",
             },
           ],
           stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "chestEntityId",
+              type: "bytes32",
+            },
+          ],
+          name: "onHookSet",
+          outputs: [],
+          stateMutability: "nonpayable",
           type: "function",
         },
         {
@@ -591,11 +580,6 @@ const deployedContracts = {
               type: "bytes32",
             },
             {
-              internalType: "uint8",
-              name: "buyObjectTypeId",
-              type: "uint8",
-            },
-            {
               internalType: "uint256",
               name: "amount",
               type: "uint256",
@@ -609,11 +593,12 @@ const deployedContracts = {
       ],
       inheritedFunctions: {
         allowTransfer: "@biomesaw/world/src/prototypes/IChestTransferHook.sol",
+        onHookSet: "@biomesaw/world/src/prototypes/IChestTransferHook.sol",
         supportsInterface: "@biomesaw/world/src/prototypes/IChestTransferHook.sol",
       },
     },
     SellChest: {
-      address: "0xAdE429ba898c34722e722415D722A70a297cE3a2",
+      address: "0x9BcC604D4381C5b0Ad12Ff3Bf32bEdE063416BC7",
       abi: [
         {
           inputs: [
@@ -745,9 +730,9 @@ const deployedContracts = {
                   type: "uint256",
                 },
               ],
-              internalType: "struct ShopData[]",
+              internalType: "struct ShopData",
               name: "",
-              type: "tuple[]",
+              type: "tuple",
             },
           ],
           stateMutability: "view",
@@ -757,48 +742,13 @@ const deployedContracts = {
           inputs: [
             {
               internalType: "bytes32",
-              name: "",
+              name: "chestEntityId",
               type: "bytes32",
             },
-            {
-              internalType: "uint8",
-              name: "",
-              type: "uint8",
-            },
           ],
-          name: "sellObjectPrices",
-          outputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "bytes32",
-              name: "",
-              type: "bytes32",
-            },
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
-            },
-          ],
-          name: "sellObjectTypes",
-          outputs: [
-            {
-              internalType: "uint8",
-              name: "",
-              type: "uint8",
-            },
-          ],
-          stateMutability: "view",
+          name: "onHookSet",
+          outputs: [],
+          stateMutability: "nonpayable",
           type: "function",
         },
         {
@@ -846,6 +796,7 @@ const deployedContracts = {
       ],
       inheritedFunctions: {
         allowTransfer: "@biomesaw/world/src/prototypes/IChestTransferHook.sol",
+        onHookSet: "@biomesaw/world/src/prototypes/IChestTransferHook.sol",
         supportsInterface: "@biomesaw/world/src/prototypes/IChestTransferHook.sol",
       },
     },

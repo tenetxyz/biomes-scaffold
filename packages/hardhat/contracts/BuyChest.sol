@@ -20,9 +20,10 @@ struct ShopData {
 contract BuyChest is IChestTransferHook {
   address public immutable biomeWorldAddress;
 
-  mapping(bytes32 => mapping(uint8 => uint256)) public buyObjectPrices;
-  mapping(bytes32 => mapping(uint8 => uint256)) public buyObjectBalances;
-  mapping(bytes32 => uint8[]) public buyObjectTypes;
+  // Note: for now, we only support shops buying one type of object.
+  mapping(bytes32 => ShopData) private shopData;
+  mapping(address => mapping(bytes32 => uint256)) private balances;
+  mapping(address => bytes32[]) private ownedChests;
 
   constructor(address _biomeWorldAddress) {
     biomeWorldAddress = _biomeWorldAddress;
@@ -37,57 +38,67 @@ contract BuyChest is IChestTransferHook {
     _; // Continue execution
   }
 
-  function safeAddObjectType(bytes32 chestEntityId, uint8 buyObjectTypeId) internal {
-    for (uint8 i = 0; i < buyObjectTypes[chestEntityId].length; i++) {
-      if (buyObjectTypes[chestEntityId][i] == buyObjectTypeId) {
+  function safeAddOwnedChest(address player, bytes32 chestEntityId) internal {
+    for (uint i = 0; i < ownedChests[player].length; i++) {
+      if (ownedChests[player][i] == chestEntityId) {
         return;
       }
     }
-    buyObjectTypes[chestEntityId].push(buyObjectTypeId);
+    ownedChests[player].push(chestEntityId);
   }
 
-  function isBuying(bytes32 chestEntityId, uint8 buyObjectTypeId) internal view returns (bool) {
-    for (uint i = 0; i < buyObjectTypes[chestEntityId].length; i++) {
-      if (buyObjectTypes[chestEntityId][i] == buyObjectTypeId) {
-        return true;
+  function removeOwnedChest(address player, bytes32 chestEntityId) internal {
+    bytes32[] storage chests = ownedChests[player];
+    for (uint i = 0; i < chests.length; i++) {
+      if (chests[i] == chestEntityId) {
+        chests[i] = chests[chests.length - 1];
+        chests.pop();
+        return;
       }
     }
-    return false;
+  }
+
+  function onHookSet(bytes32 chestEntityId) external onlyBiomeWorld {
+    ChestMetadataData memory chestMetadata = ChestMetadata.get(chestEntityId);
+    shopData[chestEntityId] = ShopData({ objectTypeId: 0, price: 0 });
   }
 
   function setupBuyChest(bytes32 chestEntityId, uint8 buyObjectTypeId, uint256 buyPrice) external payable {
     ChestMetadataData memory chestMetadata = ChestMetadata.get(chestEntityId);
     require(chestMetadata.owner == msg.sender, "Only the owner can set up the chest");
-    require(buyObjectBalances[chestEntityId][buyObjectTypeId] == 0, "Chest already has a balance");
+    require(balances[chestMetadata.owner][chestEntityId] == 0, "Chest already has a balance");
 
-    buyObjectPrices[chestEntityId][buyObjectTypeId] = buyPrice;
-    buyObjectBalances[chestEntityId][buyObjectTypeId] = msg.value;
-
-    safeAddObjectType(chestEntityId, buyObjectTypeId);
+    shopData[chestEntityId] = ShopData({ objectTypeId: buyObjectTypeId, price: buyPrice });
+    balances[chestMetadata.owner][chestEntityId] = msg.value;
+    safeAddOwnedChest(chestMetadata.owner, chestEntityId);
   }
 
-  function changeBuyPrice(bytes32 chestEntityId, uint8 buyObjectTypeId, uint256 newPrice) external {
+  function changeBuyPrice(
+    bytes32 chestEntityId,
+    uint8 buyObjectTypeId,
+    uint256 newPrice,
+    uint256 withdrawAmount
+  ) external {
     ChestMetadataData memory chestMetadata = ChestMetadata.get(chestEntityId);
     require(chestMetadata.owner == msg.sender, "Only the owner can change the price");
-    require(buyObjectBalances[chestEntityId][buyObjectTypeId] > 0, "Chest has no balance");
+    require(shopData[chestEntityId].objectTypeId == buyObjectTypeId, "Chest is not set up");
 
-    buyObjectPrices[chestEntityId][buyObjectTypeId] = newPrice;
+    shopData[chestEntityId].price = newPrice;
+    withdrawBuyChestBalance(chestEntityId, withdrawAmount);
   }
 
   function refillBuyChestBalance(bytes32 chestEntityId, uint8 buyObjectTypeId) external payable {
     ChestMetadataData memory chestMetadata = ChestMetadata.get(chestEntityId);
     require(chestMetadata.owner == msg.sender, "Only the owner can refill the chest");
-    require(buyObjectPrices[chestEntityId][buyObjectTypeId] > 0, "Chest has no price");
+    require(shopData[chestEntityId].objectTypeId == buyObjectTypeId, "Chest is not set up");
 
-    buyObjectBalances[chestEntityId][buyObjectTypeId] += msg.value;
+    balances[chestMetadata.owner][chestEntityId] += msg.value;
   }
 
-  function withdrawBuyChestBalance(bytes32 chestEntityId, uint8 buyObjectTypeId, uint256 amount) public {
-    ChestMetadataData memory chestMetadata = ChestMetadata.get(chestEntityId);
-    require(chestMetadata.owner == msg.sender, "Only the owner can withdraw from the chest");
-
-    require(buyObjectBalances[chestEntityId][buyObjectTypeId] >= amount, "Insufficient balance");
-    buyObjectBalances[chestEntityId][buyObjectTypeId] -= amount;
+  function withdrawBuyChestBalance(bytes32 chestEntityId, uint256 amount) public {
+    // Note: We don't read ChestMetadataData here because the chest may have been destroyed.
+    require(balances[msg.sender][chestEntityId] >= amount, "Insufficient balance");
+    balances[msg.sender][chestEntityId] -= amount;
 
     (bool sent, ) = msg.sender.call{ value: amount }("");
     require(sent, "Failed to send Ether");
@@ -96,18 +107,11 @@ contract BuyChest is IChestTransferHook {
   function destroyBuyChest(bytes32 chestEntityId, uint8 buyObjectTypeId) external {
     ChestMetadataData memory chestMetadata = ChestMetadata.get(chestEntityId);
     require(chestMetadata.owner == msg.sender, "Only the owner can destroy the chest");
+    require(shopData[chestEntityId].objectTypeId == buyObjectTypeId, "Chest is not set up");
 
-    withdrawBuyChestBalance(chestEntityId, buyObjectTypeId, buyObjectBalances[chestEntityId][buyObjectTypeId]);
-    buyObjectPrices[chestEntityId][buyObjectTypeId] = 0;
-
-    uint8[] storage buyTypes = buyObjectTypes[chestEntityId];
-    for (uint i = 0; i < buyTypes.length; i++) {
-      if (buyTypes[i] == buyObjectTypeId) {
-        buyTypes[i] = buyTypes[buyTypes.length - 1];
-        buyTypes.pop();
-        break;
-      }
-    }
+    withdrawBuyChestBalance(chestEntityId, balances[chestMetadata.owner][chestEntityId]);
+    shopData[chestEntityId] = ShopData({ objectTypeId: 0, price: 0 });
+    removeOwnedChest(chestMetadata.owner, chestEntityId);
   }
 
   function allowTransfer(
@@ -118,22 +122,28 @@ contract BuyChest is IChestTransferHook {
     bytes32 toolEntityId,
     bytes memory extraData
   ) external payable onlyBiomeWorld returns (bool) {
-    bool isDeposit = ObjectType.get(srcEntityId) == PlayerObjectID;
-    if (!isDeposit) {
-      return false;
+    {
+      bool isDeposit = ObjectType.get(srcEntityId) == PlayerObjectID;
+      if (!isDeposit) {
+        return false;
+      }
     }
-    if (!isBuying(dstEntityId, transferObjectTypeId)) {
+
+    ShopData storage chestShopData = shopData[dstEntityId];
+    if (chestShopData.objectTypeId != transferObjectTypeId) {
       return false;
     }
 
-    uint256 buyPrice = buyObjectPrices[dstEntityId][transferObjectTypeId];
+    uint256 buyPrice = chestShopData.price;
     if (buyPrice == 0) {
       return true;
     }
 
     uint256 amountToPay = numToTransfer * buyPrice;
+
     // Check if there is enough balance in the chest
-    uint256 balance = buyObjectBalances[dstEntityId][transferObjectTypeId];
+    ChestMetadataData memory chestMetadata = ChestMetadata.get(dstEntityId);
+    uint256 balance = balances[chestMetadata.owner][dstEntityId];
     if (balance < amountToPay) {
       return false;
     }
@@ -142,7 +152,7 @@ contract BuyChest is IChestTransferHook {
     (bool sent, ) = player.call{ value: amountToPay }("");
     require(sent, "Failed to send Ether");
 
-    buyObjectBalances[dstEntityId][transferObjectTypeId] -= amountToPay;
+    balances[chestMetadata.owner][dstEntityId] -= amountToPay;
 
     return true;
   }
@@ -151,12 +161,15 @@ contract BuyChest is IChestTransferHook {
     return interfaceId == type(IChestTransferHook).interfaceId || interfaceId == type(IERC165).interfaceId;
   }
 
-  function getShopData(bytes32 chestEntityId) external view returns (ShopData[] memory) {
-    uint8[] memory objectTypes = buyObjectTypes[chestEntityId];
-    ShopData[] memory shopData = new ShopData[](objectTypes.length);
-    for (uint i = 0; i < objectTypes.length; i++) {
-      shopData[i] = ShopData({ objectTypeId: objectTypes[i], price: buyObjectPrices[chestEntityId][objectTypes[i]] });
-    }
-    return shopData;
+  function getShopData(bytes32 chestEntityId) external view returns (ShopData memory) {
+    return shopData[chestEntityId];
+  }
+
+  function getOwnedChests(address player) external view returns (bytes32[] memory) {
+    return ownedChests[player];
+  }
+
+  function getBalance(address player, bytes32 chestEntityId) external view returns (uint256) {
+    return balances[player][chestEntityId];
   }
 }

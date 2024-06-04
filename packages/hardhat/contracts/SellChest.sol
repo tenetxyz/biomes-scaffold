@@ -20,8 +20,8 @@ struct ShopData {
 contract SellChest is IChestTransferHook {
   address public immutable biomeWorldAddress;
 
-  mapping(bytes32 => mapping(uint8 => uint256)) public sellObjectPrices;
-  mapping(bytes32 => uint8[]) public sellObjectTypes;
+  // Note: for now, we only support shops selling one type of object.
+  mapping(bytes32 => ShopData) private shopData;
 
   constructor(address _biomeWorldAddress) {
     biomeWorldAddress = _biomeWorldAddress;
@@ -36,46 +36,22 @@ contract SellChest is IChestTransferHook {
     _; // Continue execution
   }
 
-  function safeAddObjectType(bytes32 chestEntityId, uint8 sellObjectTypeId) internal {
-    for (uint8 i = 0; i < sellObjectTypes[chestEntityId].length; i++) {
-      if (sellObjectTypes[chestEntityId][i] == sellObjectTypeId) {
-        return;
-      }
-    }
-    sellObjectTypes[chestEntityId].push(sellObjectTypeId);
-  }
-
-  function isSelling(bytes32 chestEntityId, uint8 sellObjectTypeId) internal view returns (bool) {
-    for (uint i = 0; i < sellObjectTypes[chestEntityId].length; i++) {
-      if (sellObjectTypes[chestEntityId][i] == sellObjectTypeId) {
-        return true;
-      }
-    }
-    return false;
+  function onHookSet(bytes32 chestEntityId) external onlyBiomeWorld {
+    shopData[chestEntityId] = ShopData({ objectTypeId: 0, price: 0 });
   }
 
   function setupSellChest(bytes32 chestEntityId, uint8 sellObjectTypeId, uint256 sellPrice) external {
     ChestMetadataData memory chestMetadata = ChestMetadata.get(chestEntityId);
     require(chestMetadata.owner == msg.sender, "Only the owner can set up the chest");
 
-    sellObjectPrices[chestEntityId][sellObjectTypeId] = sellPrice;
-    safeAddObjectType(chestEntityId, sellObjectTypeId);
+    shopData[chestEntityId] = ShopData({ objectTypeId: sellObjectTypeId, price: sellPrice });
   }
 
   function destroySellChest(bytes32 chestEntityId, uint8 sellObjectTypeId) external {
     ChestMetadataData memory chestMetadata = ChestMetadata.get(chestEntityId);
     require(chestMetadata.owner == msg.sender, "Only the owner can destroy the chest");
 
-    sellObjectPrices[chestEntityId][sellObjectTypeId] = 0;
-
-    uint8[] storage sellTypes = sellObjectTypes[chestEntityId];
-    for (uint i = 0; i < sellTypes.length; i++) {
-      if (sellTypes[i] == sellObjectTypeId) {
-        sellTypes[i] = sellTypes[sellTypes.length - 1];
-        sellTypes.pop();
-        break;
-      }
-    }
+    shopData[chestEntityId] = ShopData({ objectTypeId: 0, price: 0 });
   }
 
   function allowTransfer(
@@ -90,11 +66,12 @@ contract SellChest is IChestTransferHook {
     if (!isWithdrawl) {
       return false;
     }
-    if (!isSelling(srcEntityId, transferObjectTypeId)) {
+    ShopData storage chestShopData = shopData[srcEntityId];
+    if (chestShopData.objectTypeId != transferObjectTypeId) {
       return false;
     }
 
-    uint256 sellPrice = sellObjectPrices[srcEntityId][transferObjectTypeId];
+    uint256 sellPrice = chestShopData.price;
     if (sellPrice == 0) {
       return true;
     }
@@ -116,12 +93,7 @@ contract SellChest is IChestTransferHook {
     return interfaceId == type(IChestTransferHook).interfaceId || interfaceId == type(IERC165).interfaceId;
   }
 
-  function getShopData(bytes32 chestEntityId) external view returns (ShopData[] memory) {
-    uint8[] memory objectTypes = sellObjectTypes[chestEntityId];
-    ShopData[] memory shopData = new ShopData[](objectTypes.length);
-    for (uint i = 0; i < objectTypes.length; i++) {
-      shopData[i] = ShopData({ objectTypeId: objectTypes[i], price: sellObjectPrices[chestEntityId][objectTypes[i]] });
-    }
-    return shopData;
+  function getShopData(bytes32 chestEntityId) external view returns (ShopData memory) {
+    return shopData[chestEntityId];
   }
 }
