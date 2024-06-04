@@ -589,7 +589,8 @@ const deployedContracts = {
       inheritedFunctions: {
         allowTransfer: "@biomesaw/world/src/prototypes/IChestTransferHook.sol",
         onHookSet: "@biomesaw/world/src/prototypes/IChestTransferHook.sol",
-        supportsInterface: "@biomesaw/world/src/prototypes/IChestTransferHook.sol",
+        supportsInterface:
+          "@biomesaw/world/src/prototypes/IChestTransferHook.sol",
       },
     },
     SellChest: {
@@ -792,7 +793,8 @@ const deployedContracts = {
       inheritedFunctions: {
         allowTransfer: "@biomesaw/world/src/prototypes/IChestTransferHook.sol",
         onHookSet: "@biomesaw/world/src/prototypes/IChestTransferHook.sol",
-        supportsInterface: "@biomesaw/world/src/prototypes/IChestTransferHook.sol",
+        supportsInterface:
+          "@biomesaw/world/src/prototypes/IChestTransferHook.sol",
       },
     },
   },
