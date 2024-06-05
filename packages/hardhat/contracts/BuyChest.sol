@@ -5,6 +5,8 @@ import { StoreSwitch } from "@latticexyz/store/src/StoreSwitch.sol";
 import { IERC165 } from "@latticexyz/store/src/IERC165.sol";
 
 import { ObjectType } from "@biomesaw/world/src/codegen/tables/ObjectType.sol";
+import { ObjectTypeMetadata } from "@biomesaw/world/src/codegen/tables/ObjectTypeMetadata.sol";
+import { ItemMetadata } from "@biomesaw/world/src/codegen/tables/ItemMetadata.sol";
 import { ReversePlayer } from "@biomesaw/world/src/codegen/tables/ReversePlayer.sol";
 import { ChestMetadata, ChestMetadataData } from "@biomesaw/world/src/codegen/tables/ChestMetadata.sol";
 
@@ -139,6 +141,12 @@ contract BuyChest is IChestTransferHook {
     ShopData storage chestShopData = shopData[dstEntityId];
     if (chestShopData.objectTypeId != transferObjectTypeId) {
       return false;
+    }
+    if (toolEntityId != bytes32(0)) {
+      require(
+        ItemMetadata.getNumUsesLeft(toolEntityId) == ObjectTypeMetadata.getDurability(chestShopData.objectTypeId),
+        "Tool must have full durability"
+      );
     }
 
     uint256 buyPrice = chestShopData.price;
