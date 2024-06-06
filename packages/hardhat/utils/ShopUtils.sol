@@ -10,5 +10,5 @@ struct FullShopData {
   bytes32 chestEntityId;
   ShopData shopData;
   uint256 balance;
-  bool isOwned;
+  bool isSetup;
 }

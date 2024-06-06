@@ -193,7 +193,7 @@ contract BuyChest is IChestTransferHook {
         chestEntityId: chestEntityId,
         shopData: shopData[chestEntityId],
         balance: balances[player][chestEntityId],
-        isOwned: chestMetadata.owner == player
+        isSetup: chestMetadata.owner == player && chestMetadata.onTransferHook == address(this)
       });
     }
 

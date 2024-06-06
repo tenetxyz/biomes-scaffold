@@ -485,7 +485,7 @@ const deployedContracts = {
                 },
                 {
                   internalType: "bool",
-                  name: "isOwned",
+                  name: "isSetup",
                   type: "bool",
                 },
               ],
@@ -796,7 +796,7 @@ const deployedContracts = {
                 },
                 {
                   internalType: "bool",
-                  name: "isOwned",
+                  name: "isSetup",
                   type: "bool",
                 },
               ],

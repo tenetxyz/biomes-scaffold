@@ -138,7 +138,7 @@ contract SellChest is IChestTransferHook {
         chestEntityId: chests[i],
         shopData: shop,
         balance: 0,
-        isOwned: chestMetadata.owner == player
+        isSetup: chestMetadata.owner == player && chestMetadata.onTransferHook == address(this)
       });
     }
     return fullShopData;
