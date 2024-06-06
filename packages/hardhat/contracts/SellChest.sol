@@ -4,19 +4,13 @@ pragma solidity >=0.8.24;
 import { StoreSwitch } from "@latticexyz/store/src/StoreSwitch.sol";
 import { IERC165 } from "@latticexyz/store/src/IERC165.sol";
 
-import { ObjectType } from "@biomesaw/world/src/codegen/tables/ObjectType.sol";
-import { ObjectTypeMetadata } from "@biomesaw/world/src/codegen/tables/ObjectTypeMetadata.sol";
-import { ItemMetadata } from "@biomesaw/world/src/codegen/tables/ItemMetadata.sol";
-import { ReversePlayer } from "@biomesaw/world/src/codegen/tables/ReversePlayer.sol";
 import { ChestMetadata, ChestMetadataData } from "@biomesaw/world/src/codegen/tables/ChestMetadata.sol";
 
 import { IChestTransferHook } from "@biomesaw/world/src/prototypes/IChestTransferHook.sol";
 import { PlayerObjectID } from "@biomesaw/world/src/ObjectTypeIds.sol";
 
-struct ShopData {
-  uint8 objectTypeId;
-  uint256 price;
-}
+import { getObjectType, getDurability, getNumUsesLeft, getPlayerFromEntity } from "../utils/EntityUtils.sol";
+import { ShopData, FullShopData } from "../utils/ShopUtils.sol";
 
 // Players send it ether, and are given items in return.
 contract SellChest is IChestTransferHook {
@@ -24,6 +18,7 @@ contract SellChest is IChestTransferHook {
 
   // Note: for now, we only support shops selling one type of object.
   mapping(bytes32 => ShopData) private shopData;
+  mapping(address => bytes32[]) private ownedChests;
 
   constructor(address _biomeWorldAddress) {
     biomeWorldAddress = _biomeWorldAddress;
@@ -38,6 +33,26 @@ contract SellChest is IChestTransferHook {
     _; // Continue execution
   }
 
+  function safeAddOwnedChest(address player, bytes32 chestEntityId) internal {
+    for (uint i = 0; i < ownedChests[player].length; i++) {
+      if (ownedChests[player][i] == chestEntityId) {
+        return;
+      }
+    }
+    ownedChests[player].push(chestEntityId);
+  }
+
+  function removeOwnedChest(address player, bytes32 chestEntityId) internal {
+    bytes32[] storage chests = ownedChests[player];
+    for (uint i = 0; i < chests.length; i++) {
+      if (chests[i] == chestEntityId) {
+        chests[i] = chests[chests.length - 1];
+        chests.pop();
+        return;
+      }
+    }
+  }
+
   function onHookSet(bytes32 chestEntityId) external onlyBiomeWorld {
     shopData[chestEntityId] = ShopData({ objectTypeId: 0, price: 0 });
   }
@@ -47,6 +62,7 @@ contract SellChest is IChestTransferHook {
     require(chestMetadata.owner == msg.sender, "Only the owner can set up the chest");
 
     shopData[chestEntityId] = ShopData({ objectTypeId: sellObjectTypeId, price: sellPrice });
+    safeAddOwnedChest(msg.sender, chestEntityId);
   }
 
   function destroySellChest(bytes32 chestEntityId, uint8 sellObjectTypeId) external {
@@ -54,6 +70,13 @@ contract SellChest is IChestTransferHook {
     require(chestMetadata.owner == msg.sender, "Only the owner can destroy the chest");
 
     shopData[chestEntityId] = ShopData({ objectTypeId: 0, price: 0 });
+    removeOwnedChest(msg.sender, chestEntityId);
+  }
+
+  function removeMinedChest(address player, bytes32 chestEntityId) external {
+    ChestMetadataData memory chestMetadata = ChestMetadata.get(chestEntityId);
+    require(chestMetadata.owner != player, "The player still owns the chest");
+    removeOwnedChest(player, chestEntityId);
   }
 
   function allowTransfer(
@@ -64,7 +87,7 @@ contract SellChest is IChestTransferHook {
     bytes32 toolEntityId,
     bytes memory extraData
   ) external payable onlyBiomeWorld returns (bool) {
-    bool isWithdrawl = ObjectType.get(dstEntityId) == PlayerObjectID;
+    bool isWithdrawl = getObjectType(dstEntityId) == PlayerObjectID;
     if (!isWithdrawl) {
       return false;
     }
@@ -74,7 +97,7 @@ contract SellChest is IChestTransferHook {
     }
     if (toolEntityId != bytes32(0)) {
       require(
-        ItemMetadata.getNumUsesLeft(toolEntityId) == ObjectTypeMetadata.getDurability(chestShopData.objectTypeId),
+        getNumUsesLeft(toolEntityId) == getDurability(chestShopData.objectTypeId),
         "Tool must have full durability"
       );
     }
@@ -103,5 +126,21 @@ contract SellChest is IChestTransferHook {
 
   function getShopData(bytes32 chestEntityId) external view returns (ShopData memory) {
     return shopData[chestEntityId];
+  }
+
+  function getFullShopData(address player) external view returns (FullShopData[] memory) {
+    bytes32[] memory chests = ownedChests[player];
+    FullShopData[] memory fullShopData = new FullShopData[](chests.length);
+    for (uint i = 0; i < chests.length; i++) {
+      ShopData memory shop = shopData[chests[i]];
+      ChestMetadataData memory chestMetadata = ChestMetadata.get(chests[i]);
+      fullShopData[i] = FullShopData({
+        chestEntityId: chests[i],
+        shopData: shop,
+        balance: 0,
+        isOwned: chestMetadata.owner == player
+      });
+    }
+    return fullShopData;
   }
 }

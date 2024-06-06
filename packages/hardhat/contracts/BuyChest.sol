@@ -4,19 +4,13 @@ pragma solidity >=0.8.24;
 import { StoreSwitch } from "@latticexyz/store/src/StoreSwitch.sol";
 import { IERC165 } from "@latticexyz/store/src/IERC165.sol";
 
-import { ObjectType } from "@biomesaw/world/src/codegen/tables/ObjectType.sol";
-import { ObjectTypeMetadata } from "@biomesaw/world/src/codegen/tables/ObjectTypeMetadata.sol";
-import { ItemMetadata } from "@biomesaw/world/src/codegen/tables/ItemMetadata.sol";
-import { ReversePlayer } from "@biomesaw/world/src/codegen/tables/ReversePlayer.sol";
 import { ChestMetadata, ChestMetadataData } from "@biomesaw/world/src/codegen/tables/ChestMetadata.sol";
 
 import { IChestTransferHook } from "@biomesaw/world/src/prototypes/IChestTransferHook.sol";
 import { PlayerObjectID } from "@biomesaw/world/src/ObjectTypeIds.sol";
 
-struct ShopData {
-  uint8 objectTypeId;
-  uint256 price;
-}
+import { getObjectType, getDurability, getNumUsesLeft, getPlayerFromEntity } from "../utils/EntityUtils.sol";
+import { ShopData, FullShopData } from "../utils/ShopUtils.sol";
 
 // Players send it items, and are given Ether in return.
 contract BuyChest is IChestTransferHook {
@@ -132,7 +126,7 @@ contract BuyChest is IChestTransferHook {
     bytes memory extraData
   ) external payable onlyBiomeWorld returns (bool) {
     {
-      bool isDeposit = ObjectType.get(srcEntityId) == PlayerObjectID;
+      bool isDeposit = getObjectType(srcEntityId) == PlayerObjectID;
       if (!isDeposit) {
         return false;
       }
@@ -144,7 +138,7 @@ contract BuyChest is IChestTransferHook {
     }
     if (toolEntityId != bytes32(0)) {
       require(
-        ItemMetadata.getNumUsesLeft(toolEntityId) == ObjectTypeMetadata.getDurability(chestShopData.objectTypeId),
+        getNumUsesLeft(toolEntityId) == getDurability(chestShopData.objectTypeId),
         "Tool must have full durability"
       );
     }
@@ -165,7 +159,7 @@ contract BuyChest is IChestTransferHook {
 
     balances[chestMetadata.owner][dstEntityId] -= amountToPay;
 
-    address player = ReversePlayer.get(srcEntityId);
+    address player = getPlayerFromEntity(srcEntityId);
     (bool sent, ) = player.call{ value: amountToPay }("");
     require(sent, "Failed to send Ether");
 
@@ -186,5 +180,23 @@ contract BuyChest is IChestTransferHook {
 
   function getBalance(address player, bytes32 chestEntityId) external view returns (uint256) {
     return balances[player][chestEntityId];
+  }
+
+  function getFullShopData(address player) external view returns (FullShopData[] memory) {
+    bytes32[] memory chestEntityIds = ownedChests[player];
+    FullShopData[] memory fullShopData = new FullShopData[](chestEntityIds.length);
+
+    for (uint i = 0; i < chestEntityIds.length; i++) {
+      bytes32 chestEntityId = chestEntityIds[i];
+      ChestMetadataData memory chestMetadata = ChestMetadata.get(chestEntityId);
+      fullShopData[i] = FullShopData({
+        chestEntityId: chestEntityId,
+        shopData: shopData[chestEntityId],
+        balance: balances[player][chestEntityId],
+        isOwned: chestMetadata.owner == player
+      });
+    }
+
+    return fullShopData;
   }
 }

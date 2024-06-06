@@ -452,6 +452,59 @@ const deployedContracts = {
               type: "address",
             },
           ],
+          name: "getFullShopData",
+          outputs: [
+            {
+              components: [
+                {
+                  internalType: "bytes32",
+                  name: "chestEntityId",
+                  type: "bytes32",
+                },
+                {
+                  components: [
+                    {
+                      internalType: "uint8",
+                      name: "objectTypeId",
+                      type: "uint8",
+                    },
+                    {
+                      internalType: "uint256",
+                      name: "price",
+                      type: "uint256",
+                    },
+                  ],
+                  internalType: "struct ShopData",
+                  name: "shopData",
+                  type: "tuple",
+                },
+                {
+                  internalType: "uint256",
+                  name: "balance",
+                  type: "uint256",
+                },
+                {
+                  internalType: "bool",
+                  name: "isOwned",
+                  type: "bool",
+                },
+              ],
+              internalType: "struct FullShopData[]",
+              name: "",
+              type: "tuple[]",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "player",
+              type: "address",
+            },
+          ],
           name: "getOwnedChests",
           outputs: [
             {
@@ -589,8 +642,7 @@ const deployedContracts = {
       inheritedFunctions: {
         allowTransfer: "@biomesaw/world/src/prototypes/IChestTransferHook.sol",
         onHookSet: "@biomesaw/world/src/prototypes/IChestTransferHook.sol",
-        supportsInterface:
-          "@biomesaw/world/src/prototypes/IChestTransferHook.sol",
+        supportsInterface: "@biomesaw/world/src/prototypes/IChestTransferHook.sol",
       },
     },
     SellChest: {
@@ -706,6 +758,59 @@ const deployedContracts = {
         {
           inputs: [
             {
+              internalType: "address",
+              name: "player",
+              type: "address",
+            },
+          ],
+          name: "getFullShopData",
+          outputs: [
+            {
+              components: [
+                {
+                  internalType: "bytes32",
+                  name: "chestEntityId",
+                  type: "bytes32",
+                },
+                {
+                  components: [
+                    {
+                      internalType: "uint8",
+                      name: "objectTypeId",
+                      type: "uint8",
+                    },
+                    {
+                      internalType: "uint256",
+                      name: "price",
+                      type: "uint256",
+                    },
+                  ],
+                  internalType: "struct ShopData",
+                  name: "shopData",
+                  type: "tuple",
+                },
+                {
+                  internalType: "uint256",
+                  name: "balance",
+                  type: "uint256",
+                },
+                {
+                  internalType: "bool",
+                  name: "isOwned",
+                  type: "bool",
+                },
+              ],
+              internalType: "struct FullShopData[]",
+              name: "",
+              type: "tuple[]",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
               internalType: "bytes32",
               name: "chestEntityId",
               type: "bytes32",
@@ -743,6 +848,24 @@ const deployedContracts = {
             },
           ],
           name: "onHookSet",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "player",
+              type: "address",
+            },
+            {
+              internalType: "bytes32",
+              name: "chestEntityId",
+              type: "bytes32",
+            },
+          ],
+          name: "removeMinedChest",
           outputs: [],
           stateMutability: "nonpayable",
           type: "function",
@@ -793,8 +916,7 @@ const deployedContracts = {
       inheritedFunctions: {
         allowTransfer: "@biomesaw/world/src/prototypes/IChestTransferHook.sol",
         onHookSet: "@biomesaw/world/src/prototypes/IChestTransferHook.sol",
-        supportsInterface:
-          "@biomesaw/world/src/prototypes/IChestTransferHook.sol",
+        supportsInterface: "@biomesaw/world/src/prototypes/IChestTransferHook.sol",
       },
     },
   },
