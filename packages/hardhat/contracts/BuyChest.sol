@@ -88,6 +88,7 @@ contract BuyChest is IChestTransferHook {
     require(shopData[chestEntityId].objectTypeId == buyObjectTypeId, "Chest is not set up");
 
     balances[chestMetadata.owner][chestEntityId] += msg.value;
+    safeAddOwnedChest(chestMetadata.owner, chestEntityId);
   }
 
   function withdrawBuyChestBalance(bytes32 chestEntityId, uint256 amount) public {
