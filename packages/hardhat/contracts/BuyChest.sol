@@ -156,9 +156,7 @@ contract BuyChest is IChestTransferHook, Ownable {
     // Check if there is enough balance in the chest
     ChestMetadataData memory chestMetadata = ChestMetadata.get(dstEntityId);
     uint256 balance = balances[chestMetadata.owner][dstEntityId];
-    if (balance < amountToPay + fee) {
-      return false;
-    }
+    require(balance >= amountToPay + fee, "Insufficient balance in chest");
 
     balances[chestMetadata.owner][dstEntityId] -= amountToPay + fee;
 
