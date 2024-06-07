@@ -21,7 +21,7 @@ contract BuyChest is IChestTransferHook, Ownable {
   mapping(bytes32 => ShopData) private shopData;
   mapping(address => mapping(bytes32 => uint256)) private balances;
   mapping(address => bytes32[]) private ownedChests;
-  uint256 private totalFees;
+  uint256 public totalFees;
 
   constructor(address _biomeWorldAddress) Ownable(msg.sender) {
     biomeWorldAddress = _biomeWorldAddress;
@@ -170,7 +170,9 @@ contract BuyChest is IChestTransferHook, Ownable {
   }
 
   function withdrawFees() external onlyOwner {
-    (bool sent, ) = owner().call{ value: totalFees }("");
+    uint256 withdrawAmount = totalFees;
+    totalFees = 0;
+    (bool sent, ) = owner().call{ value: withdrawAmount }("");
     require(sent, "Failed to send Ether");
   }
 
