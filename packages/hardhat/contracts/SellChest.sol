@@ -3,6 +3,7 @@ pragma solidity >=0.8.24;
 
 import { StoreSwitch } from "@latticexyz/store/src/StoreSwitch.sol";
 import { IERC165 } from "@latticexyz/store/src/IERC165.sol";
+import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
 
 import { ChestMetadata, ChestMetadataData } from "@biomesaw/world/src/codegen/tables/ChestMetadata.sol";
 
@@ -13,14 +14,14 @@ import { getObjectType, getDurability, getNumUsesLeft, getPlayerFromEntity } fro
 import { ShopData, FullShopData } from "../utils/ShopUtils.sol";
 
 // Players send it ether, and are given items in return.
-contract SellChest is IChestTransferHook {
+contract SellChest is IChestTransferHook, Ownable {
   address public immutable biomeWorldAddress;
 
   // Note: for now, we only support shops selling one type of object.
   mapping(bytes32 => ShopData) private shopData;
   mapping(address => bytes32[]) private ownedChests;
 
-  constructor(address _biomeWorldAddress) {
+  constructor(address _biomeWorldAddress) Ownable(msg.sender) {
     biomeWorldAddress = _biomeWorldAddress;
 
     // Set the store address, so that when reading from MUD tables in the
@@ -108,16 +109,22 @@ contract SellChest is IChestTransferHook {
     }
 
     uint256 amountToCharge = sellPrice * numToTransfer;
-    if (msg.value < amountToCharge) {
+    uint256 fee = (amountToCharge * 10) / 10000; // 0.10% fee
+    if (msg.value < amountToCharge + fee) {
       return false;
     }
     ChestMetadataData memory chestMetadata = ChestMetadata.get(srcEntityId);
     require(chestMetadata.owner != address(0), "Chest does not exist");
 
-    (bool sent, ) = chestMetadata.owner.call{ value: msg.value }("");
+    (bool sent, ) = chestMetadata.owner.call{ value: amountToCharge }("");
     require(sent, "Failed to send Ether");
 
     return true;
+  }
+
+  function withdrawFees() external onlyOwner {
+    (bool sent, ) = owner().call{ value: address(this).balance }("");
+    require(sent, "Failed to send Ether");
   }
 
   function supportsInterface(bytes4 interfaceId) external view override returns (bool) {

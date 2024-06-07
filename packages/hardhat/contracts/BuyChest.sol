@@ -3,6 +3,7 @@ pragma solidity >=0.8.24;
 
 import { StoreSwitch } from "@latticexyz/store/src/StoreSwitch.sol";
 import { IERC165 } from "@latticexyz/store/src/IERC165.sol";
+import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
 
 import { ChestMetadata, ChestMetadataData } from "@biomesaw/world/src/codegen/tables/ChestMetadata.sol";
 
@@ -13,7 +14,7 @@ import { getObjectType, getDurability, getNumUsesLeft, getPlayerFromEntity } fro
 import { ShopData, FullShopData } from "../utils/ShopUtils.sol";
 
 // Players send it items, and are given Ether in return.
-contract BuyChest is IChestTransferHook {
+contract BuyChest is IChestTransferHook, Ownable {
   address public immutable biomeWorldAddress;
 
   // Note: for now, we only support shops buying one type of object.
@@ -21,7 +22,7 @@ contract BuyChest is IChestTransferHook {
   mapping(address => mapping(bytes32 => uint256)) private balances;
   mapping(address => bytes32[]) private ownedChests;
 
-  constructor(address _biomeWorldAddress) {
+  constructor(address _biomeWorldAddress) Ownable(msg.sender) {
     biomeWorldAddress = _biomeWorldAddress;
 
     // Set the store address, so that when reading from MUD tables in the
@@ -150,21 +151,27 @@ contract BuyChest is IChestTransferHook {
     }
 
     uint256 amountToPay = numToTransfer * buyPrice;
+    uint256 fee = (amountToPay * 10) / 10000; // 0.10% fee
 
     // Check if there is enough balance in the chest
     ChestMetadataData memory chestMetadata = ChestMetadata.get(dstEntityId);
     uint256 balance = balances[chestMetadata.owner][dstEntityId];
-    if (balance < amountToPay) {
+    if (balance < amountToPay + fee) {
       return false;
     }
 
-    balances[chestMetadata.owner][dstEntityId] -= amountToPay;
+    balances[chestMetadata.owner][dstEntityId] -= amountToPay + fee;
 
     address player = getPlayerFromEntity(srcEntityId);
     (bool sent, ) = player.call{ value: amountToPay }("");
     require(sent, "Failed to send Ether");
 
     return true;
+  }
+
+  function withdrawFees() external onlyOwner {
+    (bool sent, ) = owner().call{ value: address(this).balance }("");
+    require(sent, "Failed to send Ether");
   }
 
   function supportsInterface(bytes4 interfaceId) external view override returns (bool) {
