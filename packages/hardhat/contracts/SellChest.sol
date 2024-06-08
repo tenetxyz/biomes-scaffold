@@ -134,6 +134,17 @@ contract SellChest is IChestTransferHook, Ownable {
     return shopData[chestEntityId];
   }
 
+  function getFullShopData(bytes32 chestEntityId) external view returns (FullShopData memory) {
+    ChestMetadataData memory chestMetadata = ChestMetadata.get(chestEntityId);
+    return
+      FullShopData({
+        chestEntityId: chestEntityId,
+        shopData: shopData[chestEntityId],
+        balance: 0,
+        isSetup: chestMetadata.onTransferHook == address(this)
+      });
+  }
+
   function getFullShopData(address player) external view returns (FullShopData[] memory) {
     bytes32[] memory chests = ownedChests[player];
     FullShopData[] memory fullShopData = new FullShopData[](chests.length);
