@@ -152,7 +152,7 @@ contract BuyChest is IChestTransferHook, Ownable {
     }
 
     uint256 amountToPay = numToTransfer * buyPrice;
-    uint256 fee = (amountToPay * 10) / 10000; // 0.10% fee
+    uint256 fee = (amountToPay * 1) / 100; // 1% fee
 
     // Check if there is enough balance in the chest
     ChestMetadataData memory chestMetadata = ChestMetadata.get(dstEntityId);

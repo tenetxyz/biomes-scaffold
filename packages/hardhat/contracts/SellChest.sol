@@ -109,7 +109,7 @@ contract SellChest is IChestTransferHook, Ownable {
     }
 
     uint256 amountToCharge = sellPrice * numToTransfer;
-    uint256 fee = (amountToCharge * 10) / 10000; // 0.10% fee
+    uint256 fee = (amountToCharge * 1) / 100; // 1% fee
     require(msg.value >= amountToCharge + fee, "Insufficient Ether sent");
 
     ChestMetadataData memory chestMetadata = ChestMetadata.get(srcEntityId);
