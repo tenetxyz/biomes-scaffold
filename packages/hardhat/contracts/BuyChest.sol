@@ -64,6 +64,17 @@ contract BuyChest is IChestTransferHook, Ownable {
     if (currentBalance > 0) {
       doWithdraw(chestMetadata.owner, chestEntityId, currentBalance);
     }
+    safeAddOwnedChest(chestMetadata.owner, chestEntityId);
+  }
+
+  function onHookRemoved(bytes32 chestEntityId) external onlyBiomeWorld {
+    ChestMetadataData memory chestMetadata = ChestMetadata.get(chestEntityId);
+    shopData[chestEntityId] = ShopData({ objectTypeId: 0, price: 0 });
+
+    uint256 currentBalance = balances[chestMetadata.owner][chestEntityId];
+    if (currentBalance > 0) {
+      doWithdraw(chestMetadata.owner, chestEntityId, currentBalance);
+    }
   }
 
   function setupBuyChest(bytes32 chestEntityId, uint8 buyObjectTypeId, uint256 buyPrice) external payable {

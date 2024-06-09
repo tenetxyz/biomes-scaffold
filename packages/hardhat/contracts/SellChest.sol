@@ -56,6 +56,16 @@ contract SellChest is IChestTransferHook, Ownable {
 
   function onHookSet(bytes32 chestEntityId) external onlyBiomeWorld {
     shopData[chestEntityId] = ShopData({ objectTypeId: 0, price: 0 });
+
+    ChestMetadataData memory chestMetadata = ChestMetadata.get(chestEntityId);
+    safeAddOwnedChest(chestMetadata.owner, chestEntityId);
+  }
+
+  function onHookRemoved(bytes32 chestEntityId) external onlyBiomeWorld {
+    ChestMetadataData memory chestMetadata = ChestMetadata.get(chestEntityId);
+    shopData[chestEntityId] = ShopData({ objectTypeId: 0, price: 0 });
+
+    removeOwnedChest(chestMetadata.owner, chestEntityId);
   }
 
   function setupSellChest(bytes32 chestEntityId, uint8 sellObjectTypeId, uint256 sellPrice) external {
@@ -72,12 +82,6 @@ contract SellChest is IChestTransferHook, Ownable {
 
     shopData[chestEntityId] = ShopData({ objectTypeId: 0, price: 0 });
     removeOwnedChest(msg.sender, chestEntityId);
-  }
-
-  function removeMinedChest(address player, bytes32 chestEntityId) external {
-    ChestMetadataData memory chestMetadata = ChestMetadata.get(chestEntityId);
-    require(chestMetadata.owner != player, "The player still owns the chest");
-    removeOwnedChest(player, chestEntityId);
   }
 
   function allowTransfer(

@@ -649,6 +649,19 @@ const deployedContracts = {
               type: "bytes32",
             },
           ],
+          name: "onHookRemoved",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "chestEntityId",
+              type: "bytes32",
+            },
+          ],
           name: "onHookSet",
           outputs: [],
           stateMutability: "nonpayable",
@@ -788,6 +801,7 @@ const deployedContracts = {
       ],
       inheritedFunctions: {
         allowTransfer: "@biomesaw/world/src/prototypes/IChestTransferHook.sol",
+        onHookRemoved: "@biomesaw/world/src/prototypes/IChestTransferHook.sol",
         onHookSet: "@biomesaw/world/src/prototypes/IChestTransferHook.sol",
         supportsInterface: "@biomesaw/world/src/prototypes/IChestTransferHook.sol",
         owner: "@openzeppelin/contracts/access/Ownable.sol",
@@ -1091,6 +1105,19 @@ const deployedContracts = {
               type: "bytes32",
             },
           ],
+          name: "onHookRemoved",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "chestEntityId",
+              type: "bytes32",
+            },
+          ],
           name: "onHookSet",
           outputs: [],
           stateMutability: "nonpayable",
@@ -1107,24 +1134,6 @@ const deployedContracts = {
             },
           ],
           stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "address",
-              name: "player",
-              type: "address",
-            },
-            {
-              internalType: "bytes32",
-              name: "chestEntityId",
-              type: "bytes32",
-            },
-          ],
-          name: "removeMinedChest",
-          outputs: [],
-          stateMutability: "nonpayable",
           type: "function",
         },
         {
@@ -1199,6 +1208,7 @@ const deployedContracts = {
       ],
       inheritedFunctions: {
         allowTransfer: "@biomesaw/world/src/prototypes/IChestTransferHook.sol",
+        onHookRemoved: "@biomesaw/world/src/prototypes/IChestTransferHook.sol",
         onHookSet: "@biomesaw/world/src/prototypes/IChestTransferHook.sol",
         supportsInterface: "@biomesaw/world/src/prototypes/IChestTransferHook.sol",
         owner: "@openzeppelin/contracts/access/Ownable.sol",
