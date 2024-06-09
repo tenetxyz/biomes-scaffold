@@ -10,7 +10,7 @@ import { ChestMetadata, ChestMetadataData } from "@biomesaw/world/src/codegen/ta
 import { IChestTransferHook } from "@biomesaw/world/src/prototypes/IChestTransferHook.sol";
 import { PlayerObjectID } from "@biomesaw/world/src/ObjectTypeIds.sol";
 
-import { getObjectType, getDurability, getNumUsesLeft, getPlayerFromEntity } from "../utils/EntityUtils.sol";
+import { getObjectType, getDurability, getNumUsesLeft, getPlayerFromEntity, getPosition } from "../utils/EntityUtils.sol";
 import { ShopData, FullShopData } from "../utils/ShopUtils.sol";
 
 // Players send it ether, and are given items in return.
@@ -140,26 +140,28 @@ contract SellChest is IChestTransferHook, Ownable {
 
   function getFullShopData(bytes32 chestEntityId) external view returns (FullShopData memory) {
     ChestMetadataData memory chestMetadata = ChestMetadata.get(chestEntityId);
+
     return
       FullShopData({
         chestEntityId: chestEntityId,
         shopData: shopData[chestEntityId],
         balance: 0,
-        isSetup: chestMetadata.onTransferHook == address(this)
+        location: getPosition(chestEntityId)
       });
   }
 
   function getFullShopData(address player) external view returns (FullShopData[] memory) {
-    bytes32[] memory chests = ownedChests[player];
-    FullShopData[] memory fullShopData = new FullShopData[](chests.length);
-    for (uint i = 0; i < chests.length; i++) {
-      ShopData memory shop = shopData[chests[i]];
-      ChestMetadataData memory chestMetadata = ChestMetadata.get(chests[i]);
+    bytes32[] memory chestEntityIds = ownedChests[player];
+    FullShopData[] memory fullShopData = new FullShopData[](chestEntityIds.length);
+    for (uint i = 0; i < chestEntityIds.length; i++) {
+      bytes32 chestEntityId = chestEntityIds[i];
+      ShopData memory shop = shopData[chestEntityId];
+      ChestMetadataData memory chestMetadata = ChestMetadata.get(chestEntityId);
       fullShopData[i] = FullShopData({
-        chestEntityId: chests[i],
+        chestEntityId: chestEntityId,
         shopData: shop,
         balance: 0,
-        isSetup: chestMetadata.owner == player && chestMetadata.onTransferHook == address(this)
+        location: getPosition(chestEntityId)
       });
     }
     return fullShopData;

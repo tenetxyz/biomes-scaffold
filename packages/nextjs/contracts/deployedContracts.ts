@@ -525,9 +525,26 @@ const deployedContracts = {
                   type: "uint256",
                 },
                 {
-                  internalType: "bool",
-                  name: "isSetup",
-                  type: "bool",
+                  components: [
+                    {
+                      internalType: "int16",
+                      name: "x",
+                      type: "int16",
+                    },
+                    {
+                      internalType: "int16",
+                      name: "y",
+                      type: "int16",
+                    },
+                    {
+                      internalType: "int16",
+                      name: "z",
+                      type: "int16",
+                    },
+                  ],
+                  internalType: "struct VoxelCoord",
+                  name: "location",
+                  type: "tuple",
                 },
               ],
               internalType: "struct FullShopData",
@@ -578,9 +595,26 @@ const deployedContracts = {
                   type: "uint256",
                 },
                 {
-                  internalType: "bool",
-                  name: "isSetup",
-                  type: "bool",
+                  components: [
+                    {
+                      internalType: "int16",
+                      name: "x",
+                      type: "int16",
+                    },
+                    {
+                      internalType: "int16",
+                      name: "y",
+                      type: "int16",
+                    },
+                    {
+                      internalType: "int16",
+                      name: "z",
+                      type: "int16",
+                    },
+                  ],
+                  internalType: "struct VoxelCoord",
+                  name: "location",
+                  type: "tuple",
                 },
               ],
               internalType: "struct FullShopData[]",
@@ -1000,9 +1034,26 @@ const deployedContracts = {
                   type: "uint256",
                 },
                 {
-                  internalType: "bool",
-                  name: "isSetup",
-                  type: "bool",
+                  components: [
+                    {
+                      internalType: "int16",
+                      name: "x",
+                      type: "int16",
+                    },
+                    {
+                      internalType: "int16",
+                      name: "y",
+                      type: "int16",
+                    },
+                    {
+                      internalType: "int16",
+                      name: "z",
+                      type: "int16",
+                    },
+                  ],
+                  internalType: "struct VoxelCoord",
+                  name: "location",
+                  type: "tuple",
                 },
               ],
               internalType: "struct FullShopData",
@@ -1053,9 +1104,26 @@ const deployedContracts = {
                   type: "uint256",
                 },
                 {
-                  internalType: "bool",
-                  name: "isSetup",
-                  type: "bool",
+                  components: [
+                    {
+                      internalType: "int16",
+                      name: "x",
+                      type: "int16",
+                    },
+                    {
+                      internalType: "int16",
+                      name: "y",
+                      type: "int16",
+                    },
+                    {
+                      internalType: "int16",
+                      name: "z",
+                      type: "int16",
+                    },
+                  ],
+                  internalType: "struct VoxelCoord",
+                  name: "location",
+                  type: "tuple",
                 },
               ],
               internalType: "struct FullShopData[]",

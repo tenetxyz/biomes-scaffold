@@ -10,7 +10,7 @@ import { ChestMetadata, ChestMetadataData } from "@biomesaw/world/src/codegen/ta
 import { IChestTransferHook } from "@biomesaw/world/src/prototypes/IChestTransferHook.sol";
 import { PlayerObjectID } from "@biomesaw/world/src/ObjectTypeIds.sol";
 
-import { getObjectType, getDurability, getNumUsesLeft, getPlayerFromEntity } from "../utils/EntityUtils.sol";
+import { getObjectType, getDurability, getNumUsesLeft, getPlayerFromEntity, getPosition } from "../utils/EntityUtils.sol";
 import { ShopData, FullShopData } from "../utils/ShopUtils.sol";
 
 // Players send it items, and are given Ether in return.
@@ -210,7 +210,7 @@ contract BuyChest is IChestTransferHook, Ownable {
         chestEntityId: chestEntityId,
         shopData: shopData[chestEntityId],
         balance: balances[chestMetadata.owner][chestEntityId],
-        isSetup: chestMetadata.onTransferHook == address(this)
+        location: getPosition(chestEntityId)
       });
   }
 
@@ -225,7 +225,7 @@ contract BuyChest is IChestTransferHook, Ownable {
         chestEntityId: chestEntityId,
         shopData: shopData[chestEntityId],
         balance: balances[player][chestEntityId],
-        isSetup: chestMetadata.owner == player && chestMetadata.onTransferHook == address(this)
+        location: getPosition(chestEntityId)
       });
     }
 
