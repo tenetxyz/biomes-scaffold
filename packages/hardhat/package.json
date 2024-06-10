@@ -48,8 +48,8 @@
     "typescript": "^5.1.6"
   },
   "dependencies": {
-    "@biomesaw/utils": "0.0.9",
-    "@biomesaw/world": "0.0.9",
+    "@biomesaw/utils": "0.1.4",
+    "@biomesaw/world": "0.1.4",
     "@latticexyz/common": "https://static.biomes.aw/tenetxyz-common-2.0.8.tgz",
     "@latticexyz/schema-type": "https://static.biomes.aw/tenetxyz-schema-type-2.0.8.tgz",
     "@latticexyz/store": "https://static.biomes.aw/tenetxyz-store-2.0.8.tgz",

@@ -672,8 +672,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@biomesaw-scaffold/hardhat@workspace:packages/hardhat"
   dependencies:
-    "@biomesaw/utils": 0.0.9
-    "@biomesaw/world": 0.0.9
+    "@biomesaw/utils": 0.1.4
+    "@biomesaw/world": 0.1.4
     "@ethersproject/abi": ^5.7.0
     "@ethersproject/providers": ^5.7.1
     "@latticexyz/common": "https://static.biomes.aw/tenetxyz-common-2.0.8.tgz"
@@ -796,18 +796,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@biomesaw/utils@npm:0.0.9":
-  version: 0.0.9
-  resolution: "@biomesaw/utils@npm:0.0.9"
+"@biomesaw/utils@npm:0.1.4":
+  version: 0.1.4
+  resolution: "@biomesaw/utils@npm:0.1.4"
   dependencies:
     "@latticexyz/cli": "https://static.biomes.aw/tenetxyz-cli-2.0.8.tgz"
-    "@latticexyz/config": "https://static.biomes.aw/tenetxyz-config-2.0.8.tgz"
     "@latticexyz/schema-type": "https://static.biomes.aw/tenetxyz-schema-type-2.0.8.tgz"
     "@latticexyz/store": "https://static.biomes.aw/tenetxyz-store-2.0.8.tgz"
     "@latticexyz/world": "https://static.biomes.aw/tenetxyz-world-2.0.8.tgz"
     "@latticexyz/world-modules": "https://static.biomes.aw/tenetxyz-world-modules-2.0.8.tgz"
     "@openzeppelin/contracts": ^4.9.6
-  checksum: e4b8adc2f43b1e4259083241cdcce12372b8be26cc320114941f0ed1aa0f61a0c9aadd26130a64122f8fbcacec9a1ee3d1b45aca5b574e6b490d5086ff7b98af
+  checksum: 474c18c2e469e92c7b4fce6c30f9795dbebe9619ab177cfd64df5eb5e221632cdf09c584a75e441ae149dd732464cd4207925e42a0f0e82c546393652f262d4b
   languageName: node
   linkType: hard
 
@@ -827,11 +826,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@biomesaw/world@npm:0.0.9":
-  version: 0.0.9
-  resolution: "@biomesaw/world@npm:0.0.9"
+"@biomesaw/world@npm:0.1.4":
+  version: 0.1.4
+  resolution: "@biomesaw/world@npm:0.1.4"
   dependencies:
-    "@biomesaw/utils": 0.0.9
+    "@biomesaw/utils": 0.1.4
     "@latticexyz/cli": "https://static.biomes.aw/tenetxyz-cli-2.0.8.tgz"
     "@latticexyz/config": "https://static.biomes.aw/tenetxyz-config-2.0.8.tgz"
     "@latticexyz/gas-report": "https://static.biomes.aw/tenetxyz-gas-report-2.0.8.tgz"
@@ -839,7 +838,7 @@ __metadata:
     "@latticexyz/store": "https://static.biomes.aw/tenetxyz-store-2.0.8.tgz"
     "@latticexyz/world": "https://static.biomes.aw/tenetxyz-world-2.0.8.tgz"
     "@latticexyz/world-modules": "https://static.biomes.aw/tenetxyz-world-modules-2.0.8.tgz"
-  checksum: fb820ef4221d158083d3c0d4f670178bb0e2a6edb905b2d57962ba9e8f9e18cd2c1bb6cd7b60016dadcea951fe3cf29ec55132c54274d029564a01933608af49
+  checksum: 5d5f6959649c81bc62e0d06846775cb40da730d2e9a33d0c72cef33180c474d0d8fce4d5fdb0e0109d4b0b9b1c8bafd11785875e6ef180c8ce49081460c66ed3
   languageName: node
   linkType: hard
 

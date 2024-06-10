@@ -90,10 +90,13 @@ function callTransfer(
   if (toolEntityId == bytes32(0)) {
     transferCallData = abi.encodeCall(
       ITransferSystem.transfer,
-      (srcEntityId, dstEntityId, transferObjectTypeId, numToTransfer)
+      (srcEntityId, dstEntityId, transferObjectTypeId, numToTransfer, new bytes(0))
     );
   } else {
-    transferCallData = abi.encodeCall(ITransferSystem.transferTool, (srcEntityId, dstEntityId, toolEntityId));
+    transferCallData = abi.encodeCall(
+      ITransferSystem.transferTool,
+      (srcEntityId, dstEntityId, toolEntityId, new bytes(0))
+    );
   }
   IWorld(biomeWorldAddress).callFrom(delegatorAddress, getSystemId("TransferSystem"), transferCallData);
 }
