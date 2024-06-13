@@ -10,7 +10,8 @@ struct ShopData {
 
 struct FullShopData {
   bytes32 chestEntityId;
-  ShopData shopData;
+  ShopData buyShopData;
+  ShopData sellShopData;
   uint256 balance;
   VoxelCoord location;
 }

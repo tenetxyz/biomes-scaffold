@@ -14,11 +14,13 @@ import { getObjectType, getDurability, getNumUsesLeft, getPlayerFromEntity, getP
 import { ShopData, FullShopData } from "../utils/ShopUtils.sol";
 
 // Players send it items, and are given Ether in return.
-contract BuyChest is IChestTransferHook, Ownable {
+// Players send it ether, and are given items in return.
+contract BuySellChest is IChestTransferHook, Ownable {
   address public immutable biomeWorldAddress;
 
-  // Note: for now, we only support shops buying one type of object.
-  mapping(bytes32 => ShopData) private shopData;
+  // Note: for now, we only support shops buying/selling one type of object.
+  mapping(bytes32 => ShopData) private buyShopData;
+  mapping(bytes32 => ShopData) private sellShopData;
   mapping(address => mapping(bytes32 => uint256)) private balances;
   mapping(address => bytes32[]) private ownedChests;
   uint256 public totalFees;
@@ -58,7 +60,8 @@ contract BuyChest is IChestTransferHook, Ownable {
 
   function onHookSet(bytes32 chestEntityId) external onlyBiomeWorld {
     ChestMetadataData memory chestMetadata = ChestMetadata.get(chestEntityId);
-    shopData[chestEntityId] = ShopData({ objectTypeId: 0, price: 0 });
+    buyShopData[chestEntityId] = ShopData({ objectTypeId: 0, price: 0 });
+    sellShopData[chestEntityId] = ShopData({ objectTypeId: 0, price: 0 });
 
     uint256 currentBalance = balances[chestMetadata.owner][chestEntityId];
     if (currentBalance > 0) {
@@ -69,7 +72,8 @@ contract BuyChest is IChestTransferHook, Ownable {
 
   function onHookRemoved(bytes32 chestEntityId) external onlyBiomeWorld {
     ChestMetadataData memory chestMetadata = ChestMetadata.get(chestEntityId);
-    shopData[chestEntityId] = ShopData({ objectTypeId: 0, price: 0 });
+    buyShopData[chestEntityId] = ShopData({ objectTypeId: 0, price: 0 });
+    sellShopData[chestEntityId] = ShopData({ objectTypeId: 0, price: 0 });
 
     uint256 currentBalance = balances[chestMetadata.owner][chestEntityId];
     if (currentBalance > 0) {
@@ -78,28 +82,39 @@ contract BuyChest is IChestTransferHook, Ownable {
     removeOwnedChest(chestMetadata.owner, chestEntityId);
   }
 
-  function setupBuyChest(bytes32 chestEntityId, uint8 buyObjectTypeId, uint256 buyPrice) external payable {
+  function setupChest(bytes32 chestEntityId, uint8 objectTypeId, uint256 buyPrice, uint256 sellPrice) external payable {
     ChestMetadataData memory chestMetadata = ChestMetadata.get(chestEntityId);
     require(chestMetadata.owner == msg.sender, "Only the owner can set up the chest");
     require(balances[chestMetadata.owner][chestEntityId] == 0, "Chest already has a balance");
 
-    shopData[chestEntityId] = ShopData({ objectTypeId: buyObjectTypeId, price: buyPrice });
+    buyShopData[chestEntityId] = ShopData({ objectTypeId: objectTypeId, price: buyPrice });
+    sellShopData[chestEntityId] = ShopData({ objectTypeId: objectTypeId, price: sellPrice });
+
     balances[chestMetadata.owner][chestEntityId] = msg.value;
+
     safeAddOwnedChest(chestMetadata.owner, chestEntityId);
   }
 
   function changeBuyPrice(bytes32 chestEntityId, uint8 buyObjectTypeId, uint256 newPrice) external {
     ChestMetadataData memory chestMetadata = ChestMetadata.get(chestEntityId);
     require(chestMetadata.owner == msg.sender, "Only the owner can change the price");
-    require(shopData[chestEntityId].objectTypeId == buyObjectTypeId, "Chest is not set up");
+    require(buyShopData[chestEntityId].objectTypeId == buyObjectTypeId, "Chest is not set up");
 
-    shopData[chestEntityId].price = newPrice;
+    buyShopData[chestEntityId].price = newPrice;
+  }
+
+  function changeSellPrice(bytes32 chestEntityId, uint8 sellObjectTypeId, uint256 newPrice) external {
+    ChestMetadataData memory chestMetadata = ChestMetadata.get(chestEntityId);
+    require(chestMetadata.owner == msg.sender, "Only the owner can change the price");
+    require(sellShopData[chestEntityId].objectTypeId == sellObjectTypeId, "Chest is not set up");
+
+    sellShopData[chestEntityId].price = newPrice;
   }
 
   function refillBuyChestBalance(bytes32 chestEntityId, uint8 buyObjectTypeId) external payable {
     ChestMetadataData memory chestMetadata = ChestMetadata.get(chestEntityId);
     require(chestMetadata.owner == msg.sender, "Only the owner can refill the chest");
-    require(shopData[chestEntityId].objectTypeId == buyObjectTypeId, "Chest is not set up");
+    require(buyShopData[chestEntityId].objectTypeId == buyObjectTypeId, "Chest is not set up");
 
     balances[chestMetadata.owner][chestEntityId] += msg.value;
     safeAddOwnedChest(chestMetadata.owner, chestEntityId);
@@ -123,16 +138,19 @@ contract BuyChest is IChestTransferHook, Ownable {
     require(sent, "Failed to send Ether");
   }
 
-  function destroyBuyChest(bytes32 chestEntityId, uint8 buyObjectTypeId) external {
+  function destroyChest(bytes32 chestEntityId, uint8 objectTypeId) external {
     ChestMetadataData memory chestMetadata = ChestMetadata.get(chestEntityId);
     require(chestMetadata.owner == msg.sender, "Only the owner can destroy the chest");
-    require(shopData[chestEntityId].objectTypeId == buyObjectTypeId, "Chest is not set up");
+    require(buyShopData[chestEntityId].objectTypeId == objectTypeId, "Chest is not set up");
+    require(sellShopData[chestEntityId].objectTypeId == objectTypeId, "Chest is not set up");
 
     if (balances[chestMetadata.owner][chestEntityId] > 0) {
       withdrawBuyChestBalance(chestEntityId, balances[chestMetadata.owner][chestEntityId]);
     }
-    shopData[chestEntityId] = ShopData({ objectTypeId: 0, price: 0 });
-    removeOwnedChest(chestMetadata.owner, chestEntityId);
+
+    buyShopData[chestEntityId] = ShopData({ objectTypeId: 0, price: 0 });
+    sellShopData[chestEntityId] = ShopData({ objectTypeId: 0, price: 0 });
+    removeOwnedChest(msg.sender, chestEntityId);
   }
 
   function allowTransfer(
@@ -143,14 +161,8 @@ contract BuyChest is IChestTransferHook, Ownable {
     bytes32 toolEntityId,
     bytes memory extraData
   ) external payable onlyBiomeWorld returns (bool) {
-    {
-      bool isDeposit = getObjectType(srcEntityId) == PlayerObjectID;
-      if (!isDeposit) {
-        return false;
-      }
-    }
-
-    ShopData storage chestShopData = shopData[dstEntityId];
+    bool isDeposit = getObjectType(srcEntityId) == PlayerObjectID;
+    ShopData storage chestShopData = isDeposit ? buyShopData[dstEntityId] : sellShopData[srcEntityId];
     if (chestShopData.objectTypeId != transferObjectTypeId) {
       return false;
     }
@@ -161,25 +173,34 @@ contract BuyChest is IChestTransferHook, Ownable {
       );
     }
 
-    uint256 buyPrice = chestShopData.price;
-    if (buyPrice == 0) {
+    uint256 shopPrice = chestShopData.price;
+    if (shopPrice == 0) {
       return true;
     }
 
-    uint256 amountToPay = numToTransfer * buyPrice;
-    uint256 fee = (amountToPay * 1) / 100; // 1% fee
+    uint256 shopTotalPrice = numToTransfer * shopPrice;
+    uint256 fee = (shopTotalPrice * 1) / 100; // 1% fee
 
-    // Check if there is enough balance in the chest
-    ChestMetadataData memory chestMetadata = ChestMetadata.get(dstEntityId);
-    uint256 balance = balances[chestMetadata.owner][dstEntityId];
-    require(balance >= amountToPay + fee, "Insufficient balance in chest");
+    ChestMetadataData memory chestMetadata = ChestMetadata.get(srcEntityId);
+    require(chestMetadata.owner != address(0), "Chest does not exist");
 
-    balances[chestMetadata.owner][dstEntityId] -= amountToPay + fee;
-    totalFees += fee;
+    if (isDeposit) {
+      // Check if there is enough balance in the chest
+      uint256 balance = balances[chestMetadata.owner][dstEntityId];
+      require(balance >= shopTotalPrice + fee, "Insufficient balance in chest");
 
-    address player = getPlayerFromEntity(srcEntityId);
-    (bool sent, ) = player.call{ value: amountToPay }("");
-    require(sent, "Failed to send Ether");
+      balances[chestMetadata.owner][dstEntityId] -= shopTotalPrice + fee;
+      totalFees += fee;
+
+      address player = getPlayerFromEntity(srcEntityId);
+      (bool sent, ) = player.call{ value: shopTotalPrice }("");
+      require(sent, "Failed to send Ether");
+    } else {
+      require(msg.value >= shopTotalPrice + fee, "Insufficient Ether sent");
+
+      (bool sent, ) = chestMetadata.owner.call{ value: shopTotalPrice }("");
+      require(sent, "Failed to send Ether");
+    }
 
     return true;
   }
@@ -195,8 +216,12 @@ contract BuyChest is IChestTransferHook, Ownable {
     return interfaceId == type(IChestTransferHook).interfaceId || interfaceId == type(IERC165).interfaceId;
   }
 
-  function getShopData(bytes32 chestEntityId) external view returns (ShopData memory) {
-    return shopData[chestEntityId];
+  function getBuyShopData(bytes32 chestEntityId) external view returns (ShopData memory) {
+    return buyShopData[chestEntityId];
+  }
+
+  function getSellShopData(bytes32 chestEntityId) external view returns (ShopData memory) {
+    return sellShopData[chestEntityId];
   }
 
   function getOwnedChests(address player) external view returns (bytes32[] memory) {
@@ -212,8 +237,8 @@ contract BuyChest is IChestTransferHook, Ownable {
     return
       FullShopData({
         chestEntityId: chestEntityId,
-        buyShopData: shopData[chestEntityId],
-        sellShopData: ShopData({ objectTypeId: 0, price: 0 }),
+        buyShopData: buyShopData[chestEntityId],
+        sellShopData: sellShopData[chestEntityId],
         balance: balances[chestMetadata.owner][chestEntityId],
         location: getPosition(chestEntityId)
       });
@@ -228,8 +253,8 @@ contract BuyChest is IChestTransferHook, Ownable {
       ChestMetadataData memory chestMetadata = ChestMetadata.get(chestEntityId);
       fullShopData[i] = FullShopData({
         chestEntityId: chestEntityId,
-        buyShopData: shopData[chestEntityId],
-        sellShopData: ShopData({ objectTypeId: 0, price: 0 }),
+        buyShopData: buyShopData[chestEntityId],
+        sellShopData: sellShopData[chestEntityId],
         balance: balances[player][chestEntityId],
         location: getPosition(chestEntityId)
       });

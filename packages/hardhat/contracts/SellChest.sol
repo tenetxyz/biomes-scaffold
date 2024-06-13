@@ -144,7 +144,8 @@ contract SellChest is IChestTransferHook, Ownable {
     return
       FullShopData({
         chestEntityId: chestEntityId,
-        shopData: shopData[chestEntityId],
+        buyShopData: ShopData({ objectTypeId: 0, price: 0 }),
+        sellShopData: shopData[chestEntityId],
         balance: 0,
         location: getPosition(chestEntityId)
       });
@@ -155,11 +156,11 @@ contract SellChest is IChestTransferHook, Ownable {
     FullShopData[] memory fullShopData = new FullShopData[](chestEntityIds.length);
     for (uint i = 0; i < chestEntityIds.length; i++) {
       bytes32 chestEntityId = chestEntityIds[i];
-      ShopData memory shop = shopData[chestEntityId];
       ChestMetadataData memory chestMetadata = ChestMetadata.get(chestEntityId);
       fullShopData[i] = FullShopData({
         chestEntityId: chestEntityId,
-        shopData: shop,
+        buyShopData: ShopData({ objectTypeId: 0, price: 0 }),
+        sellShopData: shopData[chestEntityId],
         balance: 0,
         location: getPosition(chestEntityId)
       });
