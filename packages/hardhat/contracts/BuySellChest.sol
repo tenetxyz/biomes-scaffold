@@ -181,7 +181,7 @@ contract BuySellChest is IChestTransferHook, Ownable {
     uint256 shopTotalPrice = numToTransfer * shopPrice;
     uint256 fee = (shopTotalPrice * 1) / 100; // 1% fee
 
-    ChestMetadataData memory chestMetadata = ChestMetadata.get(srcEntityId);
+    ChestMetadataData memory chestMetadata = ChestMetadata.get(isDeposit ? dstEntityId : srcEntityId);
     require(chestMetadata.owner != address(0), "Chest does not exist");
 
     if (isDeposit) {
