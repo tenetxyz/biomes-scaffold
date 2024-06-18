@@ -1,6 +1,7 @@
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { DeployFunction } from "hardhat-deploy/types";
 import { garnet, mudFoundry, redstone } from "@latticexyz/common/chains";
+import { Contract } from "ethers";
 
 const BIOMES_MAINNET_WORLD_ADDRESS = "0xf75b1b7bdb6932e487c4aa8d210f4a682abeacf0";
 const BIOMES_TESTNET_WORLD_ADDRESS = "0x641554ed9d8a6c2c362e6c3fb2835ec2ca4da95c";
@@ -69,6 +70,29 @@ const deployExperienceContract: DeployFunction = async function (hre: HardhatRun
     from: deployer,
     // Contract constructor arguments
     args: [useBiomesWorldAddress],
+    log: true,
+    // autoMine: can be passed to the deploy function to make the deployment process faster on local networks by
+    // automatically mining the contract deployment transaction. There is no effect on live networks.
+    autoMine: true,
+  });
+
+  await deploy("BondingCurveChest", {
+    from: deployer,
+    // Contract constructor arguments
+    args: [useBiomesWorldAddress],
+    log: true,
+    // autoMine: can be passed to the deploy function to make the deployment process faster on local networks by
+    // automatically mining the contract deployment transaction. There is no effect on live networks.
+    autoMine: true,
+  });
+
+  // Get the deployed contract to interact with it after deploying.
+  const bondingCurveChestContract = await hre.ethers.getContract<Contract>("BondingCurveChest", deployer);
+
+  await deploy("ShopToken", {
+    from: deployer,
+    // Contract constructor arguments
+    args: ["Grass", "GRS", bondingCurveChestContract.target],
     log: true,
     // autoMine: can be passed to the deploy function to make the deployment process faster on local networks by
     // automatically mining the contract deployment transaction. There is no effect on live networks.
