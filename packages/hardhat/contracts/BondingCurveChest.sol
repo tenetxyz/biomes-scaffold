@@ -24,7 +24,6 @@ contract BondingCurveChest is IChestTransferHook, Ownable {
   // Note: for now, we only support shops buying/selling one type of object.
   mapping(bytes32 => ShopData) private buyShopData;
   mapping(bytes32 => ShopData) private sellShopData;
-  mapping(bytes32 => address) private shopToken;
   mapping(address => bytes32[]) private ownedChests;
 
   mapping(uint8 => address) private objectToToken;
