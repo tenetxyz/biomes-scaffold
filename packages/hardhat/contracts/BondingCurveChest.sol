@@ -79,12 +79,14 @@ contract BondingCurveChest is IChestTransferHook, Ownable {
     removeOwnedChest(chestMetadata.owner, chestEntityId);
   }
 
-  function setupChest(bytes32 chestEntityId, uint8 objectTypeId, address) external {
+  function setupChest(bytes32 chestEntityId, uint8 objectTypeId) external {
     ChestMetadataData memory chestMetadata = ChestMetadata.get(chestEntityId);
     require(chestMetadata.owner == msg.sender, "Only the owner can set up the chest");
 
     buyShopData[chestEntityId] = ShopData({ objectTypeId: objectTypeId, price: 0 });
     sellShopData[chestEntityId] = ShopData({ objectTypeId: objectTypeId, price: 0 });
+
+    require(objectToToken[objectTypeId] != address(0), "Token not set up");
 
     safeAddOwnedChest(chestMetadata.owner, chestEntityId);
   }
@@ -141,6 +143,7 @@ contract BondingCurveChest is IChestTransferHook, Ownable {
     address tokenAddress = objectToToken[transferObjectTypeId];
     require(tokenAddress != address(0), "Token not set up");
     address player = getPlayerFromEntity(isDeposit ? srcEntityId : dstEntityId);
+    require(player != address(0), "Player does not exist");
 
     uint256 blockTokens = blocksToTokens(currentSupplyInChest, numToTransfer);
 

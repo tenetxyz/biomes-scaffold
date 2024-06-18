@@ -3067,7 +3067,7 @@ const deployedContracts = {
   },
   31337: {
     BondingCurveChest: {
-      address: "0x071586BA1b380B00B793Cc336fe01106B0BFbE6D",
+      address: "0xdFdE6B33f13de2CA1A75A6F7169f50541B14f75b",
       abi: [
         {
           inputs: [
@@ -3542,11 +3542,6 @@ const deployedContracts = {
               internalType: "uint8",
               name: "objectTypeId",
               type: "uint8",
-            },
-            {
-              internalType: "address",
-              name: "",
-              type: "address",
             },
           ],
           name: "setupChest",
@@ -5330,7 +5325,7 @@ const deployedContracts = {
       },
     },
     ShopToken: {
-      address: "0xe70f935c32dA4dB13e7876795f1e175465e6458e",
+      address: "0xaC9fCBA56E42d5960f813B9D0387F3D3bC003338",
       abi: [
         {
           inputs: [
