@@ -114,24 +114,6 @@ contract BondingCurveChest is IChestTransferHook, Ownable {
     return (k * transferAmount) / (1 + (supply / 1000));
   }
 
-  function calcBlocksAllowed(uint16 supply, uint256 tokens) internal returns (uint16) {
-    // Constant that adjusts the base rate of tokens per block
-    uint256 k = 1;
-
-    // Constant that controls how the block rate increases as the chest fills up
-    uint256 beta = 1;
-
-    // Map supply to the range of 0 -- 10x10^10
-    uint256 scaledSupply = (supply * 10 ** 10) / 1188;
-
-    uint256 blocksAllowed = k * tokens * (1 + (beta * scaledSupply));
-
-    // Map blocksAllowed to the range of 0 -- 1188
-    blocksAllowed = (blocksAllowed * 1188) / 10 ** 10;
-
-    return blocksAllowed > type(uint16).max ? type(uint16).max : uint16(blocksAllowed);
-  }
-
   function allowTransfer(
     bytes32 srcEntityId,
     bytes32 dstEntityId,
