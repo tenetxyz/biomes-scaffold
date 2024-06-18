@@ -198,4 +198,21 @@ contract BondingCurveChest is IChestTransferHook, Ownable {
 
     return fullShopData;
   }
+
+  function getTokens() external view returns (address[] memory) {
+    address[] memory tokens = new address[](256);
+    uint16 numTokens = 0;
+    for (uint16 i = 0; i < 256; i++) {
+      address token = objectToToken[uint8(i)];
+      if (token != address(0)) {
+        tokens[numTokens] = token;
+        numTokens++;
+      }
+    }
+    address[] memory result = new address[](numTokens);
+    for (uint16 i = 0; i < numTokens; i++) {
+      result[i] = tokens[i];
+    }
+    return result;
+  }
 }
