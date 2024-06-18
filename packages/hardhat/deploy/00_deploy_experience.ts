@@ -98,6 +98,12 @@ const deployExperienceContract: DeployFunction = async function (hre: HardhatRun
     // automatically mining the contract deployment transaction. There is no effect on live networks.
     autoMine: true,
   });
+
+  const shopTokenContract = await hre.ethers.getContract<Contract>("ShopToken", deployer);
+
+  // Update objectToToken mapping with the token address
+  const objectTypeId = 35; // Grass
+  await bondingCurveChestContract.updateObjectToToken(objectTypeId, shopTokenContract.target);
 };
 
 export default deployExperienceContract;

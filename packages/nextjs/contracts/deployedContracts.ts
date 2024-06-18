@@ -3067,7 +3067,7 @@ const deployedContracts = {
   },
   31337: {
     BondingCurveChest: {
-      address: "0x38A70c040CA5F5439ad52d0e821063b0EC0B52b6",
+      address: "0xdFdE6B33f13de2CA1A75A6F7169f50541B14f75b",
       abi: [
         {
           inputs: [
@@ -5317,7 +5317,7 @@ const deployedContracts = {
       },
     },
     ShopToken: {
-      address: "0x54B8d8E2455946f2A5B8982283f2359812e815ce",
+      address: "0xaC9fCBA56E42d5960f813B9D0387F3D3bC003338",
       abi: [
         {
           inputs: [
@@ -5339,33 +5339,6 @@ const deployedContracts = {
           ],
           stateMutability: "nonpayable",
           type: "constructor",
-        },
-        {
-          inputs: [],
-          name: "ECDSAInvalidSignature",
-          type: "error",
-        },
-        {
-          inputs: [
-            {
-              internalType: "uint256",
-              name: "length",
-              type: "uint256",
-            },
-          ],
-          name: "ECDSAInvalidSignatureLength",
-          type: "error",
-        },
-        {
-          inputs: [
-            {
-              internalType: "bytes32",
-              name: "s",
-              type: "bytes32",
-            },
-          ],
-          name: "ECDSAInvalidSignatureS",
-          type: "error",
         },
         {
           inputs: [
@@ -5456,54 +5429,6 @@ const deployedContracts = {
         {
           inputs: [
             {
-              internalType: "uint256",
-              name: "deadline",
-              type: "uint256",
-            },
-          ],
-          name: "ERC2612ExpiredSignature",
-          type: "error",
-        },
-        {
-          inputs: [
-            {
-              internalType: "address",
-              name: "signer",
-              type: "address",
-            },
-            {
-              internalType: "address",
-              name: "owner",
-              type: "address",
-            },
-          ],
-          name: "ERC2612InvalidSigner",
-          type: "error",
-        },
-        {
-          inputs: [
-            {
-              internalType: "address",
-              name: "account",
-              type: "address",
-            },
-            {
-              internalType: "uint256",
-              name: "currentNonce",
-              type: "uint256",
-            },
-          ],
-          name: "InvalidAccountNonce",
-          type: "error",
-        },
-        {
-          inputs: [],
-          name: "InvalidShortString",
-          type: "error",
-        },
-        {
-          inputs: [
-            {
               internalType: "address",
               name: "owner",
               type: "address",
@@ -5521,17 +5446,6 @@ const deployedContracts = {
             },
           ],
           name: "OwnableUnauthorizedAccount",
-          type: "error",
-        },
-        {
-          inputs: [
-            {
-              internalType: "string",
-              name: "str",
-              type: "string",
-            },
-          ],
-          name: "StringTooLong",
           type: "error",
         },
         {
@@ -5557,12 +5471,6 @@ const deployedContracts = {
             },
           ],
           name: "Approval",
-          type: "event",
-        },
-        {
-          anonymous: false,
-          inputs: [],
-          name: "EIP712DomainChanged",
           type: "event",
         },
         {
@@ -5608,19 +5516,6 @@ const deployedContracts = {
           ],
           name: "Transfer",
           type: "event",
-        },
-        {
-          inputs: [],
-          name: "DOMAIN_SEPARATOR",
-          outputs: [
-            {
-              internalType: "bytes32",
-              name: "",
-              type: "bytes32",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
         },
         {
           inputs: [
@@ -5721,49 +5616,6 @@ const deployedContracts = {
           type: "function",
         },
         {
-          inputs: [],
-          name: "eip712Domain",
-          outputs: [
-            {
-              internalType: "bytes1",
-              name: "fields",
-              type: "bytes1",
-            },
-            {
-              internalType: "string",
-              name: "name",
-              type: "string",
-            },
-            {
-              internalType: "string",
-              name: "version",
-              type: "string",
-            },
-            {
-              internalType: "uint256",
-              name: "chainId",
-              type: "uint256",
-            },
-            {
-              internalType: "address",
-              name: "verifyingContract",
-              type: "address",
-            },
-            {
-              internalType: "bytes32",
-              name: "salt",
-              type: "bytes32",
-            },
-            {
-              internalType: "uint256[]",
-              name: "extensions",
-              type: "uint256[]",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
           inputs: [
             {
               internalType: "address",
@@ -5795,25 +5647,6 @@ const deployedContracts = {
           type: "function",
         },
         {
-          inputs: [
-            {
-              internalType: "address",
-              name: "owner",
-              type: "address",
-            },
-          ],
-          name: "nonces",
-          outputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
           inputs: [],
           name: "owner",
           outputs: [
@@ -5824,49 +5657,6 @@ const deployedContracts = {
             },
           ],
           stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "address",
-              name: "owner",
-              type: "address",
-            },
-            {
-              internalType: "address",
-              name: "spender",
-              type: "address",
-            },
-            {
-              internalType: "uint256",
-              name: "value",
-              type: "uint256",
-            },
-            {
-              internalType: "uint256",
-              name: "deadline",
-              type: "uint256",
-            },
-            {
-              internalType: "uint8",
-              name: "v",
-              type: "uint8",
-            },
-            {
-              internalType: "bytes32",
-              name: "r",
-              type: "bytes32",
-            },
-            {
-              internalType: "bytes32",
-              name: "s",
-              type: "bytes32",
-            },
-          ],
-          name: "permit",
-          outputs: [],
-          stateMutability: "nonpayable",
           type: "function",
         },
         {
@@ -5970,19 +5760,15 @@ const deployedContracts = {
         },
       ],
       inheritedFunctions: {
-        allowance: "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol",
-        approve: "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol",
-        balanceOf: "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol",
-        decimals: "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol",
-        name: "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol",
-        symbol: "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol",
-        totalSupply: "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol",
-        transfer: "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol",
-        transferFrom: "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol",
-        DOMAIN_SEPARATOR: "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol",
-        eip712Domain: "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol",
-        nonces: "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol",
-        permit: "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol",
+        allowance: "@openzeppelin/contracts/token/ERC20/ERC20.sol",
+        approve: "@openzeppelin/contracts/token/ERC20/ERC20.sol",
+        balanceOf: "@openzeppelin/contracts/token/ERC20/ERC20.sol",
+        decimals: "@openzeppelin/contracts/token/ERC20/ERC20.sol",
+        name: "@openzeppelin/contracts/token/ERC20/ERC20.sol",
+        symbol: "@openzeppelin/contracts/token/ERC20/ERC20.sol",
+        totalSupply: "@openzeppelin/contracts/token/ERC20/ERC20.sol",
+        transfer: "@openzeppelin/contracts/token/ERC20/ERC20.sol",
+        transferFrom: "@openzeppelin/contracts/token/ERC20/ERC20.sol",
         owner: "@openzeppelin/contracts/access/Ownable.sol",
         renounceOwnership: "@openzeppelin/contracts/access/Ownable.sol",
         transferOwnership: "@openzeppelin/contracts/access/Ownable.sol",

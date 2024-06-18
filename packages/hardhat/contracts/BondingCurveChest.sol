@@ -15,8 +15,8 @@ import { ShopData, FullShopData } from "../utils/ShopUtils.sol";
 
 import { IShopToken } from "./IShopToken.sol";
 
-// Players send it items, and are given Ether in return.
-// Players send it ether, and are given items in return.
+// Players send it items, and are given a token in return.
+// Players send it token, and are given items in return.
 // Price is determined by a bonding curve.
 contract BondingCurveChest is IChestTransferHook, Ownable {
   address public immutable biomeWorldAddress;
@@ -101,7 +101,7 @@ contract BondingCurveChest is IChestTransferHook, Ownable {
     removeOwnedChest(msg.sender, chestEntityId);
   }
 
-  function blocksToTokens(uint16 supply, uint16 transferAmount) internal returns (uint256) {
+  function blocksToTokens(uint16 supply, uint16 transferAmount) internal pure returns (uint256) {
     // Constant that adjusts the base rate of tokens per block
     uint256 k = 10 * 10 ** 18;
 
@@ -159,25 +159,28 @@ contract BondingCurveChest is IChestTransferHook, Ownable {
     return interfaceId == type(IChestTransferHook).interfaceId || interfaceId == type(IERC165).interfaceId;
   }
 
-  function getBuyShopData(bytes32 chestEntityId) external view returns (ShopData memory) {
-    return buyShopData[chestEntityId];
+  function getBuyShopData(bytes32 chestEntityId) public view returns (ShopData memory) {
+    ShopData memory buyData = buyShopData[chestEntityId];
+    buyData.price = blocksToTokens(getCount(chestEntityId, buyData.objectTypeId), 1);
+    return buyData;
   }
 
-  function getSellShopData(bytes32 chestEntityId) external view returns (ShopData memory) {
-    return sellShopData[chestEntityId];
+  function getSellShopData(bytes32 chestEntityId) public view returns (ShopData memory) {
+    ShopData memory sellData = sellShopData[chestEntityId];
+    sellData.price = blocksToTokens(getCount(chestEntityId, sellData.objectTypeId), 1);
+    return sellData;
   }
 
   function getOwnedChests(address player) external view returns (bytes32[] memory) {
     return ownedChests[player];
   }
 
-  function getFullShopData(bytes32 chestEntityId) external view returns (FullShopData memory) {
-    ChestMetadataData memory chestMetadata = ChestMetadata.get(chestEntityId);
+  function getFullShopData(bytes32 chestEntityId) public view returns (FullShopData memory) {
     return
       FullShopData({
         chestEntityId: chestEntityId,
-        buyShopData: buyShopData[chestEntityId],
-        sellShopData: sellShopData[chestEntityId],
+        buyShopData: getBuyShopData(chestEntityId),
+        sellShopData: getSellShopData(chestEntityId),
         balance: 0,
         location: getPosition(chestEntityId)
       });
@@ -190,13 +193,7 @@ contract BondingCurveChest is IChestTransferHook, Ownable {
     for (uint i = 0; i < chestEntityIds.length; i++) {
       bytes32 chestEntityId = chestEntityIds[i];
       ChestMetadataData memory chestMetadata = ChestMetadata.get(chestEntityId);
-      fullShopData[i] = FullShopData({
-        chestEntityId: chestEntityId,
-        buyShopData: buyShopData[chestEntityId],
-        sellShopData: sellShopData[chestEntityId],
-        balance: 0,
-        location: getPosition(chestEntityId)
-      });
+      fullShopData[i] = getFullShopData(chestEntityId);
     }
 
     return fullShopData;
