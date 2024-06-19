@@ -143,14 +143,19 @@ contract BuyChest is IChestTransferHook, Ownable {
     bytes32 toolEntityId,
     bytes memory extraData
   ) external payable onlyBiomeWorld returns (bool) {
-    {
-      bool isDeposit = getObjectType(srcEntityId) == PlayerObjectID;
-      if (!isDeposit) {
-        return false;
-      }
+    bool isDeposit = getObjectType(srcEntityId) == PlayerObjectID;
+    bytes32 chestEntityId = isDeposit ? dstEntityId : srcEntityId;
+    ChestMetadataData memory chestMetadata = ChestMetadata.get(chestEntityId);
+    require(chestMetadata.owner != address(0), "Chest does not exist");
+    address player = getPlayerFromEntity(isDeposit ? srcEntityId : dstEntityId);
+    if (player == chestMetadata.owner) {
+      return true;
+    }
+    if (!isDeposit) {
+      return false;
     }
 
-    ShopData storage chestShopData = shopData[dstEntityId];
+    ShopData storage chestShopData = shopData[chestEntityId];
     if (chestShopData.objectTypeId != transferObjectTypeId) {
       return false;
     }
@@ -170,14 +175,12 @@ contract BuyChest is IChestTransferHook, Ownable {
     uint256 fee = (amountToPay * 1) / 100; // 1% fee
 
     // Check if there is enough balance in the chest
-    ChestMetadataData memory chestMetadata = ChestMetadata.get(dstEntityId);
-    uint256 balance = balances[chestMetadata.owner][dstEntityId];
+    uint256 balance = balances[chestMetadata.owner][chestEntityId];
     require(balance >= amountToPay + fee, "Insufficient balance in chest");
 
-    balances[chestMetadata.owner][dstEntityId] -= amountToPay + fee;
+    balances[chestMetadata.owner][chestEntityId] -= amountToPay + fee;
     totalFees += fee;
 
-    address player = getPlayerFromEntity(srcEntityId);
     (bool sent, ) = player.call{ value: amountToPay }("");
     require(sent, "Failed to send Ether");
 

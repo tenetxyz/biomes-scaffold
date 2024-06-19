@@ -92,11 +92,18 @@ contract SellChest is IChestTransferHook, Ownable {
     bytes32 toolEntityId,
     bytes memory extraData
   ) external payable onlyBiomeWorld returns (bool) {
-    bool isWithdrawl = getObjectType(dstEntityId) == PlayerObjectID;
-    if (!isWithdrawl) {
+    bool isDeposit = getObjectType(srcEntityId) == PlayerObjectID;
+    bytes32 chestEntityId = isDeposit ? dstEntityId : srcEntityId;
+    ChestMetadataData memory chestMetadata = ChestMetadata.get(chestEntityId);
+    require(chestMetadata.owner != address(0), "Chest does not exist");
+    address player = getPlayerFromEntity(isDeposit ? srcEntityId : dstEntityId);
+    if (player == chestMetadata.owner) {
+      return true;
+    }
+    if (isDeposit) {
       return false;
     }
-    ShopData storage chestShopData = shopData[srcEntityId];
+    ShopData storage chestShopData = shopData[chestEntityId];
     if (chestShopData.objectTypeId != transferObjectTypeId) {
       return false;
     }
@@ -115,9 +122,6 @@ contract SellChest is IChestTransferHook, Ownable {
     uint256 amountToCharge = sellPrice * numToTransfer;
     uint256 fee = (amountToCharge * 1) / 100; // 1% fee
     require(msg.value >= amountToCharge + fee, "Insufficient Ether sent");
-
-    ChestMetadataData memory chestMetadata = ChestMetadata.get(srcEntityId);
-    require(chestMetadata.owner != address(0), "Chest does not exist");
 
     (bool sent, ) = chestMetadata.owner.call{ value: amountToCharge }("");
     require(sent, "Failed to send Ether");

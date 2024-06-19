@@ -139,6 +139,8 @@ contract BondingCurveChest is IChestTransferHook, Ownable {
     ChestMetadataData memory chestMetadata = ChestMetadata.get(chestEntityId);
     require(chestMetadata.owner != address(0), "Chest does not exist");
     uint16 currentSupplyInChest = getCount(chestEntityId, transferObjectTypeId);
+    // At this point the supply already includes the transfer amount, so we need to subtract it
+    currentSupplyInChest -= numToTransfer;
 
     address tokenAddress = objectToToken[transferObjectTypeId];
     require(tokenAddress != address(0), "Token not set up");
