@@ -99,11 +99,37 @@ const deployExperienceContract: DeployFunction = async function (hre: HardhatRun
     autoMine: true,
   });
 
+  await deploy("TokenizedChest", {
+    from: deployer,
+    // Contract constructor arguments
+    args: [useBiomesWorldAddress],
+    log: true,
+    // autoMine: can be passed to the deploy function to make the deployment process faster on local networks by
+    // automatically mining the contract deployment transaction. There is no effect on live networks.
+    autoMine: true,
+  });
+
+  const bcShopTokenContract = await hre.ethers.getContract<Contract>("ShopToken", deployer);
+
+  // Get the deployed contract to interact with it after deploying.
+  const tokenizedChestContract = await hre.ethers.getContract<Contract>("TokenizedChest", deployer);
+
+  await deploy("ShopToken", {
+    from: deployer,
+    // Contract constructor arguments
+    args: ["Grass", "GRS", tokenizedChestContract.target],
+    log: true,
+    // autoMine: can be passed to the deploy function to make the deployment process faster on local networks by
+    // automatically mining the contract deployment transaction. There is no effect on live networks.
+    autoMine: true,
+  });
+
   const shopTokenContract = await hre.ethers.getContract<Contract>("ShopToken", deployer);
 
   // Update objectToToken mapping with the token address
   const objectTypeId = 35; // Grass
-  await bondingCurveChestContract.updateObjectToToken(objectTypeId, shopTokenContract.target);
+  await bondingCurveChestContract.updateObjectToToken(objectTypeId, bcShopTokenContract.target);
+  await tokenizedChestContract.updateObjectToToken(objectTypeId, shopTokenContract.target);
 };
 
 export default deployExperienceContract;
