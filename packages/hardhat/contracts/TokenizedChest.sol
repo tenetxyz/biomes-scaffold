@@ -122,20 +122,26 @@ contract TokenizedChest is IChestTransferHook, Ownable {
     // Cumulatively sum the supply as it increases
     uint256 tokens = 0;
     for (uint16 i = 0; i < transferAmount; i++) {
+      uint256 tokenIncrease = 0;
       if (supply == 0) {
-        tokens += 1 * 10 ** 18;
+        tokenIncrease = 1 * 10 ** 18;
       } else {
-        tokens += totalTokenSupply / supply;
+        tokenIncrease = totalTokenSupply / supply;
       }
+      tokens += tokenIncrease;
 
       if (isDeposit) {
         supply++;
-        totalTokenSupply += tokens;
+        totalTokenSupply += tokenIncrease;
       } else {
         if (supply > 0) {
           supply--;
         }
-        totalTokenSupply -= tokens;
+        if (totalTokenSupply > tokenIncrease) {
+          totalTokenSupply -= tokenIncrease;
+        } else {
+          totalTokenSupply = 0;
+        }
       }
     }
 

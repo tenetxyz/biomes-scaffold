@@ -5783,7 +5783,7 @@ const deployedContracts = {
       },
     },
     TokenizedChest: {
-      address: "0x38A70c040CA5F5439ad52d0e821063b0EC0B52b6",
+      address: "0xaC9fCBA56E42d5960f813B9D0387F3D3bC003338",
       abi: [
         {
           inputs: [
