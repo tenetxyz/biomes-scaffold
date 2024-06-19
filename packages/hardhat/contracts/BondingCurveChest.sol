@@ -9,8 +9,9 @@ import { ChestMetadata, ChestMetadataData } from "@biomesaw/world/src/codegen/ta
 
 import { IChestTransferHook } from "@biomesaw/world/src/prototypes/IChestTransferHook.sol";
 import { PlayerObjectID } from "@biomesaw/world/src/ObjectTypeIds.sol";
+import { MAX_CHEST_INVENTORY_SLOTS } from "@biomesaw/world/src/Constants.sol";
 
-import { getObjectType, getDurability, getNumUsesLeft, getPlayerFromEntity, getPosition, getCount } from "../utils/EntityUtils.sol";
+import { getObjectType, getDurability, getNumUsesLeft, getPlayerFromEntity, getPosition, getCount, getStackable } from "../utils/EntityUtils.sol";
 import { ShopData, FullShopData } from "../utils/ShopUtils.sol";
 
 import { IShopToken } from "./IShopToken.sol";
@@ -102,17 +103,38 @@ contract BondingCurveChest is IChestTransferHook, Ownable {
     removeOwnedChest(msg.sender, chestEntityId);
   }
 
-  function blocksToTokens(uint16 supply, uint16 transferAmount) internal pure returns (uint256) {
+  function blocksToTokens(
+    uint16 supply,
+    uint8 transferObjectTypeId,
+    uint16 transferAmount,
+    bool isDeposit
+  ) internal view returns (uint256) {
     // Constant that adjusts the base rate of tokens per block
     uint256 k = 10 * 10 ** 18;
 
     // Constant that controls how the reward rate decreases as the chest fills up
     // uint256 alpha = 0.001;
 
-    // Map supply to the range of 0 -- 10x10^10
-    uint256 scaledSupply = (supply * 10 ** 10) / 1188;
+    uint256 maxItemsInChest = getStackable(transferObjectTypeId) * MAX_CHEST_INVENTORY_SLOTS;
 
-    return (k * transferAmount) / (1 + (supply / 1000));
+    // Cumulatively sum the supply as it increases
+    uint256 tokens = 0;
+    for (uint16 i = 0; i < transferAmount; i++) {
+      // Map supply to the range of 0 -- 10x10^10
+      uint256 scaledSupply = (uint256(supply) * 10 ** 10) / maxItemsInChest;
+
+      tokens += (k * 1) / (1 + (scaledSupply / 1000));
+
+      if (isDeposit) {
+        supply++;
+      } else {
+        if (supply > 0) {
+          supply--;
+        }
+      }
+    }
+
+    return tokens;
   }
 
   function allowTransfer(
@@ -139,15 +161,19 @@ contract BondingCurveChest is IChestTransferHook, Ownable {
     ChestMetadataData memory chestMetadata = ChestMetadata.get(chestEntityId);
     require(chestMetadata.owner != address(0), "Chest does not exist");
     uint16 currentSupplyInChest = getCount(chestEntityId, transferObjectTypeId);
-    // At this point the supply already includes the transfer amount, so we need to subtract it
-    currentSupplyInChest -= numToTransfer;
+    // At this point, the supply has already been updated, so we need to adjust it
+    if (isDeposit) {
+      currentSupplyInChest -= numToTransfer;
+    } else {
+      currentSupplyInChest += numToTransfer;
+    }
 
     address tokenAddress = objectToToken[transferObjectTypeId];
     require(tokenAddress != address(0), "Token not set up");
     address player = getPlayerFromEntity(isDeposit ? srcEntityId : dstEntityId);
     require(player != address(0), "Player does not exist");
 
-    uint256 blockTokens = blocksToTokens(currentSupplyInChest, numToTransfer);
+    uint256 blockTokens = blocksToTokens(currentSupplyInChest, transferObjectTypeId, numToTransfer, isDeposit);
 
     if (isDeposit) {
       IShopToken(tokenAddress).mint(player, blockTokens);
@@ -165,13 +191,13 @@ contract BondingCurveChest is IChestTransferHook, Ownable {
 
   function getBuyShopData(bytes32 chestEntityId) public view returns (ShopData memory) {
     ShopData memory buyData = buyShopData[chestEntityId];
-    buyData.price = blocksToTokens(getCount(chestEntityId, buyData.objectTypeId), 1);
+    buyData.price = blocksToTokens(getCount(chestEntityId, buyData.objectTypeId), buyData.objectTypeId, 1, true);
     return buyData;
   }
 
   function getSellShopData(bytes32 chestEntityId) public view returns (ShopData memory) {
     ShopData memory sellData = sellShopData[chestEntityId];
-    sellData.price = blocksToTokens(getCount(chestEntityId, sellData.objectTypeId), 1);
+    sellData.price = blocksToTokens(getCount(chestEntityId, sellData.objectTypeId), sellData.objectTypeId, 1, false);
     return sellData;
   }
 
