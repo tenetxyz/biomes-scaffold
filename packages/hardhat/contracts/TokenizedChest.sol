@@ -238,8 +238,16 @@ contract TokenizedChest is IChestTransferHook, Ownable {
     return ownedChests[player];
   }
 
-  function getObjectSupply(uint8 objectTypeId) external view returns (uint256) {
+  function getObjectSupply(uint8 objectTypeId) public view returns (uint256) {
     return totalObjectSupply[objectTypeId];
+  }
+
+  function getObjectTokenSupply(uint8 objectTypeId) public view returns (uint256) {
+    return IShopToken(objectToToken[objectTypeId]).totalSupply();
+  }
+
+  function getObjectAndTokenSupply(uint8 objectTypeId) external view returns (uint256, uint256) {
+    return (getObjectSupply(objectTypeId), getObjectTokenSupply(objectTypeId));
   }
 
   function getFullShopData(bytes32 chestEntityId) public view returns (FullShopData memory) {

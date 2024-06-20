@@ -6146,7 +6146,50 @@ const deployedContracts = {
               type: "uint8",
             },
           ],
+          name: "getObjectAndTokenSupply",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint8",
+              name: "objectTypeId",
+              type: "uint8",
+            },
+          ],
           name: "getObjectSupply",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint8",
+              name: "objectTypeId",
+              type: "uint8",
+            },
+          ],
+          name: "getObjectTokenSupply",
           outputs: [
             {
               internalType: "uint256",
