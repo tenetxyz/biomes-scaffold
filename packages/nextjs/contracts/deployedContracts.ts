@@ -7,7 +7,7 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 const deployedContracts = {
   31337: {
     BondingCurveChest: {
-      address: "0x38A70c040CA5F5439ad52d0e821063b0EC0B52b6",
+      address: "0x54B8d8E2455946f2A5B8982283f2359812e815ce",
       abi: [
         {
           inputs: [
@@ -583,7 +583,7 @@ const deployedContracts = {
       },
     },
     BuyChest: {
-      address: "0x63fea6E447F120B8Faf85B53cdaD8348e645D80E",
+      address: "0xdFdE6B33f13de2CA1A75A6F7169f50541B14f75b",
       abi: [
         {
           inputs: [
@@ -1205,7 +1205,7 @@ const deployedContracts = {
       },
     },
     BuySellChest: {
-      address: "0xaC9fCBA56E42d5960f813B9D0387F3D3bC003338",
+      address: "0x38A70c040CA5F5439ad52d0e821063b0EC0B52b6",
       abi: [
         {
           inputs: [
@@ -1885,8 +1885,281 @@ const deployedContracts = {
         transferOwnership: "@openzeppelin/contracts/access/Ownable.sol",
       },
     },
+    OwnedChest: {
+      address: "0x63fea6E447F120B8Faf85B53cdaD8348e645D80E",
+      abi: [
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "_biomeWorldAddress",
+              type: "address",
+            },
+          ],
+          stateMutability: "nonpayable",
+          type: "constructor",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "owner",
+              type: "address",
+            },
+          ],
+          name: "OwnableInvalidOwner",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "account",
+              type: "address",
+            },
+          ],
+          name: "OwnableUnauthorizedAccount",
+          type: "error",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: true,
+              internalType: "address",
+              name: "previousOwner",
+              type: "address",
+            },
+            {
+              indexed: true,
+              internalType: "address",
+              name: "newOwner",
+              type: "address",
+            },
+          ],
+          name: "OwnershipTransferred",
+          type: "event",
+        },
+        {
+          inputs: [],
+          name: "biomeWorldAddress",
+          outputs: [
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "chestEntityId",
+              type: "bytes32",
+            },
+          ],
+          name: "getOwner",
+          outputs: [
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "playerEntityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "bytes32",
+              name: "chestEntityId",
+              type: "bytes32",
+            },
+          ],
+          name: "onAttached",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "playerEntityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "bytes32",
+              name: "entityId",
+              type: "bytes32",
+            },
+          ],
+          name: "onChipHit",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "playerEntityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "bytes32",
+              name: "chestEntityId",
+              type: "bytes32",
+            },
+          ],
+          name: "onDetached",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "playerEntityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "bytes32",
+              name: "entityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "uint16",
+              name: "numBattery",
+              type: "uint16",
+            },
+          ],
+          name: "onPowered",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "srcEntityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "bytes32",
+              name: "dstEntityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "uint8",
+              name: "transferObjectTypeId",
+              type: "uint8",
+            },
+            {
+              internalType: "uint16",
+              name: "numToTransfer",
+              type: "uint16",
+            },
+            {
+              internalType: "bytes32",
+              name: "toolEntityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "bytes",
+              name: "extraData",
+              type: "bytes",
+            },
+          ],
+          name: "onTransfer",
+          outputs: [
+            {
+              internalType: "bool",
+              name: "",
+              type: "bool",
+            },
+          ],
+          stateMutability: "payable",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "owner",
+          outputs: [
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "renounceOwnership",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes4",
+              name: "interfaceId",
+              type: "bytes4",
+            },
+          ],
+          name: "supportsInterface",
+          outputs: [
+            {
+              internalType: "bool",
+              name: "",
+              type: "bool",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "newOwner",
+              type: "address",
+            },
+          ],
+          name: "transferOwnership",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+      ],
+      inheritedFunctions: {
+        onAttached: "@biomesaw/world/src/prototypes/IChip.sol",
+        onChipHit: "@biomesaw/world/src/prototypes/IChip.sol",
+        onDetached: "@biomesaw/world/src/prototypes/IChip.sol",
+        onPowered: "@biomesaw/world/src/prototypes/IChip.sol",
+        onTransfer: "@biomesaw/world/src/prototypes/IChip.sol",
+        supportsInterface: "@biomesaw/world/src/prototypes/IChip.sol",
+        owner: "@openzeppelin/contracts/access/Ownable.sol",
+        renounceOwnership: "@openzeppelin/contracts/access/Ownable.sol",
+        transferOwnership: "@openzeppelin/contracts/access/Ownable.sol",
+      },
+    },
     SellChest: {
-      address: "0xdFdE6B33f13de2CA1A75A6F7169f50541B14f75b",
+      address: "0xaC9fCBA56E42d5960f813B9D0387F3D3bC003338",
       abi: [
         {
           inputs: [
@@ -2393,7 +2666,7 @@ const deployedContracts = {
       },
     },
     ShopToken: {
-      address: "0xd9140951d8aE6E5F625a02F5908535e16e3af964",
+      address: "0x56D13Eb21a625EdA8438F55DF2C31dC3632034f5",
       abi: [
         {
           inputs: [
@@ -2851,7 +3124,7 @@ const deployedContracts = {
       },
     },
     TokenizedChest: {
-      address: "0x54B8d8E2455946f2A5B8982283f2359812e815ce",
+      address: "0xf090f16dEc8b6D24082Edd25B1C8D26f2bC86128",
       abi: [
         {
           inputs: [
