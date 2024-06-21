@@ -239,4 +239,8 @@ contract BuyChest is IChip, Ownable {
 
     return fullShopData;
   }
+
+  function getOwner(bytes32 chestEntityId) external view returns (address) {
+    return chestOwner[chestEntityId];
+  }
 }

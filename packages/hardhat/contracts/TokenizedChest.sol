@@ -296,4 +296,8 @@ contract TokenizedChest is IChip, Ownable {
     }
     return result;
   }
+
+  function getOwner(bytes32 chestEntityId) external view returns (address) {
+    return chestOwner[chestEntityId];
+  }
 }
