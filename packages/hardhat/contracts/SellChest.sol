@@ -5,20 +5,19 @@ import { StoreSwitch } from "@latticexyz/store/src/StoreSwitch.sol";
 import { IERC165 } from "@latticexyz/store/src/IERC165.sol";
 import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
 
-import { ChestMetadata, ChestMetadataData } from "@biomesaw/world/src/codegen/tables/ChestMetadata.sol";
-
-import { IChestTransferHook } from "@biomesaw/world/src/prototypes/IChestTransferHook.sol";
+import { IChip } from "@biomesaw/world/src/prototypes/IChip.sol";
 import { PlayerObjectID } from "@biomesaw/world/src/ObjectTypeIds.sol";
 
 import { getObjectType, getDurability, getNumUsesLeft, getPlayerFromEntity, getPosition } from "../utils/EntityUtils.sol";
 import { ShopData, FullShopData } from "../utils/ShopUtils.sol";
 
 // Players send it ether, and are given items in return.
-contract SellChest is IChestTransferHook, Ownable {
+contract SellChest is IChip, Ownable {
   address public immutable biomeWorldAddress;
 
   // Note: for now, we only support shops selling one type of object.
   mapping(bytes32 => ShopData) private shopData;
+  mapping(bytes32 => address) private chestOwner;
   mapping(address => bytes32[]) private ownedChests;
 
   constructor(address _biomeWorldAddress) Ownable(msg.sender) {
@@ -54,37 +53,41 @@ contract SellChest is IChestTransferHook, Ownable {
     }
   }
 
-  function onHookSet(bytes32 chestEntityId) external onlyBiomeWorld {
+  function onAttached(bytes32 playerEntityId, bytes32 chestEntityId) external onlyBiomeWorld {
     shopData[chestEntityId] = ShopData({ objectTypeId: 0, price: 0 });
 
-    ChestMetadataData memory chestMetadata = ChestMetadata.get(chestEntityId);
-    safeAddOwnedChest(chestMetadata.owner, chestEntityId);
+    address owner = getPlayerFromEntity(playerEntityId);
+    chestOwner[chestEntityId] = owner;
+    safeAddOwnedChest(owner, chestEntityId);
   }
 
-  function onHookRemoved(bytes32 chestEntityId) external onlyBiomeWorld {
-    ChestMetadataData memory chestMetadata = ChestMetadata.get(chestEntityId);
+  function onDetached(bytes32 playerEntityId, bytes32 chestEntityId) external onlyBiomeWorld {
+    address previousOwner = chestOwner[chestEntityId];
     shopData[chestEntityId] = ShopData({ objectTypeId: 0, price: 0 });
 
-    removeOwnedChest(chestMetadata.owner, chestEntityId);
+    removeOwnedChest(previousOwner, chestEntityId);
+    chestOwner[chestEntityId] = address(0);
   }
+
+  function onPowered(bytes32 playerEntityId, bytes32 entityId, uint16 numBattery) external onlyBiomeWorld {}
+
+  function onChipHit(bytes32 playerEntityId, bytes32 entityId) external onlyBiomeWorld {}
 
   function setupSellChest(bytes32 chestEntityId, uint8 sellObjectTypeId, uint256 sellPrice) external {
-    ChestMetadataData memory chestMetadata = ChestMetadata.get(chestEntityId);
-    require(chestMetadata.owner == msg.sender, "Only the owner can set up the chest");
+    address owner = chestOwner[chestEntityId];
+    require(owner == msg.sender, "Only the owner can set up the chest");
 
     shopData[chestEntityId] = ShopData({ objectTypeId: sellObjectTypeId, price: sellPrice });
-    safeAddOwnedChest(msg.sender, chestEntityId);
   }
 
   function destroySellChest(bytes32 chestEntityId, uint8 sellObjectTypeId) external {
-    ChestMetadataData memory chestMetadata = ChestMetadata.get(chestEntityId);
-    require(chestMetadata.owner == msg.sender, "Only the owner can destroy the chest");
+    address owner = chestOwner[chestEntityId];
+    require(owner == msg.sender, "Only the owner can destroy the chest");
 
     shopData[chestEntityId] = ShopData({ objectTypeId: 0, price: 0 });
-    removeOwnedChest(msg.sender, chestEntityId);
   }
 
-  function allowTransfer(
+  function onTransfer(
     bytes32 srcEntityId,
     bytes32 dstEntityId,
     uint8 transferObjectTypeId,
@@ -94,10 +97,10 @@ contract SellChest is IChestTransferHook, Ownable {
   ) external payable onlyBiomeWorld returns (bool) {
     bool isDeposit = getObjectType(srcEntityId) == PlayerObjectID;
     bytes32 chestEntityId = isDeposit ? dstEntityId : srcEntityId;
-    ChestMetadataData memory chestMetadata = ChestMetadata.get(chestEntityId);
-    require(chestMetadata.owner != address(0), "Chest does not exist");
+    address owner = chestOwner[chestEntityId];
+    require(owner != address(0), "Chest does not exist");
     address player = getPlayerFromEntity(isDeposit ? srcEntityId : dstEntityId);
-    if (player == chestMetadata.owner) {
+    if (player == owner) {
       return true;
     }
     if (isDeposit) {
@@ -123,7 +126,7 @@ contract SellChest is IChestTransferHook, Ownable {
     uint256 fee = (amountToCharge * 1) / 100; // 1% fee
     require(msg.value >= amountToCharge + fee, "Insufficient Ether sent");
 
-    (bool sent, ) = chestMetadata.owner.call{ value: amountToCharge }("");
+    (bool sent, ) = owner.call{ value: amountToCharge }("");
     require(sent, "Failed to send Ether");
 
     return true;
@@ -135,7 +138,7 @@ contract SellChest is IChestTransferHook, Ownable {
   }
 
   function supportsInterface(bytes4 interfaceId) external view override returns (bool) {
-    return interfaceId == type(IChestTransferHook).interfaceId || interfaceId == type(IERC165).interfaceId;
+    return interfaceId == type(IChip).interfaceId || interfaceId == type(IERC165).interfaceId;
   }
 
   function getShopData(bytes32 chestEntityId) external view returns (ShopData memory) {
@@ -143,7 +146,7 @@ contract SellChest is IChestTransferHook, Ownable {
   }
 
   function getFullShopData(bytes32 chestEntityId) external view returns (FullShopData memory) {
-    ChestMetadataData memory chestMetadata = ChestMetadata.get(chestEntityId);
+    address owner = chestOwner[chestEntityId];
 
     return
       FullShopData({
@@ -160,7 +163,7 @@ contract SellChest is IChestTransferHook, Ownable {
     FullShopData[] memory fullShopData = new FullShopData[](chestEntityIds.length);
     for (uint i = 0; i < chestEntityIds.length; i++) {
       bytes32 chestEntityId = chestEntityIds[i];
-      ChestMetadataData memory chestMetadata = ChestMetadata.get(chestEntityId);
+      address owner = chestOwner[chestEntityId];
       fullShopData[i] = FullShopData({
         chestEntityId: chestEntityId,
         buyShopData: ShopData({ objectTypeId: 0, price: 0 }),

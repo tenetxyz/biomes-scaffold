@@ -49,7 +49,7 @@
   },
   "dependencies": {
     "@biomesaw/utils": "0.1.4",
-    "@biomesaw/world": "0.1.4",
+    "@biomesaw/world": "0.1.5",
     "@latticexyz/common": "https://static.biomes.aw/tenetxyz-common-2.0.8.tgz",
     "@latticexyz/schema-type": "https://static.biomes.aw/tenetxyz-schema-type-2.0.8.tgz",
     "@latticexyz/store": "https://static.biomes.aw/tenetxyz-store-2.0.8.tgz",

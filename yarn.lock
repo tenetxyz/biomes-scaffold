@@ -673,7 +673,7 @@ __metadata:
   resolution: "@biomesaw-scaffold/hardhat@workspace:packages/hardhat"
   dependencies:
     "@biomesaw/utils": 0.1.4
-    "@biomesaw/world": 0.1.4
+    "@biomesaw/world": 0.1.5
     "@ethersproject/abi": ^5.7.0
     "@ethersproject/providers": ^5.7.1
     "@latticexyz/common": "https://static.biomes.aw/tenetxyz-common-2.0.8.tgz"
@@ -826,9 +826,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@biomesaw/world@npm:0.1.4":
-  version: 0.1.4
-  resolution: "@biomesaw/world@npm:0.1.4"
+"@biomesaw/world@npm:0.1.5":
+  version: 0.1.5
+  resolution: "@biomesaw/world@npm:0.1.5"
   dependencies:
     "@biomesaw/utils": 0.1.4
     "@latticexyz/cli": "https://static.biomes.aw/tenetxyz-cli-2.0.8.tgz"
@@ -838,7 +838,7 @@ __metadata:
     "@latticexyz/store": "https://static.biomes.aw/tenetxyz-store-2.0.8.tgz"
     "@latticexyz/world": "https://static.biomes.aw/tenetxyz-world-2.0.8.tgz"
     "@latticexyz/world-modules": "https://static.biomes.aw/tenetxyz-world-modules-2.0.8.tgz"
-  checksum: 5d5f6959649c81bc62e0d06846775cb40da730d2e9a33d0c72cef33180c474d0d8fce4d5fdb0e0109d4b0b9b1c8bafd11785875e6ef180c8ce49081460c66ed3
+  checksum: 3250efc0f5fe8edeed930030b197b5e430e802c56c05d7146d358e03f1708c23f441dc449638bd4d478a3a8610bfaa49c29ba20d96a5a836ed2b81dc04a0abe3
   languageName: node
   linkType: hard
 
