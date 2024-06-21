@@ -1,7 +1,7 @@
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { DeployFunction } from "hardhat-deploy/types";
-import { Contract } from "ethers";
 import { garnet, mudFoundry, redstone } from "@latticexyz/common/chains";
+import { Contract } from "ethers";
 
 const BIOMES_MAINNET_WORLD_ADDRESS = "0xf75b1b7bdb6932e487c4aa8d210f4a682abeacf0";
 const BIOMES_TESTNET_WORLD_ADDRESS = "0x641554ed9d8a6c2c362e6c3fb2835ec2ca4da95c";
@@ -46,10 +46,60 @@ const deployExperienceContract: DeployFunction = async function (hre: HardhatRun
   }
   console.log("useBiomesWorldAddress", useBiomesWorldAddress);
 
-  await deploy("Experience", {
+  await deploy("OwnedChest", {
     from: deployer,
     // Contract constructor arguments
-    args: [useBiomesWorldAddress, "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266"],
+    args: [useBiomesWorldAddress],
+    log: true,
+    // autoMine: can be passed to the deploy function to make the deployment process faster on local networks by
+    // automatically mining the contract deployment transaction. There is no effect on live networks.
+    autoMine: true,
+  });
+
+  await deploy("BuyChest", {
+    from: deployer,
+    // Contract constructor arguments
+    args: [useBiomesWorldAddress],
+    log: true,
+    // autoMine: can be passed to the deploy function to make the deployment process faster on local networks by
+    // automatically mining the contract deployment transaction. There is no effect on live networks.
+    autoMine: true,
+  });
+
+  await deploy("SellChest", {
+    from: deployer,
+    // Contract constructor arguments
+    args: [useBiomesWorldAddress],
+    log: true,
+    // autoMine: can be passed to the deploy function to make the deployment process faster on local networks by
+    // automatically mining the contract deployment transaction. There is no effect on live networks.
+    autoMine: true,
+  });
+
+  await deploy("BuySellChest", {
+    from: deployer,
+    // Contract constructor arguments
+    args: [useBiomesWorldAddress],
+    log: true,
+    // autoMine: can be passed to the deploy function to make the deployment process faster on local networks by
+    // automatically mining the contract deployment transaction. There is no effect on live networks.
+    autoMine: true,
+  });
+
+  await deploy("BondingCurveChest", {
+    from: deployer,
+    // Contract constructor arguments
+    args: [useBiomesWorldAddress],
+    log: true,
+    // autoMine: can be passed to the deploy function to make the deployment process faster on local networks by
+    // automatically mining the contract deployment transaction. There is no effect on live networks.
+    autoMine: true,
+  });
+
+  await deploy("TokenizedChest", {
+    from: deployer,
+    // Contract constructor arguments
+    args: [useBiomesWorldAddress],
     log: true,
     // autoMine: can be passed to the deploy function to make the deployment process faster on local networks by
     // automatically mining the contract deployment transaction. There is no effect on live networks.
@@ -57,8 +107,39 @@ const deployExperienceContract: DeployFunction = async function (hre: HardhatRun
   });
 
   // Get the deployed contract to interact with it after deploying.
-  const experienceContract = await hre.ethers.getContract<Contract>("Experience", deployer);
-  console.log("Biomes World Address:", await experienceContract.biomeWorldAddress());
+  const bondingCurveChestContract = await hre.ethers.getContract<Contract>("BondingCurveChest", deployer);
+
+  await deploy("ShopToken", {
+    from: deployer,
+    // Contract constructor arguments
+    args: ["BGrass", "BGRS", bondingCurveChestContract.target],
+    log: true,
+    // autoMine: can be passed to the deploy function to make the deployment process faster on local networks by
+    // automatically mining the contract deployment transaction. There is no effect on live networks.
+    autoMine: true,
+  });
+
+  const bcShopTokenContract = await hre.ethers.getContract<Contract>("ShopToken", deployer);
+
+  // Get the deployed contract to interact with it after deploying.
+  const tokenizedChestContract = await hre.ethers.getContract<Contract>("TokenizedChest", deployer);
+
+  await deploy("ShopToken", {
+    from: deployer,
+    // Contract constructor arguments
+    args: ["Grass", "GRS", tokenizedChestContract.target],
+    log: true,
+    // autoMine: can be passed to the deploy function to make the deployment process faster on local networks by
+    // automatically mining the contract deployment transaction. There is no effect on live networks.
+    autoMine: true,
+  });
+
+  const shopTokenContract = await hre.ethers.getContract<Contract>("ShopToken", deployer);
+
+  // Update objectToToken mapping with the token address
+  const objectTypeId = 35; // Grass
+  await bondingCurveChestContract.updateObjectToToken(objectTypeId, bcShopTokenContract.target);
+  await tokenizedChestContract.updateObjectToToken(objectTypeId, shopTokenContract.target);
 };
 
 export default deployExperienceContract;

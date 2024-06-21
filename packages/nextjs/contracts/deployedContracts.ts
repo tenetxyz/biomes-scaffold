@@ -5,493 +5,9 @@
 import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 
 const deployedContracts = {
-  690: {
-    Experience: {
-      address: "0x09F61e35b34EB7855fb234dc81109d774Bb16973",
-      abi: [
-        {
-          inputs: [
-            {
-              internalType: "address",
-              name: "_biomeWorldAddress",
-              type: "address",
-            },
-            {
-              internalType: "address",
-              name: "_delegatorAddress",
-              type: "address",
-            },
-          ],
-          stateMutability: "nonpayable",
-          type: "constructor",
-        },
-        {
-          anonymous: false,
-          inputs: [
-            {
-              indexed: false,
-              internalType: "address",
-              name: "player",
-              type: "address",
-            },
-            {
-              indexed: false,
-              internalType: "string",
-              name: "message",
-              type: "string",
-            },
-          ],
-          name: "GameNotif",
-          type: "event",
-        },
-        {
-          inputs: [],
-          name: "basicGetter",
-          outputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [],
-          name: "biomeWorldAddress",
-          outputs: [
-            {
-              internalType: "address",
-              name: "",
-              type: "address",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "address",
-              name: "delegator",
-              type: "address",
-            },
-          ],
-          name: "canUnregister",
-          outputs: [
-            {
-              internalType: "bool",
-              name: "",
-              type: "bool",
-            },
-          ],
-          stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          inputs: [],
-          name: "delegatorAddress",
-          outputs: [
-            {
-              internalType: "address",
-              name: "",
-              type: "address",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [],
-          name: "getRegisteredPlayers",
-          outputs: [
-            {
-              internalType: "address[]",
-              name: "",
-              type: "address[]",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "address",
-              name: "msgSender",
-              type: "address",
-            },
-            {
-              internalType: "ResourceId",
-              name: "systemId",
-              type: "bytes32",
-            },
-            {
-              internalType: "bytes",
-              name: "callData",
-              type: "bytes",
-            },
-          ],
-          name: "onAfterCallSystem",
-          outputs: [],
-          stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "address",
-              name: "msgSender",
-              type: "address",
-            },
-            {
-              internalType: "ResourceId",
-              name: "systemId",
-              type: "bytes32",
-            },
-            {
-              internalType: "bytes",
-              name: "callData",
-              type: "bytes",
-            },
-          ],
-          name: "onBeforeCallSystem",
-          outputs: [],
-          stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "address",
-              name: "msgSender",
-              type: "address",
-            },
-            {
-              internalType: "ResourceId",
-              name: "systemId",
-              type: "bytes32",
-            },
-            {
-              internalType: "uint8",
-              name: "enabledHooksBitmap",
-              type: "uint8",
-            },
-            {
-              internalType: "bytes32",
-              name: "callDataHash",
-              type: "bytes32",
-            },
-          ],
-          name: "onRegisterHook",
-          outputs: [],
-          stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "address",
-              name: "msgSender",
-              type: "address",
-            },
-            {
-              internalType: "ResourceId",
-              name: "systemId",
-              type: "bytes32",
-            },
-            {
-              internalType: "uint8",
-              name: "enabledHooksBitmap",
-              type: "uint8",
-            },
-            {
-              internalType: "bytes32",
-              name: "callDataHash",
-              type: "bytes32",
-            },
-          ],
-          name: "onUnregisterHook",
-          outputs: [],
-          stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "bytes4",
-              name: "interfaceId",
-              type: "bytes4",
-            },
-          ],
-          name: "supportsInterface",
-          outputs: [
-            {
-              internalType: "bool",
-              name: "",
-              type: "bool",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-      ],
-      inheritedFunctions: {
-        canUnregister: "@latticexyz/world/src/ICustomUnregisterDelegation.sol",
-        supportsInterface: "@latticexyz/world/src/IOptionalSystemHook.sol",
-        onAfterCallSystem: "@latticexyz/world/src/IOptionalSystemHook.sol",
-        onBeforeCallSystem: "@latticexyz/world/src/IOptionalSystemHook.sol",
-        onRegisterHook: "@latticexyz/world/src/IOptionalSystemHook.sol",
-        onUnregisterHook: "@latticexyz/world/src/IOptionalSystemHook.sol",
-      },
-    },
-  },
-  17069: {
-    Experience: {
-      address: "0xaFFFd91f427b81e0e56be9A4b6369f8DE6f24994",
-      abi: [
-        {
-          inputs: [
-            {
-              internalType: "address",
-              name: "_biomeWorldAddress",
-              type: "address",
-            },
-            {
-              internalType: "address",
-              name: "_delegatorAddress",
-              type: "address",
-            },
-          ],
-          stateMutability: "nonpayable",
-          type: "constructor",
-        },
-        {
-          anonymous: false,
-          inputs: [
-            {
-              indexed: false,
-              internalType: "address",
-              name: "player",
-              type: "address",
-            },
-            {
-              indexed: false,
-              internalType: "string",
-              name: "message",
-              type: "string",
-            },
-          ],
-          name: "GameNotif",
-          type: "event",
-        },
-        {
-          inputs: [],
-          name: "basicGetter",
-          outputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [],
-          name: "biomeWorldAddress",
-          outputs: [
-            {
-              internalType: "address",
-              name: "",
-              type: "address",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "address",
-              name: "delegator",
-              type: "address",
-            },
-          ],
-          name: "canUnregister",
-          outputs: [
-            {
-              internalType: "bool",
-              name: "",
-              type: "bool",
-            },
-          ],
-          stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          inputs: [],
-          name: "delegatorAddress",
-          outputs: [
-            {
-              internalType: "address",
-              name: "",
-              type: "address",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [],
-          name: "getRegisteredPlayers",
-          outputs: [
-            {
-              internalType: "address[]",
-              name: "",
-              type: "address[]",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "address",
-              name: "msgSender",
-              type: "address",
-            },
-            {
-              internalType: "ResourceId",
-              name: "systemId",
-              type: "bytes32",
-            },
-            {
-              internalType: "bytes",
-              name: "callData",
-              type: "bytes",
-            },
-          ],
-          name: "onAfterCallSystem",
-          outputs: [],
-          stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "address",
-              name: "msgSender",
-              type: "address",
-            },
-            {
-              internalType: "ResourceId",
-              name: "systemId",
-              type: "bytes32",
-            },
-            {
-              internalType: "bytes",
-              name: "callData",
-              type: "bytes",
-            },
-          ],
-          name: "onBeforeCallSystem",
-          outputs: [],
-          stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "address",
-              name: "msgSender",
-              type: "address",
-            },
-            {
-              internalType: "ResourceId",
-              name: "systemId",
-              type: "bytes32",
-            },
-            {
-              internalType: "uint8",
-              name: "enabledHooksBitmap",
-              type: "uint8",
-            },
-            {
-              internalType: "bytes32",
-              name: "callDataHash",
-              type: "bytes32",
-            },
-          ],
-          name: "onRegisterHook",
-          outputs: [],
-          stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "address",
-              name: "msgSender",
-              type: "address",
-            },
-            {
-              internalType: "ResourceId",
-              name: "systemId",
-              type: "bytes32",
-            },
-            {
-              internalType: "uint8",
-              name: "enabledHooksBitmap",
-              type: "uint8",
-            },
-            {
-              internalType: "bytes32",
-              name: "callDataHash",
-              type: "bytes32",
-            },
-          ],
-          name: "onUnregisterHook",
-          outputs: [],
-          stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "bytes4",
-              name: "interfaceId",
-              type: "bytes4",
-            },
-          ],
-          name: "supportsInterface",
-          outputs: [
-            {
-              internalType: "bool",
-              name: "",
-              type: "bool",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-      ],
-      inheritedFunctions: {
-        canUnregister: "@latticexyz/world/src/ICustomUnregisterDelegation.sol",
-        supportsInterface: "@latticexyz/world/src/IOptionalSystemHook.sol",
-        onAfterCallSystem: "@latticexyz/world/src/IOptionalSystemHook.sol",
-        onBeforeCallSystem: "@latticexyz/world/src/IOptionalSystemHook.sol",
-        onRegisterHook: "@latticexyz/world/src/IOptionalSystemHook.sol",
-        onUnregisterHook: "@latticexyz/world/src/IOptionalSystemHook.sol",
-      },
-    },
-  },
   31337: {
-    Experience: {
-      address: "0x71089Ba41e478702e1904692385Be3972B2cBf9e",
+    BondingCurveChest: {
+      address: "0x54B8d8E2455946f2A5B8982283f2359812e815ce",
       abi: [
         {
           inputs: [
@@ -500,46 +16,50 @@ const deployedContracts = {
               name: "_biomeWorldAddress",
               type: "address",
             },
-            {
-              internalType: "address",
-              name: "_delegatorAddress",
-              type: "address",
-            },
           ],
           stateMutability: "nonpayable",
           type: "constructor",
         },
         {
+          inputs: [
+            {
+              internalType: "address",
+              name: "owner",
+              type: "address",
+            },
+          ],
+          name: "OwnableInvalidOwner",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "account",
+              type: "address",
+            },
+          ],
+          name: "OwnableUnauthorizedAccount",
+          type: "error",
+        },
+        {
           anonymous: false,
           inputs: [
             {
-              indexed: false,
+              indexed: true,
               internalType: "address",
-              name: "player",
+              name: "previousOwner",
               type: "address",
             },
             {
-              indexed: false,
-              internalType: "string",
-              name: "message",
-              type: "string",
+              indexed: true,
+              internalType: "address",
+              name: "newOwner",
+              type: "address",
             },
           ],
-          name: "GameNotif",
+          name: "OwnershipTransferred",
           type: "event",
-        },
-        {
-          inputs: [],
-          name: "basicGetter",
-          outputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
         },
         {
           inputs: [],
@@ -557,25 +77,254 @@ const deployedContracts = {
         {
           inputs: [
             {
-              internalType: "address",
-              name: "delegator",
-              type: "address",
+              internalType: "bytes32",
+              name: "chestEntityId",
+              type: "bytes32",
             },
-          ],
-          name: "canUnregister",
-          outputs: [
             {
-              internalType: "bool",
-              name: "",
-              type: "bool",
+              internalType: "uint8",
+              name: "objectTypeId",
+              type: "uint8",
             },
           ],
+          name: "destroyChest",
+          outputs: [],
           stateMutability: "nonpayable",
           type: "function",
         },
         {
-          inputs: [],
-          name: "delegatorAddress",
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "chestEntityId",
+              type: "bytes32",
+            },
+          ],
+          name: "getBuyShopData",
+          outputs: [
+            {
+              components: [
+                {
+                  internalType: "uint8",
+                  name: "objectTypeId",
+                  type: "uint8",
+                },
+                {
+                  internalType: "uint256",
+                  name: "price",
+                  type: "uint256",
+                },
+              ],
+              internalType: "struct ShopData",
+              name: "",
+              type: "tuple",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "chestEntityId",
+              type: "bytes32",
+            },
+          ],
+          name: "getFullShopData",
+          outputs: [
+            {
+              components: [
+                {
+                  internalType: "bytes32",
+                  name: "chestEntityId",
+                  type: "bytes32",
+                },
+                {
+                  components: [
+                    {
+                      internalType: "uint8",
+                      name: "objectTypeId",
+                      type: "uint8",
+                    },
+                    {
+                      internalType: "uint256",
+                      name: "price",
+                      type: "uint256",
+                    },
+                  ],
+                  internalType: "struct ShopData",
+                  name: "buyShopData",
+                  type: "tuple",
+                },
+                {
+                  components: [
+                    {
+                      internalType: "uint8",
+                      name: "objectTypeId",
+                      type: "uint8",
+                    },
+                    {
+                      internalType: "uint256",
+                      name: "price",
+                      type: "uint256",
+                    },
+                  ],
+                  internalType: "struct ShopData",
+                  name: "sellShopData",
+                  type: "tuple",
+                },
+                {
+                  internalType: "uint256",
+                  name: "balance",
+                  type: "uint256",
+                },
+                {
+                  components: [
+                    {
+                      internalType: "int16",
+                      name: "x",
+                      type: "int16",
+                    },
+                    {
+                      internalType: "int16",
+                      name: "y",
+                      type: "int16",
+                    },
+                    {
+                      internalType: "int16",
+                      name: "z",
+                      type: "int16",
+                    },
+                  ],
+                  internalType: "struct VoxelCoord",
+                  name: "location",
+                  type: "tuple",
+                },
+              ],
+              internalType: "struct FullShopData",
+              name: "",
+              type: "tuple",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "player",
+              type: "address",
+            },
+          ],
+          name: "getFullShopData",
+          outputs: [
+            {
+              components: [
+                {
+                  internalType: "bytes32",
+                  name: "chestEntityId",
+                  type: "bytes32",
+                },
+                {
+                  components: [
+                    {
+                      internalType: "uint8",
+                      name: "objectTypeId",
+                      type: "uint8",
+                    },
+                    {
+                      internalType: "uint256",
+                      name: "price",
+                      type: "uint256",
+                    },
+                  ],
+                  internalType: "struct ShopData",
+                  name: "buyShopData",
+                  type: "tuple",
+                },
+                {
+                  components: [
+                    {
+                      internalType: "uint8",
+                      name: "objectTypeId",
+                      type: "uint8",
+                    },
+                    {
+                      internalType: "uint256",
+                      name: "price",
+                      type: "uint256",
+                    },
+                  ],
+                  internalType: "struct ShopData",
+                  name: "sellShopData",
+                  type: "tuple",
+                },
+                {
+                  internalType: "uint256",
+                  name: "balance",
+                  type: "uint256",
+                },
+                {
+                  components: [
+                    {
+                      internalType: "int16",
+                      name: "x",
+                      type: "int16",
+                    },
+                    {
+                      internalType: "int16",
+                      name: "y",
+                      type: "int16",
+                    },
+                    {
+                      internalType: "int16",
+                      name: "z",
+                      type: "int16",
+                    },
+                  ],
+                  internalType: "struct VoxelCoord",
+                  name: "location",
+                  type: "tuple",
+                },
+              ],
+              internalType: "struct FullShopData[]",
+              name: "",
+              type: "tuple[]",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "player",
+              type: "address",
+            },
+          ],
+          name: "getOwnedChests",
+          outputs: [
+            {
+              internalType: "bytes32[]",
+              name: "",
+              type: "bytes32[]",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "chestEntityId",
+              type: "bytes32",
+            },
+          ],
+          name: "getOwner",
           outputs: [
             {
               internalType: "address",
@@ -587,13 +336,31 @@ const deployedContracts = {
           type: "function",
         },
         {
-          inputs: [],
-          name: "getDisplayName",
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "chestEntityId",
+              type: "bytes32",
+            },
+          ],
+          name: "getSellShopData",
           outputs: [
             {
-              internalType: "string",
+              components: [
+                {
+                  internalType: "uint8",
+                  name: "objectTypeId",
+                  type: "uint8",
+                },
+                {
+                  internalType: "uint256",
+                  name: "price",
+                  type: "uint256",
+                },
+              ],
+              internalType: "struct ShopData",
               name: "",
-              type: "string",
+              type: "tuple",
             },
           ],
           stateMutability: "view",
@@ -601,7 +368,7 @@ const deployedContracts = {
         },
         {
           inputs: [],
-          name: "getRegisteredPlayers",
+          name: "getTokens",
           outputs: [
             {
               internalType: "address[]",
@@ -613,37 +380,142 @@ const deployedContracts = {
           type: "function",
         },
         {
-          inputs: [],
-          name: "getStatus",
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "playerEntityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "bytes32",
+              name: "chestEntityId",
+              type: "bytes32",
+            },
+          ],
+          name: "onAttached",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "playerEntityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "bytes32",
+              name: "entityId",
+              type: "bytes32",
+            },
+          ],
+          name: "onChipHit",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "playerEntityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "bytes32",
+              name: "chestEntityId",
+              type: "bytes32",
+            },
+          ],
+          name: "onDetached",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "playerEntityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "bytes32",
+              name: "entityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "uint16",
+              name: "numBattery",
+              type: "uint16",
+            },
+          ],
+          name: "onPowered",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "srcEntityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "bytes32",
+              name: "dstEntityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "uint8",
+              name: "transferObjectTypeId",
+              type: "uint8",
+            },
+            {
+              internalType: "uint16",
+              name: "numToTransfer",
+              type: "uint16",
+            },
+            {
+              internalType: "bytes32",
+              name: "toolEntityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "bytes",
+              name: "extraData",
+              type: "bytes",
+            },
+          ],
+          name: "onTransfer",
           outputs: [
             {
-              internalType: "string",
+              internalType: "bool",
               name: "",
-              type: "string",
+              type: "bool",
+            },
+          ],
+          stateMutability: "payable",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "owner",
+          outputs: [
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
             },
           ],
           stateMutability: "view",
           type: "function",
         },
         {
-          inputs: [
-            {
-              internalType: "address",
-              name: "msgSender",
-              type: "address",
-            },
-            {
-              internalType: "ResourceId",
-              name: "systemId",
-              type: "bytes32",
-            },
-            {
-              internalType: "bytes",
-              name: "callData",
-              type: "bytes",
-            },
-          ],
-          name: "onAfterCallSystem",
+          inputs: [],
+          name: "renounceOwnership",
           outputs: [],
           stateMutability: "nonpayable",
           type: "function",
@@ -651,78 +523,17 @@ const deployedContracts = {
         {
           inputs: [
             {
-              internalType: "address",
-              name: "msgSender",
-              type: "address",
-            },
-            {
-              internalType: "ResourceId",
-              name: "systemId",
-              type: "bytes32",
-            },
-            {
-              internalType: "bytes",
-              name: "callData",
-              type: "bytes",
-            },
-          ],
-          name: "onBeforeCallSystem",
-          outputs: [],
-          stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "address",
-              name: "msgSender",
-              type: "address",
-            },
-            {
-              internalType: "ResourceId",
-              name: "systemId",
+              internalType: "bytes32",
+              name: "chestEntityId",
               type: "bytes32",
             },
             {
               internalType: "uint8",
-              name: "enabledHooksBitmap",
+              name: "objectTypeId",
               type: "uint8",
             },
-            {
-              internalType: "bytes32",
-              name: "callDataHash",
-              type: "bytes32",
-            },
           ],
-          name: "onRegisterHook",
-          outputs: [],
-          stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "address",
-              name: "msgSender",
-              type: "address",
-            },
-            {
-              internalType: "ResourceId",
-              name: "systemId",
-              type: "bytes32",
-            },
-            {
-              internalType: "uint8",
-              name: "enabledHooksBitmap",
-              type: "uint8",
-            },
-            {
-              internalType: "bytes32",
-              name: "callDataHash",
-              type: "bytes32",
-            },
-          ],
-          name: "onUnregisterHook",
+          name: "setupChest",
           outputs: [],
           stateMutability: "nonpayable",
           type: "function",
@@ -746,14 +557,3303 @@ const deployedContracts = {
           stateMutability: "view",
           type: "function",
         },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "newOwner",
+              type: "address",
+            },
+          ],
+          name: "transferOwnership",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint8",
+              name: "objectTypeId",
+              type: "uint8",
+            },
+            {
+              internalType: "address",
+              name: "tokenAddress",
+              type: "address",
+            },
+          ],
+          name: "updateObjectToToken",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
       ],
       inheritedFunctions: {
-        canUnregister: "@latticexyz/world/src/ICustomUnregisterDelegation.sol",
-        supportsInterface: "@latticexyz/world/src/IOptionalSystemHook.sol",
-        onAfterCallSystem: "@latticexyz/world/src/IOptionalSystemHook.sol",
-        onBeforeCallSystem: "@latticexyz/world/src/IOptionalSystemHook.sol",
-        onRegisterHook: "@latticexyz/world/src/IOptionalSystemHook.sol",
-        onUnregisterHook: "@latticexyz/world/src/IOptionalSystemHook.sol",
+        onAttached: "@biomesaw/world/src/prototypes/IChip.sol",
+        onChipHit: "@biomesaw/world/src/prototypes/IChip.sol",
+        onDetached: "@biomesaw/world/src/prototypes/IChip.sol",
+        onPowered: "@biomesaw/world/src/prototypes/IChip.sol",
+        onTransfer: "@biomesaw/world/src/prototypes/IChip.sol",
+        supportsInterface: "@biomesaw/world/src/prototypes/IChip.sol",
+        owner: "@openzeppelin/contracts/access/Ownable.sol",
+        renounceOwnership: "@openzeppelin/contracts/access/Ownable.sol",
+        transferOwnership: "@openzeppelin/contracts/access/Ownable.sol",
+      },
+    },
+    BuyChest: {
+      address: "0xdFdE6B33f13de2CA1A75A6F7169f50541B14f75b",
+      abi: [
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "_biomeWorldAddress",
+              type: "address",
+            },
+          ],
+          stateMutability: "nonpayable",
+          type: "constructor",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "owner",
+              type: "address",
+            },
+          ],
+          name: "OwnableInvalidOwner",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "account",
+              type: "address",
+            },
+          ],
+          name: "OwnableUnauthorizedAccount",
+          type: "error",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: true,
+              internalType: "address",
+              name: "previousOwner",
+              type: "address",
+            },
+            {
+              indexed: true,
+              internalType: "address",
+              name: "newOwner",
+              type: "address",
+            },
+          ],
+          name: "OwnershipTransferred",
+          type: "event",
+        },
+        {
+          inputs: [],
+          name: "biomeWorldAddress",
+          outputs: [
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "chestEntityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "uint8",
+              name: "buyObjectTypeId",
+              type: "uint8",
+            },
+            {
+              internalType: "uint256",
+              name: "newPrice",
+              type: "uint256",
+            },
+          ],
+          name: "changeBuyPrice",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "chestEntityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "uint8",
+              name: "buyObjectTypeId",
+              type: "uint8",
+            },
+          ],
+          name: "destroyBuyChest",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "player",
+              type: "address",
+            },
+            {
+              internalType: "bytes32",
+              name: "chestEntityId",
+              type: "bytes32",
+            },
+          ],
+          name: "getBalance",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "chestEntityId",
+              type: "bytes32",
+            },
+          ],
+          name: "getFullShopData",
+          outputs: [
+            {
+              components: [
+                {
+                  internalType: "bytes32",
+                  name: "chestEntityId",
+                  type: "bytes32",
+                },
+                {
+                  components: [
+                    {
+                      internalType: "uint8",
+                      name: "objectTypeId",
+                      type: "uint8",
+                    },
+                    {
+                      internalType: "uint256",
+                      name: "price",
+                      type: "uint256",
+                    },
+                  ],
+                  internalType: "struct ShopData",
+                  name: "buyShopData",
+                  type: "tuple",
+                },
+                {
+                  components: [
+                    {
+                      internalType: "uint8",
+                      name: "objectTypeId",
+                      type: "uint8",
+                    },
+                    {
+                      internalType: "uint256",
+                      name: "price",
+                      type: "uint256",
+                    },
+                  ],
+                  internalType: "struct ShopData",
+                  name: "sellShopData",
+                  type: "tuple",
+                },
+                {
+                  internalType: "uint256",
+                  name: "balance",
+                  type: "uint256",
+                },
+                {
+                  components: [
+                    {
+                      internalType: "int16",
+                      name: "x",
+                      type: "int16",
+                    },
+                    {
+                      internalType: "int16",
+                      name: "y",
+                      type: "int16",
+                    },
+                    {
+                      internalType: "int16",
+                      name: "z",
+                      type: "int16",
+                    },
+                  ],
+                  internalType: "struct VoxelCoord",
+                  name: "location",
+                  type: "tuple",
+                },
+              ],
+              internalType: "struct FullShopData",
+              name: "",
+              type: "tuple",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "player",
+              type: "address",
+            },
+          ],
+          name: "getFullShopData",
+          outputs: [
+            {
+              components: [
+                {
+                  internalType: "bytes32",
+                  name: "chestEntityId",
+                  type: "bytes32",
+                },
+                {
+                  components: [
+                    {
+                      internalType: "uint8",
+                      name: "objectTypeId",
+                      type: "uint8",
+                    },
+                    {
+                      internalType: "uint256",
+                      name: "price",
+                      type: "uint256",
+                    },
+                  ],
+                  internalType: "struct ShopData",
+                  name: "buyShopData",
+                  type: "tuple",
+                },
+                {
+                  components: [
+                    {
+                      internalType: "uint8",
+                      name: "objectTypeId",
+                      type: "uint8",
+                    },
+                    {
+                      internalType: "uint256",
+                      name: "price",
+                      type: "uint256",
+                    },
+                  ],
+                  internalType: "struct ShopData",
+                  name: "sellShopData",
+                  type: "tuple",
+                },
+                {
+                  internalType: "uint256",
+                  name: "balance",
+                  type: "uint256",
+                },
+                {
+                  components: [
+                    {
+                      internalType: "int16",
+                      name: "x",
+                      type: "int16",
+                    },
+                    {
+                      internalType: "int16",
+                      name: "y",
+                      type: "int16",
+                    },
+                    {
+                      internalType: "int16",
+                      name: "z",
+                      type: "int16",
+                    },
+                  ],
+                  internalType: "struct VoxelCoord",
+                  name: "location",
+                  type: "tuple",
+                },
+              ],
+              internalType: "struct FullShopData[]",
+              name: "",
+              type: "tuple[]",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "player",
+              type: "address",
+            },
+          ],
+          name: "getOwnedChests",
+          outputs: [
+            {
+              internalType: "bytes32[]",
+              name: "",
+              type: "bytes32[]",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "chestEntityId",
+              type: "bytes32",
+            },
+          ],
+          name: "getOwner",
+          outputs: [
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "chestEntityId",
+              type: "bytes32",
+            },
+          ],
+          name: "getShopData",
+          outputs: [
+            {
+              components: [
+                {
+                  internalType: "uint8",
+                  name: "objectTypeId",
+                  type: "uint8",
+                },
+                {
+                  internalType: "uint256",
+                  name: "price",
+                  type: "uint256",
+                },
+              ],
+              internalType: "struct ShopData",
+              name: "",
+              type: "tuple",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "playerEntityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "bytes32",
+              name: "chestEntityId",
+              type: "bytes32",
+            },
+          ],
+          name: "onAttached",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "playerEntityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "bytes32",
+              name: "entityId",
+              type: "bytes32",
+            },
+          ],
+          name: "onChipHit",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "playerEntityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "bytes32",
+              name: "chestEntityId",
+              type: "bytes32",
+            },
+          ],
+          name: "onDetached",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "playerEntityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "bytes32",
+              name: "entityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "uint16",
+              name: "numBattery",
+              type: "uint16",
+            },
+          ],
+          name: "onPowered",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "srcEntityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "bytes32",
+              name: "dstEntityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "uint8",
+              name: "transferObjectTypeId",
+              type: "uint8",
+            },
+            {
+              internalType: "uint16",
+              name: "numToTransfer",
+              type: "uint16",
+            },
+            {
+              internalType: "bytes32",
+              name: "toolEntityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "bytes",
+              name: "extraData",
+              type: "bytes",
+            },
+          ],
+          name: "onTransfer",
+          outputs: [
+            {
+              internalType: "bool",
+              name: "",
+              type: "bool",
+            },
+          ],
+          stateMutability: "payable",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "owner",
+          outputs: [
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "chestEntityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "uint8",
+              name: "buyObjectTypeId",
+              type: "uint8",
+            },
+          ],
+          name: "refillBuyChestBalance",
+          outputs: [],
+          stateMutability: "payable",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "renounceOwnership",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "chestEntityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "uint8",
+              name: "buyObjectTypeId",
+              type: "uint8",
+            },
+            {
+              internalType: "uint256",
+              name: "buyPrice",
+              type: "uint256",
+            },
+          ],
+          name: "setupBuyChest",
+          outputs: [],
+          stateMutability: "payable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes4",
+              name: "interfaceId",
+              type: "bytes4",
+            },
+          ],
+          name: "supportsInterface",
+          outputs: [
+            {
+              internalType: "bool",
+              name: "",
+              type: "bool",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "totalFees",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "newOwner",
+              type: "address",
+            },
+          ],
+          name: "transferOwnership",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "chestEntityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "uint256",
+              name: "amount",
+              type: "uint256",
+            },
+          ],
+          name: "withdrawBuyChestBalance",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "withdrawFees",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+      ],
+      inheritedFunctions: {
+        onAttached: "@biomesaw/world/src/prototypes/IChip.sol",
+        onChipHit: "@biomesaw/world/src/prototypes/IChip.sol",
+        onDetached: "@biomesaw/world/src/prototypes/IChip.sol",
+        onPowered: "@biomesaw/world/src/prototypes/IChip.sol",
+        onTransfer: "@biomesaw/world/src/prototypes/IChip.sol",
+        supportsInterface: "@biomesaw/world/src/prototypes/IChip.sol",
+        owner: "@openzeppelin/contracts/access/Ownable.sol",
+        renounceOwnership: "@openzeppelin/contracts/access/Ownable.sol",
+        transferOwnership: "@openzeppelin/contracts/access/Ownable.sol",
+      },
+    },
+    BuySellChest: {
+      address: "0x38A70c040CA5F5439ad52d0e821063b0EC0B52b6",
+      abi: [
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "_biomeWorldAddress",
+              type: "address",
+            },
+          ],
+          stateMutability: "nonpayable",
+          type: "constructor",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "owner",
+              type: "address",
+            },
+          ],
+          name: "OwnableInvalidOwner",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "account",
+              type: "address",
+            },
+          ],
+          name: "OwnableUnauthorizedAccount",
+          type: "error",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: true,
+              internalType: "address",
+              name: "previousOwner",
+              type: "address",
+            },
+            {
+              indexed: true,
+              internalType: "address",
+              name: "newOwner",
+              type: "address",
+            },
+          ],
+          name: "OwnershipTransferred",
+          type: "event",
+        },
+        {
+          inputs: [],
+          name: "biomeWorldAddress",
+          outputs: [
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "chestEntityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "uint8",
+              name: "buyObjectTypeId",
+              type: "uint8",
+            },
+            {
+              internalType: "uint256",
+              name: "newPrice",
+              type: "uint256",
+            },
+          ],
+          name: "changeBuyPrice",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "chestEntityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "uint8",
+              name: "sellObjectTypeId",
+              type: "uint8",
+            },
+            {
+              internalType: "uint256",
+              name: "newPrice",
+              type: "uint256",
+            },
+          ],
+          name: "changeSellPrice",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "chestEntityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "uint8",
+              name: "objectTypeId",
+              type: "uint8",
+            },
+          ],
+          name: "destroyChest",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "player",
+              type: "address",
+            },
+            {
+              internalType: "bytes32",
+              name: "chestEntityId",
+              type: "bytes32",
+            },
+          ],
+          name: "getBalance",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "chestEntityId",
+              type: "bytes32",
+            },
+          ],
+          name: "getBuyShopData",
+          outputs: [
+            {
+              components: [
+                {
+                  internalType: "uint8",
+                  name: "objectTypeId",
+                  type: "uint8",
+                },
+                {
+                  internalType: "uint256",
+                  name: "price",
+                  type: "uint256",
+                },
+              ],
+              internalType: "struct ShopData",
+              name: "",
+              type: "tuple",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "chestEntityId",
+              type: "bytes32",
+            },
+          ],
+          name: "getFullShopData",
+          outputs: [
+            {
+              components: [
+                {
+                  internalType: "bytes32",
+                  name: "chestEntityId",
+                  type: "bytes32",
+                },
+                {
+                  components: [
+                    {
+                      internalType: "uint8",
+                      name: "objectTypeId",
+                      type: "uint8",
+                    },
+                    {
+                      internalType: "uint256",
+                      name: "price",
+                      type: "uint256",
+                    },
+                  ],
+                  internalType: "struct ShopData",
+                  name: "buyShopData",
+                  type: "tuple",
+                },
+                {
+                  components: [
+                    {
+                      internalType: "uint8",
+                      name: "objectTypeId",
+                      type: "uint8",
+                    },
+                    {
+                      internalType: "uint256",
+                      name: "price",
+                      type: "uint256",
+                    },
+                  ],
+                  internalType: "struct ShopData",
+                  name: "sellShopData",
+                  type: "tuple",
+                },
+                {
+                  internalType: "uint256",
+                  name: "balance",
+                  type: "uint256",
+                },
+                {
+                  components: [
+                    {
+                      internalType: "int16",
+                      name: "x",
+                      type: "int16",
+                    },
+                    {
+                      internalType: "int16",
+                      name: "y",
+                      type: "int16",
+                    },
+                    {
+                      internalType: "int16",
+                      name: "z",
+                      type: "int16",
+                    },
+                  ],
+                  internalType: "struct VoxelCoord",
+                  name: "location",
+                  type: "tuple",
+                },
+              ],
+              internalType: "struct FullShopData",
+              name: "",
+              type: "tuple",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "player",
+              type: "address",
+            },
+          ],
+          name: "getFullShopData",
+          outputs: [
+            {
+              components: [
+                {
+                  internalType: "bytes32",
+                  name: "chestEntityId",
+                  type: "bytes32",
+                },
+                {
+                  components: [
+                    {
+                      internalType: "uint8",
+                      name: "objectTypeId",
+                      type: "uint8",
+                    },
+                    {
+                      internalType: "uint256",
+                      name: "price",
+                      type: "uint256",
+                    },
+                  ],
+                  internalType: "struct ShopData",
+                  name: "buyShopData",
+                  type: "tuple",
+                },
+                {
+                  components: [
+                    {
+                      internalType: "uint8",
+                      name: "objectTypeId",
+                      type: "uint8",
+                    },
+                    {
+                      internalType: "uint256",
+                      name: "price",
+                      type: "uint256",
+                    },
+                  ],
+                  internalType: "struct ShopData",
+                  name: "sellShopData",
+                  type: "tuple",
+                },
+                {
+                  internalType: "uint256",
+                  name: "balance",
+                  type: "uint256",
+                },
+                {
+                  components: [
+                    {
+                      internalType: "int16",
+                      name: "x",
+                      type: "int16",
+                    },
+                    {
+                      internalType: "int16",
+                      name: "y",
+                      type: "int16",
+                    },
+                    {
+                      internalType: "int16",
+                      name: "z",
+                      type: "int16",
+                    },
+                  ],
+                  internalType: "struct VoxelCoord",
+                  name: "location",
+                  type: "tuple",
+                },
+              ],
+              internalType: "struct FullShopData[]",
+              name: "",
+              type: "tuple[]",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "player",
+              type: "address",
+            },
+          ],
+          name: "getOwnedChests",
+          outputs: [
+            {
+              internalType: "bytes32[]",
+              name: "",
+              type: "bytes32[]",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "chestEntityId",
+              type: "bytes32",
+            },
+          ],
+          name: "getOwner",
+          outputs: [
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "chestEntityId",
+              type: "bytes32",
+            },
+          ],
+          name: "getSellShopData",
+          outputs: [
+            {
+              components: [
+                {
+                  internalType: "uint8",
+                  name: "objectTypeId",
+                  type: "uint8",
+                },
+                {
+                  internalType: "uint256",
+                  name: "price",
+                  type: "uint256",
+                },
+              ],
+              internalType: "struct ShopData",
+              name: "",
+              type: "tuple",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "playerEntityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "bytes32",
+              name: "chestEntityId",
+              type: "bytes32",
+            },
+          ],
+          name: "onAttached",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "playerEntityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "bytes32",
+              name: "entityId",
+              type: "bytes32",
+            },
+          ],
+          name: "onChipHit",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "playerEntityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "bytes32",
+              name: "chestEntityId",
+              type: "bytes32",
+            },
+          ],
+          name: "onDetached",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "playerEntityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "bytes32",
+              name: "entityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "uint16",
+              name: "numBattery",
+              type: "uint16",
+            },
+          ],
+          name: "onPowered",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "srcEntityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "bytes32",
+              name: "dstEntityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "uint8",
+              name: "transferObjectTypeId",
+              type: "uint8",
+            },
+            {
+              internalType: "uint16",
+              name: "numToTransfer",
+              type: "uint16",
+            },
+            {
+              internalType: "bytes32",
+              name: "toolEntityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "bytes",
+              name: "extraData",
+              type: "bytes",
+            },
+          ],
+          name: "onTransfer",
+          outputs: [
+            {
+              internalType: "bool",
+              name: "",
+              type: "bool",
+            },
+          ],
+          stateMutability: "payable",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "owner",
+          outputs: [
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "chestEntityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "uint8",
+              name: "buyObjectTypeId",
+              type: "uint8",
+            },
+          ],
+          name: "refillBuyChestBalance",
+          outputs: [],
+          stateMutability: "payable",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "renounceOwnership",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "chestEntityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "uint8",
+              name: "objectTypeId",
+              type: "uint8",
+            },
+            {
+              internalType: "uint256",
+              name: "buyPrice",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "sellPrice",
+              type: "uint256",
+            },
+          ],
+          name: "setupChest",
+          outputs: [],
+          stateMutability: "payable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes4",
+              name: "interfaceId",
+              type: "bytes4",
+            },
+          ],
+          name: "supportsInterface",
+          outputs: [
+            {
+              internalType: "bool",
+              name: "",
+              type: "bool",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "totalFees",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "newOwner",
+              type: "address",
+            },
+          ],
+          name: "transferOwnership",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "chestEntityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "uint256",
+              name: "amount",
+              type: "uint256",
+            },
+          ],
+          name: "withdrawBuyChestBalance",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "withdrawFees",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+      ],
+      inheritedFunctions: {
+        onAttached: "@biomesaw/world/src/prototypes/IChip.sol",
+        onChipHit: "@biomesaw/world/src/prototypes/IChip.sol",
+        onDetached: "@biomesaw/world/src/prototypes/IChip.sol",
+        onPowered: "@biomesaw/world/src/prototypes/IChip.sol",
+        onTransfer: "@biomesaw/world/src/prototypes/IChip.sol",
+        supportsInterface: "@biomesaw/world/src/prototypes/IChip.sol",
+        owner: "@openzeppelin/contracts/access/Ownable.sol",
+        renounceOwnership: "@openzeppelin/contracts/access/Ownable.sol",
+        transferOwnership: "@openzeppelin/contracts/access/Ownable.sol",
+      },
+    },
+    OwnedChest: {
+      address: "0x63fea6E447F120B8Faf85B53cdaD8348e645D80E",
+      abi: [
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "_biomeWorldAddress",
+              type: "address",
+            },
+          ],
+          stateMutability: "nonpayable",
+          type: "constructor",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "owner",
+              type: "address",
+            },
+          ],
+          name: "OwnableInvalidOwner",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "account",
+              type: "address",
+            },
+          ],
+          name: "OwnableUnauthorizedAccount",
+          type: "error",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: true,
+              internalType: "address",
+              name: "previousOwner",
+              type: "address",
+            },
+            {
+              indexed: true,
+              internalType: "address",
+              name: "newOwner",
+              type: "address",
+            },
+          ],
+          name: "OwnershipTransferred",
+          type: "event",
+        },
+        {
+          inputs: [],
+          name: "biomeWorldAddress",
+          outputs: [
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "chestEntityId",
+              type: "bytes32",
+            },
+          ],
+          name: "getOwner",
+          outputs: [
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "playerEntityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "bytes32",
+              name: "chestEntityId",
+              type: "bytes32",
+            },
+          ],
+          name: "onAttached",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "playerEntityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "bytes32",
+              name: "entityId",
+              type: "bytes32",
+            },
+          ],
+          name: "onChipHit",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "playerEntityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "bytes32",
+              name: "chestEntityId",
+              type: "bytes32",
+            },
+          ],
+          name: "onDetached",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "playerEntityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "bytes32",
+              name: "entityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "uint16",
+              name: "numBattery",
+              type: "uint16",
+            },
+          ],
+          name: "onPowered",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "srcEntityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "bytes32",
+              name: "dstEntityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "uint8",
+              name: "transferObjectTypeId",
+              type: "uint8",
+            },
+            {
+              internalType: "uint16",
+              name: "numToTransfer",
+              type: "uint16",
+            },
+            {
+              internalType: "bytes32",
+              name: "toolEntityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "bytes",
+              name: "extraData",
+              type: "bytes",
+            },
+          ],
+          name: "onTransfer",
+          outputs: [
+            {
+              internalType: "bool",
+              name: "",
+              type: "bool",
+            },
+          ],
+          stateMutability: "payable",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "owner",
+          outputs: [
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "renounceOwnership",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes4",
+              name: "interfaceId",
+              type: "bytes4",
+            },
+          ],
+          name: "supportsInterface",
+          outputs: [
+            {
+              internalType: "bool",
+              name: "",
+              type: "bool",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "newOwner",
+              type: "address",
+            },
+          ],
+          name: "transferOwnership",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+      ],
+      inheritedFunctions: {
+        onAttached: "@biomesaw/world/src/prototypes/IChip.sol",
+        onChipHit: "@biomesaw/world/src/prototypes/IChip.sol",
+        onDetached: "@biomesaw/world/src/prototypes/IChip.sol",
+        onPowered: "@biomesaw/world/src/prototypes/IChip.sol",
+        onTransfer: "@biomesaw/world/src/prototypes/IChip.sol",
+        supportsInterface: "@biomesaw/world/src/prototypes/IChip.sol",
+        owner: "@openzeppelin/contracts/access/Ownable.sol",
+        renounceOwnership: "@openzeppelin/contracts/access/Ownable.sol",
+        transferOwnership: "@openzeppelin/contracts/access/Ownable.sol",
+      },
+    },
+    SellChest: {
+      address: "0xaC9fCBA56E42d5960f813B9D0387F3D3bC003338",
+      abi: [
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "_biomeWorldAddress",
+              type: "address",
+            },
+          ],
+          stateMutability: "nonpayable",
+          type: "constructor",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "owner",
+              type: "address",
+            },
+          ],
+          name: "OwnableInvalidOwner",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "account",
+              type: "address",
+            },
+          ],
+          name: "OwnableUnauthorizedAccount",
+          type: "error",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: true,
+              internalType: "address",
+              name: "previousOwner",
+              type: "address",
+            },
+            {
+              indexed: true,
+              internalType: "address",
+              name: "newOwner",
+              type: "address",
+            },
+          ],
+          name: "OwnershipTransferred",
+          type: "event",
+        },
+        {
+          inputs: [],
+          name: "biomeWorldAddress",
+          outputs: [
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "chestEntityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "uint8",
+              name: "sellObjectTypeId",
+              type: "uint8",
+            },
+          ],
+          name: "destroySellChest",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "chestEntityId",
+              type: "bytes32",
+            },
+          ],
+          name: "getFullShopData",
+          outputs: [
+            {
+              components: [
+                {
+                  internalType: "bytes32",
+                  name: "chestEntityId",
+                  type: "bytes32",
+                },
+                {
+                  components: [
+                    {
+                      internalType: "uint8",
+                      name: "objectTypeId",
+                      type: "uint8",
+                    },
+                    {
+                      internalType: "uint256",
+                      name: "price",
+                      type: "uint256",
+                    },
+                  ],
+                  internalType: "struct ShopData",
+                  name: "buyShopData",
+                  type: "tuple",
+                },
+                {
+                  components: [
+                    {
+                      internalType: "uint8",
+                      name: "objectTypeId",
+                      type: "uint8",
+                    },
+                    {
+                      internalType: "uint256",
+                      name: "price",
+                      type: "uint256",
+                    },
+                  ],
+                  internalType: "struct ShopData",
+                  name: "sellShopData",
+                  type: "tuple",
+                },
+                {
+                  internalType: "uint256",
+                  name: "balance",
+                  type: "uint256",
+                },
+                {
+                  components: [
+                    {
+                      internalType: "int16",
+                      name: "x",
+                      type: "int16",
+                    },
+                    {
+                      internalType: "int16",
+                      name: "y",
+                      type: "int16",
+                    },
+                    {
+                      internalType: "int16",
+                      name: "z",
+                      type: "int16",
+                    },
+                  ],
+                  internalType: "struct VoxelCoord",
+                  name: "location",
+                  type: "tuple",
+                },
+              ],
+              internalType: "struct FullShopData",
+              name: "",
+              type: "tuple",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "player",
+              type: "address",
+            },
+          ],
+          name: "getFullShopData",
+          outputs: [
+            {
+              components: [
+                {
+                  internalType: "bytes32",
+                  name: "chestEntityId",
+                  type: "bytes32",
+                },
+                {
+                  components: [
+                    {
+                      internalType: "uint8",
+                      name: "objectTypeId",
+                      type: "uint8",
+                    },
+                    {
+                      internalType: "uint256",
+                      name: "price",
+                      type: "uint256",
+                    },
+                  ],
+                  internalType: "struct ShopData",
+                  name: "buyShopData",
+                  type: "tuple",
+                },
+                {
+                  components: [
+                    {
+                      internalType: "uint8",
+                      name: "objectTypeId",
+                      type: "uint8",
+                    },
+                    {
+                      internalType: "uint256",
+                      name: "price",
+                      type: "uint256",
+                    },
+                  ],
+                  internalType: "struct ShopData",
+                  name: "sellShopData",
+                  type: "tuple",
+                },
+                {
+                  internalType: "uint256",
+                  name: "balance",
+                  type: "uint256",
+                },
+                {
+                  components: [
+                    {
+                      internalType: "int16",
+                      name: "x",
+                      type: "int16",
+                    },
+                    {
+                      internalType: "int16",
+                      name: "y",
+                      type: "int16",
+                    },
+                    {
+                      internalType: "int16",
+                      name: "z",
+                      type: "int16",
+                    },
+                  ],
+                  internalType: "struct VoxelCoord",
+                  name: "location",
+                  type: "tuple",
+                },
+              ],
+              internalType: "struct FullShopData[]",
+              name: "",
+              type: "tuple[]",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "chestEntityId",
+              type: "bytes32",
+            },
+          ],
+          name: "getOwner",
+          outputs: [
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "chestEntityId",
+              type: "bytes32",
+            },
+          ],
+          name: "getShopData",
+          outputs: [
+            {
+              components: [
+                {
+                  internalType: "uint8",
+                  name: "objectTypeId",
+                  type: "uint8",
+                },
+                {
+                  internalType: "uint256",
+                  name: "price",
+                  type: "uint256",
+                },
+              ],
+              internalType: "struct ShopData",
+              name: "",
+              type: "tuple",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "playerEntityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "bytes32",
+              name: "chestEntityId",
+              type: "bytes32",
+            },
+          ],
+          name: "onAttached",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "playerEntityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "bytes32",
+              name: "entityId",
+              type: "bytes32",
+            },
+          ],
+          name: "onChipHit",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "playerEntityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "bytes32",
+              name: "chestEntityId",
+              type: "bytes32",
+            },
+          ],
+          name: "onDetached",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "playerEntityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "bytes32",
+              name: "entityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "uint16",
+              name: "numBattery",
+              type: "uint16",
+            },
+          ],
+          name: "onPowered",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "srcEntityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "bytes32",
+              name: "dstEntityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "uint8",
+              name: "transferObjectTypeId",
+              type: "uint8",
+            },
+            {
+              internalType: "uint16",
+              name: "numToTransfer",
+              type: "uint16",
+            },
+            {
+              internalType: "bytes32",
+              name: "toolEntityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "bytes",
+              name: "extraData",
+              type: "bytes",
+            },
+          ],
+          name: "onTransfer",
+          outputs: [
+            {
+              internalType: "bool",
+              name: "",
+              type: "bool",
+            },
+          ],
+          stateMutability: "payable",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "owner",
+          outputs: [
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "renounceOwnership",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "chestEntityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "uint8",
+              name: "sellObjectTypeId",
+              type: "uint8",
+            },
+            {
+              internalType: "uint256",
+              name: "sellPrice",
+              type: "uint256",
+            },
+          ],
+          name: "setupSellChest",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes4",
+              name: "interfaceId",
+              type: "bytes4",
+            },
+          ],
+          name: "supportsInterface",
+          outputs: [
+            {
+              internalType: "bool",
+              name: "",
+              type: "bool",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "newOwner",
+              type: "address",
+            },
+          ],
+          name: "transferOwnership",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "withdrawFees",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+      ],
+      inheritedFunctions: {
+        onAttached: "@biomesaw/world/src/prototypes/IChip.sol",
+        onChipHit: "@biomesaw/world/src/prototypes/IChip.sol",
+        onDetached: "@biomesaw/world/src/prototypes/IChip.sol",
+        onPowered: "@biomesaw/world/src/prototypes/IChip.sol",
+        onTransfer: "@biomesaw/world/src/prototypes/IChip.sol",
+        supportsInterface: "@biomesaw/world/src/prototypes/IChip.sol",
+        owner: "@openzeppelin/contracts/access/Ownable.sol",
+        renounceOwnership: "@openzeppelin/contracts/access/Ownable.sol",
+        transferOwnership: "@openzeppelin/contracts/access/Ownable.sol",
+      },
+    },
+    ShopToken: {
+      address: "0x56D13Eb21a625EdA8438F55DF2C31dC3632034f5",
+      abi: [
+        {
+          inputs: [
+            {
+              internalType: "string",
+              name: "name",
+              type: "string",
+            },
+            {
+              internalType: "string",
+              name: "symbol",
+              type: "string",
+            },
+            {
+              internalType: "address",
+              name: "shopAddress",
+              type: "address",
+            },
+          ],
+          stateMutability: "nonpayable",
+          type: "constructor",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "spender",
+              type: "address",
+            },
+            {
+              internalType: "uint256",
+              name: "allowance",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "needed",
+              type: "uint256",
+            },
+          ],
+          name: "ERC20InsufficientAllowance",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "sender",
+              type: "address",
+            },
+            {
+              internalType: "uint256",
+              name: "balance",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "needed",
+              type: "uint256",
+            },
+          ],
+          name: "ERC20InsufficientBalance",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "approver",
+              type: "address",
+            },
+          ],
+          name: "ERC20InvalidApprover",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "receiver",
+              type: "address",
+            },
+          ],
+          name: "ERC20InvalidReceiver",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "sender",
+              type: "address",
+            },
+          ],
+          name: "ERC20InvalidSender",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "spender",
+              type: "address",
+            },
+          ],
+          name: "ERC20InvalidSpender",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "owner",
+              type: "address",
+            },
+          ],
+          name: "OwnableInvalidOwner",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "account",
+              type: "address",
+            },
+          ],
+          name: "OwnableUnauthorizedAccount",
+          type: "error",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: true,
+              internalType: "address",
+              name: "owner",
+              type: "address",
+            },
+            {
+              indexed: true,
+              internalType: "address",
+              name: "spender",
+              type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "value",
+              type: "uint256",
+            },
+          ],
+          name: "Approval",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: true,
+              internalType: "address",
+              name: "previousOwner",
+              type: "address",
+            },
+            {
+              indexed: true,
+              internalType: "address",
+              name: "newOwner",
+              type: "address",
+            },
+          ],
+          name: "OwnershipTransferred",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: true,
+              internalType: "address",
+              name: "from",
+              type: "address",
+            },
+            {
+              indexed: true,
+              internalType: "address",
+              name: "to",
+              type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "value",
+              type: "uint256",
+            },
+          ],
+          name: "Transfer",
+          type: "event",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "owner",
+              type: "address",
+            },
+            {
+              internalType: "address",
+              name: "spender",
+              type: "address",
+            },
+          ],
+          name: "allowance",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "spender",
+              type: "address",
+            },
+            {
+              internalType: "uint256",
+              name: "value",
+              type: "uint256",
+            },
+          ],
+          name: "approve",
+          outputs: [
+            {
+              internalType: "bool",
+              name: "",
+              type: "bool",
+            },
+          ],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "account",
+              type: "address",
+            },
+          ],
+          name: "balanceOf",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "account",
+              type: "address",
+            },
+            {
+              internalType: "uint256",
+              name: "value",
+              type: "uint256",
+            },
+          ],
+          name: "burn",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "decimals",
+          outputs: [
+            {
+              internalType: "uint8",
+              name: "",
+              type: "uint8",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "to",
+              type: "address",
+            },
+            {
+              internalType: "uint256",
+              name: "amount",
+              type: "uint256",
+            },
+          ],
+          name: "mint",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "name",
+          outputs: [
+            {
+              internalType: "string",
+              name: "",
+              type: "string",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "owner",
+          outputs: [
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "renounceOwnership",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "symbol",
+          outputs: [
+            {
+              internalType: "string",
+              name: "",
+              type: "string",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "totalSupply",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "to",
+              type: "address",
+            },
+            {
+              internalType: "uint256",
+              name: "value",
+              type: "uint256",
+            },
+          ],
+          name: "transfer",
+          outputs: [
+            {
+              internalType: "bool",
+              name: "",
+              type: "bool",
+            },
+          ],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "from",
+              type: "address",
+            },
+            {
+              internalType: "address",
+              name: "to",
+              type: "address",
+            },
+            {
+              internalType: "uint256",
+              name: "value",
+              type: "uint256",
+            },
+          ],
+          name: "transferFrom",
+          outputs: [
+            {
+              internalType: "bool",
+              name: "",
+              type: "bool",
+            },
+          ],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "newOwner",
+              type: "address",
+            },
+          ],
+          name: "transferOwnership",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+      ],
+      inheritedFunctions: {
+        allowance: "@openzeppelin/contracts/token/ERC20/ERC20.sol",
+        approve: "@openzeppelin/contracts/token/ERC20/ERC20.sol",
+        balanceOf: "@openzeppelin/contracts/token/ERC20/ERC20.sol",
+        decimals: "@openzeppelin/contracts/token/ERC20/ERC20.sol",
+        name: "@openzeppelin/contracts/token/ERC20/ERC20.sol",
+        symbol: "@openzeppelin/contracts/token/ERC20/ERC20.sol",
+        totalSupply: "@openzeppelin/contracts/token/ERC20/ERC20.sol",
+        transfer: "@openzeppelin/contracts/token/ERC20/ERC20.sol",
+        transferFrom: "@openzeppelin/contracts/token/ERC20/ERC20.sol",
+        owner: "@openzeppelin/contracts/access/Ownable.sol",
+        renounceOwnership: "@openzeppelin/contracts/access/Ownable.sol",
+        transferOwnership: "@openzeppelin/contracts/access/Ownable.sol",
+      },
+    },
+    TokenizedChest: {
+      address: "0xf090f16dEc8b6D24082Edd25B1C8D26f2bC86128",
+      abi: [
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "_biomeWorldAddress",
+              type: "address",
+            },
+          ],
+          stateMutability: "nonpayable",
+          type: "constructor",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "owner",
+              type: "address",
+            },
+          ],
+          name: "OwnableInvalidOwner",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "account",
+              type: "address",
+            },
+          ],
+          name: "OwnableUnauthorizedAccount",
+          type: "error",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: true,
+              internalType: "address",
+              name: "previousOwner",
+              type: "address",
+            },
+            {
+              indexed: true,
+              internalType: "address",
+              name: "newOwner",
+              type: "address",
+            },
+          ],
+          name: "OwnershipTransferred",
+          type: "event",
+        },
+        {
+          inputs: [],
+          name: "biomeWorldAddress",
+          outputs: [
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "chestEntityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "uint8",
+              name: "objectTypeId",
+              type: "uint8",
+            },
+          ],
+          name: "destroyChest",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "chestEntityId",
+              type: "bytes32",
+            },
+          ],
+          name: "getBuyShopData",
+          outputs: [
+            {
+              components: [
+                {
+                  internalType: "uint8",
+                  name: "objectTypeId",
+                  type: "uint8",
+                },
+                {
+                  internalType: "uint256",
+                  name: "price",
+                  type: "uint256",
+                },
+              ],
+              internalType: "struct ShopData",
+              name: "",
+              type: "tuple",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "chestEntityId",
+              type: "bytes32",
+            },
+          ],
+          name: "getFullShopData",
+          outputs: [
+            {
+              components: [
+                {
+                  internalType: "bytes32",
+                  name: "chestEntityId",
+                  type: "bytes32",
+                },
+                {
+                  components: [
+                    {
+                      internalType: "uint8",
+                      name: "objectTypeId",
+                      type: "uint8",
+                    },
+                    {
+                      internalType: "uint256",
+                      name: "price",
+                      type: "uint256",
+                    },
+                  ],
+                  internalType: "struct ShopData",
+                  name: "buyShopData",
+                  type: "tuple",
+                },
+                {
+                  components: [
+                    {
+                      internalType: "uint8",
+                      name: "objectTypeId",
+                      type: "uint8",
+                    },
+                    {
+                      internalType: "uint256",
+                      name: "price",
+                      type: "uint256",
+                    },
+                  ],
+                  internalType: "struct ShopData",
+                  name: "sellShopData",
+                  type: "tuple",
+                },
+                {
+                  internalType: "uint256",
+                  name: "balance",
+                  type: "uint256",
+                },
+                {
+                  components: [
+                    {
+                      internalType: "int16",
+                      name: "x",
+                      type: "int16",
+                    },
+                    {
+                      internalType: "int16",
+                      name: "y",
+                      type: "int16",
+                    },
+                    {
+                      internalType: "int16",
+                      name: "z",
+                      type: "int16",
+                    },
+                  ],
+                  internalType: "struct VoxelCoord",
+                  name: "location",
+                  type: "tuple",
+                },
+              ],
+              internalType: "struct FullShopData",
+              name: "",
+              type: "tuple",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "player",
+              type: "address",
+            },
+          ],
+          name: "getFullShopData",
+          outputs: [
+            {
+              components: [
+                {
+                  internalType: "bytes32",
+                  name: "chestEntityId",
+                  type: "bytes32",
+                },
+                {
+                  components: [
+                    {
+                      internalType: "uint8",
+                      name: "objectTypeId",
+                      type: "uint8",
+                    },
+                    {
+                      internalType: "uint256",
+                      name: "price",
+                      type: "uint256",
+                    },
+                  ],
+                  internalType: "struct ShopData",
+                  name: "buyShopData",
+                  type: "tuple",
+                },
+                {
+                  components: [
+                    {
+                      internalType: "uint8",
+                      name: "objectTypeId",
+                      type: "uint8",
+                    },
+                    {
+                      internalType: "uint256",
+                      name: "price",
+                      type: "uint256",
+                    },
+                  ],
+                  internalType: "struct ShopData",
+                  name: "sellShopData",
+                  type: "tuple",
+                },
+                {
+                  internalType: "uint256",
+                  name: "balance",
+                  type: "uint256",
+                },
+                {
+                  components: [
+                    {
+                      internalType: "int16",
+                      name: "x",
+                      type: "int16",
+                    },
+                    {
+                      internalType: "int16",
+                      name: "y",
+                      type: "int16",
+                    },
+                    {
+                      internalType: "int16",
+                      name: "z",
+                      type: "int16",
+                    },
+                  ],
+                  internalType: "struct VoxelCoord",
+                  name: "location",
+                  type: "tuple",
+                },
+              ],
+              internalType: "struct FullShopData[]",
+              name: "",
+              type: "tuple[]",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint8",
+              name: "objectTypeId",
+              type: "uint8",
+            },
+          ],
+          name: "getObjectAndTokenSupply",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint8",
+              name: "objectTypeId",
+              type: "uint8",
+            },
+          ],
+          name: "getObjectSupply",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint8",
+              name: "objectTypeId",
+              type: "uint8",
+            },
+          ],
+          name: "getObjectTokenSupply",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "player",
+              type: "address",
+            },
+          ],
+          name: "getOwnedChests",
+          outputs: [
+            {
+              internalType: "bytes32[]",
+              name: "",
+              type: "bytes32[]",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "chestEntityId",
+              type: "bytes32",
+            },
+          ],
+          name: "getOwner",
+          outputs: [
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "chestEntityId",
+              type: "bytes32",
+            },
+          ],
+          name: "getSellShopData",
+          outputs: [
+            {
+              components: [
+                {
+                  internalType: "uint8",
+                  name: "objectTypeId",
+                  type: "uint8",
+                },
+                {
+                  internalType: "uint256",
+                  name: "price",
+                  type: "uint256",
+                },
+              ],
+              internalType: "struct ShopData",
+              name: "",
+              type: "tuple",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "getTokens",
+          outputs: [
+            {
+              internalType: "address[]",
+              name: "",
+              type: "address[]",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "playerEntityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "bytes32",
+              name: "chestEntityId",
+              type: "bytes32",
+            },
+          ],
+          name: "onAttached",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "playerEntityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "bytes32",
+              name: "entityId",
+              type: "bytes32",
+            },
+          ],
+          name: "onChipHit",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "playerEntityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "bytes32",
+              name: "chestEntityId",
+              type: "bytes32",
+            },
+          ],
+          name: "onDetached",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "playerEntityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "bytes32",
+              name: "entityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "uint16",
+              name: "numBattery",
+              type: "uint16",
+            },
+          ],
+          name: "onPowered",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "srcEntityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "bytes32",
+              name: "dstEntityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "uint8",
+              name: "transferObjectTypeId",
+              type: "uint8",
+            },
+            {
+              internalType: "uint16",
+              name: "numToTransfer",
+              type: "uint16",
+            },
+            {
+              internalType: "bytes32",
+              name: "toolEntityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "bytes",
+              name: "extraData",
+              type: "bytes",
+            },
+          ],
+          name: "onTransfer",
+          outputs: [
+            {
+              internalType: "bool",
+              name: "",
+              type: "bool",
+            },
+          ],
+          stateMutability: "payable",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "owner",
+          outputs: [
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "renounceOwnership",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "chestEntityId",
+              type: "bytes32",
+            },
+            {
+              internalType: "uint8",
+              name: "objectTypeId",
+              type: "uint8",
+            },
+          ],
+          name: "setupChest",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes4",
+              name: "interfaceId",
+              type: "bytes4",
+            },
+          ],
+          name: "supportsInterface",
+          outputs: [
+            {
+              internalType: "bool",
+              name: "",
+              type: "bool",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "newOwner",
+              type: "address",
+            },
+          ],
+          name: "transferOwnership",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint8",
+              name: "objectTypeId",
+              type: "uint8",
+            },
+            {
+              internalType: "address",
+              name: "tokenAddress",
+              type: "address",
+            },
+          ],
+          name: "updateObjectToToken",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+      ],
+      inheritedFunctions: {
+        onAttached: "@biomesaw/world/src/prototypes/IChip.sol",
+        onChipHit: "@biomesaw/world/src/prototypes/IChip.sol",
+        onDetached: "@biomesaw/world/src/prototypes/IChip.sol",
+        onPowered: "@biomesaw/world/src/prototypes/IChip.sol",
+        onTransfer: "@biomesaw/world/src/prototypes/IChip.sol",
+        supportsInterface: "@biomesaw/world/src/prototypes/IChip.sol",
+        owner: "@openzeppelin/contracts/access/Ownable.sol",
+        renounceOwnership: "@openzeppelin/contracts/access/Ownable.sol",
+        transferOwnership: "@openzeppelin/contracts/access/Ownable.sol",
       },
     },
   },
