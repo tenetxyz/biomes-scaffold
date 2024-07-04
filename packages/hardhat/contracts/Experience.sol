@@ -3,6 +3,7 @@ pragma solidity >=0.8.24;
 
 import { Strings } from "@openzeppelin/contracts/utils/Strings.sol";
 import { StoreSwitch } from "@latticexyz/store/src/StoreSwitch.sol";
+import { WorldContextConsumerLib } from "@latticexyz/world/src/WorldContext.sol";
 import { ResourceId, WorldResourceIdLib, WorldResourceIdInstance } from "@latticexyz/world/src/WorldResourceId.sol";
 import { Hook } from "@latticexyz/store/src/Hook.sol";
 import { IERC165 } from "@latticexyz/world/src/IERC165.sol";
@@ -27,15 +28,14 @@ import { hasBeforeAndAfterSystemHook, getObjectTypeAtCoord, getEntityAtCoord, ge
 import { Area, insideArea, insideAreaIgnoreY, getEntitiesInArea, getArea } from "@biomesaw/experience/src/utils/AreaUtils.sol";
 import { Build, BuildWithPos, buildExistsInWorld, buildWithPosExistsInWorld, getBuild, getBuildWithPos } from "@biomesaw/experience/src/utils/BuildUtils.sol";
 import { weiToString, getEmptyBlockOnGround } from "@biomesaw/experience/src/utils/GameUtils.sol";
+import { setExperienceMetadata, deleteExperienceMetadata, setNotification, deleteNotifications, setStatus, deleteStatus, setRegisterMsg, deleteRegisterMsg, setUnregisterMsg, deleteUnregisterMsg } from "@biomesaw/experience/src/utils/ExperienceUtils.sol";
+import { setPlayers, pushPlayers, popPlayers, updatePlayers, deletePlayers, setArea, deleteArea, setBuild, deleteBuild, setBuildWithPos, deleteBuildWithPos, setCountdown, setCountdownEndTimestamp, setCountdownEndBlock } from "@biomesaw/experience/src/utils/ExperienceUtils.sol";
+import { setChipMetadata, deleteChipMetadata, setChipAttacher, deleteChipAttacher } from "@biomesaw/experience/src/utils/ExperienceUtils.sol";
 
 contract Experience is ICustomUnregisterDelegation, IOptionalSystemHook {
-  address public immutable biomeWorldAddress;
-
   address public delegatorAddress;
 
   constructor(address _biomeWorldAddress, address _delegatorAddress) {
-    biomeWorldAddress = _biomeWorldAddress;
-
     // Set the store address, so that when reading from MUD tables in the
     // Biomes world, we don't need to pass the store address every time.
     StoreSwitch.setStoreAddress(_biomeWorldAddress);
@@ -46,14 +46,14 @@ contract Experience is ICustomUnregisterDelegation, IOptionalSystemHook {
   }
 
   function initExperience() internal {
-    IExperienceWorld(biomeWorldAddress).experience__setStatus("Test Experience Status");
-    IExperienceWorld(biomeWorldAddress).experience__setRegisterMsg("Test Experience Register Message");
-    IExperienceWorld(biomeWorldAddress).experience__setUnregisterMsg("Test Experience Unregister Message");
+    setStatus("Test Experience Status");
+    setRegisterMsg("Test Experience Register Message");
+    setUnregisterMsg("Test Experience Unregister Message");
 
     bytes32[] memory hookSystemIds = new bytes32[](1);
     hookSystemIds[0] = ResourceId.unwrap(getSystemId("MoveSystem"));
 
-    IExperienceWorld(biomeWorldAddress).experience__setExperienceMetadata(
+    setExperienceMetadata(
       ExperienceMetadataData({
         shouldDelegate: address(0),
         hookSystemIds: hookSystemIds,
@@ -67,7 +67,7 @@ contract Experience is ICustomUnregisterDelegation, IOptionalSystemHook {
   // Use this modifier to restrict access to the Biomes World contract only
   // eg. for hooks that are only allowed to be called by the Biomes World contract
   modifier onlyBiomeWorld() {
-    require(msg.sender == biomeWorldAddress, "Caller is not the Biomes World contract");
+    require(msg.sender == WorldContextConsumerLib._world(), "Caller is not the Biomes World contract");
     _; // Continue execution
   }
 
@@ -110,5 +110,9 @@ contract Experience is ICustomUnregisterDelegation, IOptionalSystemHook {
 
   function basicGetter() external view returns (uint256) {
     return 42;
+  }
+
+  function getBiomeWorldAddress() external view returns (address) {
+    return WorldContextConsumerLib._world();
   }
 }

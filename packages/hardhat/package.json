@@ -48,7 +48,7 @@
     "typescript": "^5.1.6"
   },
   "dependencies": {
-    "@biomesaw/experience": "0.0.1",
+    "@biomesaw/experience": "0.0.2",
     "@biomesaw/utils": "0.1.5",
     "@biomesaw/world": "0.1.6",
     "@latticexyz/common": "https://static.biomes.aw/pkg/tenetxyz-common-2.0.12.tgz",

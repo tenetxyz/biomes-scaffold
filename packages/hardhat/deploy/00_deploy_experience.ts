@@ -58,7 +58,7 @@ const deployExperienceContract: DeployFunction = async function (hre: HardhatRun
 
   // Get the deployed contract to interact with it after deploying.
   const experienceContract = await hre.ethers.getContract<Contract>("Experience", deployer);
-  console.log("Biomes World Address:", await experienceContract.biomeWorldAddress());
+  console.log("Biomes World Address:", await experienceContract.getBiomeWorldAddress());
 };
 
 export default deployExperienceContract;

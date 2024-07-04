@@ -672,7 +672,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@biomesaw-scaffold/hardhat@workspace:packages/hardhat"
   dependencies:
-    "@biomesaw/experience": 0.0.1
+    "@biomesaw/experience": 0.0.2
     "@biomesaw/utils": 0.1.5
     "@biomesaw/world": 0.1.6
     "@ethersproject/abi": ^5.7.0
@@ -767,9 +767,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@biomesaw/experience@npm:0.0.1":
-  version: 0.0.1
-  resolution: "@biomesaw/experience@npm:0.0.1"
+"@biomesaw/experience@npm:0.0.2":
+  version: 0.0.2
+  resolution: "@biomesaw/experience@npm:0.0.2"
   dependencies:
     "@biomesaw/utils": 0.1.5
     "@biomesaw/world": 0.1.6
@@ -779,7 +779,7 @@ __metadata:
     "@latticexyz/world": "https://static.biomes.aw/pkg/tenetxyz-world-2.0.12.tgz"
     "@latticexyz/world-modules": "https://static.biomes.aw/pkg/tenetxyz-world-modules-2.0.12.tgz"
     "@openzeppelin/contracts": ^5.0.2
-  checksum: ac4fd5b1c8642dd7fddd9c73c38b23fcb8be722e712ca85b8f0d414e33a76d11ae5befe6265e5a143bcd6786dd499a3bc11d882682cc4e6b38786c7f1cdf8df7
+  checksum: 2c8d07a9af7a01129152d7595397fbf511d95614f17a56f1c0d314ce959996696768c7e07ba1ae5a5238a26b7462b23ff1eb5bbc3dc1cb857feaec2b3a04bc84
   languageName: node
   linkType: hard
 

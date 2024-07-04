@@ -15,7 +15,7 @@ describe("Experience", function () {
 
   describe("Deployment", function () {
     it("Should have a Biomes world address", async function () {
-      const address = await experienceContract.biomeWorldAddress();
+      const address = await experienceContract.getBiomeWorldAddress();
       expect(address).to.be.a("string");
       expect(address).to.have.length(42);
     });

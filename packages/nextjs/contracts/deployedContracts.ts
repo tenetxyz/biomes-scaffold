@@ -39,19 +39,6 @@ const deployedContracts = {
           type: "function",
         },
         {
-          inputs: [],
-          name: "biomeWorldAddress",
-          outputs: [
-            {
-              internalType: "address",
-              name: "",
-              type: "address",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
           inputs: [
             {
               internalType: "address",
@@ -73,6 +60,19 @@ const deployedContracts = {
         {
           inputs: [],
           name: "delegatorAddress",
+          outputs: [
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "getBiomeWorldAddress",
           outputs: [
             {
               internalType: "address",
