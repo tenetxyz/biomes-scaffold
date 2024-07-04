@@ -7,7 +7,7 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 const deployedContracts = {
   31337: {
     Experience: {
-      address: "0x9Fcca440F19c62CDF7f973eB6DDF218B15d4C71D",
+      address: "0x01E21d7B8c39dc4C764c19b308Bd8b14B1ba139E",
       abi: [
         {
           inputs: [
@@ -17,44 +17,108 @@ const deployedContracts = {
               type: "address",
             },
             {
-              internalType: "address",
-              name: "_delegatorAddress",
-              type: "address",
+              components: [
+                {
+                  components: [
+                    {
+                      internalType: "int16",
+                      name: "x",
+                      type: "int16",
+                    },
+                    {
+                      internalType: "int16",
+                      name: "y",
+                      type: "int16",
+                    },
+                    {
+                      internalType: "int16",
+                      name: "z",
+                      type: "int16",
+                    },
+                  ],
+                  internalType: "struct VoxelCoord",
+                  name: "lowerSouthwestCorner",
+                  type: "tuple",
+                },
+                {
+                  components: [
+                    {
+                      internalType: "int16",
+                      name: "x",
+                      type: "int16",
+                    },
+                    {
+                      internalType: "int16",
+                      name: "y",
+                      type: "int16",
+                    },
+                    {
+                      internalType: "int16",
+                      name: "z",
+                      type: "int16",
+                    },
+                  ],
+                  internalType: "struct VoxelCoord",
+                  name: "size",
+                  type: "tuple",
+                },
+              ],
+              internalType: "struct Area",
+              name: "initialArea",
+              type: "tuple",
             },
           ],
-          stateMutability: "nonpayable",
+          stateMutability: "payable",
           type: "constructor",
-        },
-        {
-          inputs: [],
-          name: "basicGetter",
-          outputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
         },
         {
           inputs: [
             {
+              internalType: "bytes",
+              name: "data",
+              type: "bytes",
+            },
+            {
+              internalType: "uint256",
+              name: "start",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "end",
+              type: "uint256",
+            },
+          ],
+          name: "Slice_OutOfBounds",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "value",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "length",
+              type: "uint256",
+            },
+          ],
+          name: "StringsInsufficientHexLength",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "biomeWorldAddress",
+          outputs: [
+            {
               internalType: "address",
-              name: "delegator",
+              name: "",
               type: "address",
             },
           ],
-          name: "canUnregister",
-          outputs: [
-            {
-              internalType: "bool",
-              name: "",
-              type: "bool",
-            },
-          ],
-          stateMutability: "nonpayable",
+          stateMutability: "view",
           type: "function",
         },
         {
@@ -78,6 +142,32 @@ const deployedContracts = {
               internalType: "address",
               name: "",
               type: "address",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "getWinner",
+          outputs: [
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "isGameOver",
+          outputs: [
+            {
+              internalType: "bool",
+              name: "",
+              type: "bool",
             },
           ],
           stateMutability: "view",
@@ -204,14 +294,26 @@ const deployedContracts = {
           stateMutability: "view",
           type: "function",
         },
+        {
+          inputs: [],
+          name: "winner",
+          outputs: [
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
       ],
       inheritedFunctions: {
-        canUnregister: "@latticexyz/world/src/ICustomUnregisterDelegation.sol",
-        supportsInterface: "@latticexyz/world/src/IOptionalSystemHook.sol",
         onAfterCallSystem: "@latticexyz/world/src/IOptionalSystemHook.sol",
         onBeforeCallSystem: "@latticexyz/world/src/IOptionalSystemHook.sol",
         onRegisterHook: "@latticexyz/world/src/IOptionalSystemHook.sol",
         onUnregisterHook: "@latticexyz/world/src/IOptionalSystemHook.sol",
+        supportsInterface: "@latticexyz/world/src/IOptionalSystemHook.sol",
       },
     },
   },
