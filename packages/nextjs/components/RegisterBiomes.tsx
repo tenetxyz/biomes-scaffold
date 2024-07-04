@@ -87,7 +87,7 @@ export const RegisterBiomes: React.FC = ({}) => {
               <h3 className="text-xl font-bold text-left mt-8">HOOKS</h3>
               <CardSection
                 relevantSystems={ExperienceRequiredHooks}
-                description={"Description of why you need the player to register the hooks on MoveSystem"}
+                description={"Check if your player reached the summit."}
               >
                 <RegisterHookButton
                   hookAddress={contractsData["Experience"].address}

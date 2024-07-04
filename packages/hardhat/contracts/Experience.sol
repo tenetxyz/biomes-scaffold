@@ -32,23 +32,29 @@ import { setExperienceMetadata, deleteExperienceMetadata, setNotification, delet
 import { setPlayers, pushPlayers, popPlayers, updatePlayers, deletePlayers, setArea, deleteArea, setBuild, deleteBuild, setBuildWithPos, deleteBuildWithPos, setCountdown, setCountdownEndTimestamp, setCountdownEndBlock } from "@biomesaw/experience/src/utils/ExperienceUtils.sol";
 import { setChipMetadata, deleteChipMetadata, setChipAttacher, deleteChipAttacher } from "@biomesaw/experience/src/utils/ExperienceUtils.sol";
 
-contract Experience is ICustomUnregisterDelegation, IOptionalSystemHook {
+bytes32 constant PRIZE_AREA_ID = bytes32(keccak256("PRIZE_AREA"));
+
+contract Experience is IOptionalSystemHook {
+  address public immutable biomeWorldAddress;
+
   address public delegatorAddress;
 
-  constructor(address _biomeWorldAddress, address _delegatorAddress) {
+  bool public isGameOver = false;
+  address public winner;
+
+  constructor(address _biomeWorldAddress, Area memory initialArea) payable {
     // Set the store address, so that when reading from MUD tables in the
     // Biomes world, we don't need to pass the store address every time.
     StoreSwitch.setStoreAddress(_biomeWorldAddress);
 
-    initExperience();
-
-    delegatorAddress = _delegatorAddress;
+    initExperience(initialArea);
   }
 
-  function initExperience() internal {
-    setStatus("Test Experience Status");
-    setRegisterMsg("Test Experience Register Message");
-    setUnregisterMsg("Test Experience Unregister Message");
+  function initExperience(Area memory initialArea) internal {
+    setArea(PRIZE_AREA_ID, "SkyBox", initialArea);
+
+    setStatus("Game in progress. Move your avatar inside the SkyBox to win!");
+    setRegisterMsg("Move hook checks if your player has reached the summit.");
 
     bytes32[] memory hookSystemIds = new bytes32[](1);
     hookSystemIds[0] = ResourceId.unwrap(getSystemId("MoveSystem"));
@@ -58,8 +64,8 @@ contract Experience is ICustomUnregisterDelegation, IOptionalSystemHook {
         shouldDelegate: address(0),
         hookSystemIds: hookSystemIds,
         joinFee: 0,
-        name: "Test Experience",
-        description: "Test Experience Description"
+        name: "Race To The Sky",
+        description: "First to reach the designated area in the sky wins the ETH"
       })
     );
   }
@@ -72,14 +78,7 @@ contract Experience is ICustomUnregisterDelegation, IOptionalSystemHook {
   }
 
   function supportsInterface(bytes4 interfaceId) external view override returns (bool) {
-    return
-      interfaceId == type(ICustomUnregisterDelegation).interfaceId ||
-      interfaceId == type(IOptionalSystemHook).interfaceId ||
-      interfaceId == type(IERC165).interfaceId;
-  }
-
-  function canUnregister(address delegator) external override onlyBiomeWorld returns (bool) {
-    return true;
+    return interfaceId == type(IOptionalSystemHook).interfaceId || interfaceId == type(IERC165).interfaceId;
   }
 
   function onRegisterHook(
@@ -87,7 +86,14 @@ contract Experience is ICustomUnregisterDelegation, IOptionalSystemHook {
     ResourceId systemId,
     uint8 enabledHooksBitmap,
     bytes32 callDataHash
-  ) external override onlyBiomeWorld {}
+  ) external override onlyBiomeWorld {
+    require(!isGameOver, "Game is already over.");
+    require(
+      getEntityFromPlayer(msgSender) != bytes32(0),
+      "You Must First Spawn An Avatar In Biome-1 To Play The Game."
+    );
+    setNotification(address(0), string.concat(Strings.toHexString(msgSender), " has joined the game"));
+  }
 
   function onUnregisterHook(
     address msgSender,
@@ -106,13 +112,39 @@ contract Experience is ICustomUnregisterDelegation, IOptionalSystemHook {
     address msgSender,
     ResourceId systemId,
     bytes memory callData
-  ) external override onlyBiomeWorld {}
+  ) external override onlyBiomeWorld {
+    if (isGameOver) {
+      return;
+    }
 
-  function basicGetter() external view returns (uint256) {
-    return 42;
+    Area memory prizeArea = getArea(address(this), PRIZE_AREA_ID);
+
+    bytes32 playerEntityId = getEntityFromPlayer(msgSender);
+    if (playerEntityId == bytes32(0)) {
+      return;
+    }
+
+    VoxelCoord memory playerPosition = getPosition(playerEntityId);
+
+    if (insideArea(prizeArea, playerPosition)) {
+      isGameOver = true;
+      winner = msgSender;
+
+      setStatus(string.concat("Game over. Winner: ", Strings.toHexString(msgSender)));
+      setRegisterMsg("Game is over.");
+
+      setNotification(address(0), string.concat(Strings.toHexString(msgSender), " has won the game!"));
+
+      (bool sent, ) = msgSender.call{ value: address(this).balance }("");
+      require(sent, "Failed to send Ether");
+    }
   }
 
   function getBiomeWorldAddress() external view returns (address) {
     return WorldContextConsumerLib._world();
+  }
+
+  function getWinner() external view returns (address) {
+    return winner;
   }
 }
