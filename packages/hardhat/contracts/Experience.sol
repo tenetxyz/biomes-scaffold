@@ -15,24 +15,23 @@ import { OptionalSystemHooks } from "@latticexyz/world/src/codegen/tables/Option
 import { IWorld } from "@biomesaw/world/src/codegen/world/IWorld.sol";
 import { VoxelCoord } from "@biomesaw/utils/src/Types.sol";
 import { voxelCoordsAreEqual, inSurroundingCube } from "@biomesaw/utils/src/VoxelCoordUtils.sol";
+import { IWorld as IExperienceWorld } from "@biomesaw/experience/src/codegen/world/IWorld.sol";
+import { ExperienceMetadataData } from "@biomesaw/experience/src/codegen/tables/ExperienceMetadata.sol";
 
 // Available utils, remove the ones you don't need
 // See ObjectTypeIds.sol for all available object types
 import { PlayerObjectID, AirObjectID, DirtObjectID, ChestObjectID } from "@biomesaw/world/src/ObjectTypeIds.sol";
-import { getBuildArgs, getMineArgs, getMoveArgs, getHitArgs, getDropArgs, getTransferArgs, getCraftArgs, getEquipArgs, getLoginArgs, getSpawnArgs } from "../utils/HookUtils.sol";
-import { getSystemId, isSystemId, callBuild, callMine, callMove, callHit, callDrop, callTransfer, callCraft, callEquip, callUnequip, callLogin, callLogout, callSpawn, callActivate } from "../utils/DelegationUtils.sol";
-import { hasBeforeAndAfterSystemHook, getObjectTypeAtCoord, getEntityAtCoord, getPosition, getObjectType, getMiningDifficulty, getStackable, getDamage, getDurability, isTool, isBlock, getEntityFromPlayer, getPlayerFromEntity, getEquipped, getHealth, getStamina, getIsLoggedOff, getLastHitTime, getInventoryTool, getInventoryObjects, getCount, getNumSlotsUsed, getNumUsesLeft } from "../utils/EntityUtils.sol";
-import { Area, insideArea, insideAreaIgnoreY, getEntitiesInArea } from "../utils/AreaUtils.sol";
-import { Build, BuildWithPos, buildExistsInWorld, buildWithPosExistsInWorld } from "../utils/BuildUtils.sol";
-import { NamedArea, NamedBuild, NamedBuildWithPos, weiToString, getEmptyBlockOnGround } from "../utils/GameUtils.sol";
+import { getBuildArgs, getMineArgs, getMoveArgs, getHitArgs, getDropArgs, getTransferArgs, getCraftArgs, getEquipArgs, getLoginArgs, getSpawnArgs } from "@biomesaw/experience/src/utils/HookUtils.sol";
+import { getSystemId, isSystemId, callBuild, callMine, callMove, callHit, callDrop, callTransfer, callCraft, callEquip, callUnequip, callLogin, callLogout, callSpawn, callActivate } from "@biomesaw/experience/src/utils/DelegationUtils.sol";
+import { hasBeforeAndAfterSystemHook, getObjectTypeAtCoord, getEntityAtCoord, getPosition, getObjectType, getMiningDifficulty, getStackable, getDamage, getDurability, isTool, isBlock, getEntityFromPlayer, getPlayerFromEntity, getEquipped, getHealth, getStamina, getIsLoggedOff, getLastHitTime, getInventoryTool, getInventoryObjects, getCount, getNumSlotsUsed, getNumUsesLeft } from "@biomesaw/experience/src/utils/EntityUtils.sol";
+import { Area, insideArea, insideAreaIgnoreY, getEntitiesInArea, getArea } from "@biomesaw/experience/src/utils/AreaUtils.sol";
+import { Build, BuildWithPos, buildExistsInWorld, buildWithPosExistsInWorld, getBuild, getBuildWithPos } from "@biomesaw/experience/src/utils/BuildUtils.sol";
+import { weiToString, getEmptyBlockOnGround } from "@biomesaw/experience/src/utils/GameUtils.sol";
 
 contract Experience is ICustomUnregisterDelegation, IOptionalSystemHook {
   address public immutable biomeWorldAddress;
 
   address public delegatorAddress;
-
-  // Event to show a notification in the Biomes World
-  event GameNotif(address player, string message);
 
   constructor(address _biomeWorldAddress, address _delegatorAddress) {
     biomeWorldAddress = _biomeWorldAddress;
@@ -41,7 +40,28 @@ contract Experience is ICustomUnregisterDelegation, IOptionalSystemHook {
     // Biomes world, we don't need to pass the store address every time.
     StoreSwitch.setStoreAddress(_biomeWorldAddress);
 
+    initExperience();
+
     delegatorAddress = _delegatorAddress;
+  }
+
+  function initExperience() internal {
+    IExperienceWorld(biomeWorldAddress).experience__setStatus("Test Experience Status");
+    IExperienceWorld(biomeWorldAddress).experience__setRegisterMsg("Test Experience Register Message");
+    IExperienceWorld(biomeWorldAddress).experience__setUnregisterMsg("Test Experience Unregister Message");
+
+    bytes32[] memory hookSystemIds = new bytes32[](1);
+    hookSystemIds[0] = ResourceId.unwrap(getSystemId("MoveSystem"));
+
+    IExperienceWorld(biomeWorldAddress).experience__setExperienceMetadata(
+      ExperienceMetadataData({
+        shouldDelegate: address(0),
+        hookSystemIds: hookSystemIds,
+        joinFee: 0,
+        name: "Test Experience",
+        description: "Test Experience Description"
+      })
+    );
   }
 
   // Use this modifier to restrict access to the Biomes World contract only
@@ -90,17 +110,5 @@ contract Experience is ICustomUnregisterDelegation, IOptionalSystemHook {
 
   function basicGetter() external view returns (uint256) {
     return 42;
-  }
-
-  function getRegisteredPlayers() external view returns (address[] memory) {
-    return new address[](0);
-  }
-
-  function getDisplayName() external view returns (string memory) {
-    return "Experience";
-  }
-
-  function getStatus() external view returns (string memory) {
-    return "You are in the Experience";
   }
 }
