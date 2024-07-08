@@ -7,18 +7,13 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 const deployedContracts = {
   31337: {
     Experience: {
-      address: "0x9Fcca440F19c62CDF7f973eB6DDF218B15d4C71D",
+      address: "0x7C8BaafA542c57fF9B2B90612bf8aB9E86e22C09",
       abi: [
         {
           inputs: [
             {
               internalType: "address",
               name: "_biomeWorldAddress",
-              type: "address",
-            },
-            {
-              internalType: "address",
-              name: "_delegatorAddress",
               type: "address",
             },
           ],
@@ -55,19 +50,6 @@ const deployedContracts = {
             },
           ],
           stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          inputs: [],
-          name: "delegatorAddress",
-          outputs: [
-            {
-              internalType: "address",
-              name: "",
-              type: "address",
-            },
-          ],
-          stateMutability: "view",
           type: "function",
         },
         {

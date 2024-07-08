@@ -33,16 +33,12 @@ import { setPlayers, pushPlayers, popPlayers, updatePlayers, deletePlayers, setA
 import { setChipMetadata, deleteChipMetadata, setChipAttacher, deleteChipAttacher } from "@biomesaw/experience/src/utils/ExperienceUtils.sol";
 
 contract Experience is ICustomUnregisterDelegation, IOptionalSystemHook {
-  address public delegatorAddress;
-
-  constructor(address _biomeWorldAddress, address _delegatorAddress) {
+  constructor(address _biomeWorldAddress) {
     // Set the store address, so that when reading from MUD tables in the
     // Biomes world, we don't need to pass the store address every time.
     StoreSwitch.setStoreAddress(_biomeWorldAddress);
 
     initExperience();
-
-    delegatorAddress = _delegatorAddress;
   }
 
   function initExperience() internal {
